@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon=""
+        android:title="Home" />
+    <item
+        android:id= "@+id/search"
+        android:icon=""
+        android:title="Search" />
+    <item
+        android:id="@+id/profile"
+        android:icon=""
+        android:title="Profile" />
+</menu>
