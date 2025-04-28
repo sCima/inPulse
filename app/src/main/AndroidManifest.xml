@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inpulse"
         tools:targetApi="31">
+        <activity android:name=".HubActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
