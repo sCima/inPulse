@@ -27,7 +27,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:layout_margin="8dp"
         android:background="@drawable/shape_recycler"
-        tools:itemCount="5"
+        tools:itemCount="1"
         android:padding="8dp"/>
 
     <androidx.appcompat.widget.AppCompatButton

@@ -6,7 +6,8 @@
     <color name="btnYellow">#FFD700</color>
     <color name="btnBlue">#2A3F5F</color>
     <color name="fgBar">#FAFAF6</color>
-    <color name="fgBg">#F1F3F4</color>
+    <color name="fgBg">#F2F3F4</color>
+    <color name="tagsBg">#E3F6FF</color>
     <color name="fontBlack">#212121</color>
     <color name="fontBlue">#022956</color>
     <color name="fontBlue2">#4F022956</color>

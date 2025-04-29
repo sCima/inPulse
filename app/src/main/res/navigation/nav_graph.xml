@@ -23,4 +23,9 @@
         android:name="br.com.fiap.inpulse.fragments.SettingsFragment"
         android:label="Configurações" />
 
+    <fragment
+        android:id="@+id/ideaFragment"
+        android:name="br.com.fiap.inpulse.fragments.IdeaFragment"
+        android:label="Ideia" />
+
 </navigation>
