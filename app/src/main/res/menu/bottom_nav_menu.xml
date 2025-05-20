@@ -8,6 +8,10 @@
         android:icon="@drawable/baseline_profile_24"
         android:title="Perfil" />
     <item
+        android:id= "@+id/idea"
+        android:icon="@drawable/baseline_idea_24"
+        android:title="Nova Ideia" />
+    <item
         android:id="@+id/ranking"
         android:icon="@drawable/baseline_ranking_24"
         android:title="Ranking" />

@@ -14,6 +14,11 @@
         android:label="Perfil" />
 
     <fragment
+        android:id="@+id/ideaFragment"
+        android:name="br.com.fiap.inpulse.fragments.IdeaFragment"
+        android:label="Idea" />
+
+    <fragment
         android:id="@+id/rankingFragment"
         android:name="br.com.fiap.inpulse.fragments.RankingFragment"
         android:label="Ranking" />
@@ -22,10 +27,5 @@
         android:id="@+id/settingsFragment"
         android:name="br.com.fiap.inpulse.fragments.SettingsFragment"
         android:label="Configurações" />
-
-    <fragment
-        android:id="@+id/ideaFragment"
-        android:name="br.com.fiap.inpulse.fragments.IdeaFragment"
-        android:label="Ideia" />
 
 </navigation>

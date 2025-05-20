@@ -63,6 +63,6 @@ class HubActivity : AppCompatActivity() {
 
     private fun configureToolbar(toolbar: Toolbar) {
         setSupportActionBar(toolbar)
-        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgBlue))
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgWhite))
     }
 }

@@ -1,69 +1,142 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
     android:background="@drawable/shape_recycler_ideias"
-    android:padding="12dp"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_margin="8dp">
+
+    <include
+        layout="@layout/component_bar"
+        android:id="@+id/includeBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerInterno"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        app:layout_constraintTop_toBottomOf="@id/includeBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+    <LinearLayout
+        android:id="@+id/layoutIcones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@id/includeBar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="8dp"
+        tools:ignore="NotSibling">
+
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/shape_button_yellow" />
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/shape_button_yellow"
+            android:layout_marginStart="8dp" />
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/shape_button_yellow"
+            android:layout_marginStart="8dp" />
+        <ImageView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/shape_button_yellow"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imagemIdeia"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:scaleType="centerCrop"
         android:background="@drawable/bg_image_rounded"
-        android:contentDescription="Imagem da ideia"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:contentDescription="@string/image_idea_desc"
+        app:layout_constraintTop_toBottomOf="@id/includeBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/layoutIcones"
+        android:layout_marginBottom="8dp"
+        tools:ignore="NotSibling" />
 
     <TextView
-        android:id="@+id/tituloIdeia"
+        android:id="@+id/resumoIdeia"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nome da ideia etc"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@color/fontBlue"
-        android:layout_marginStart="8dp"
-        app:layout_constraintStart_toEndOf="@id/imagemIdeia"
-        app:layout_constraintEnd_toStartOf="@id/btnFavoritar"
-        app:layout_constraintTop_toTopOf="@id/imagemIdeia" />
+        android:text="@string/idea_problema"
+        android:textSize="14sp"
+        android:textColor="@color/fontBlack"
+        app:layout_constraintTop_toBottomOf="@id/layoutIcones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/layoutIcones"
+        android:layout_marginEnd="8dp" />
+
+    <TextView
+        android:id="@+id/textoCompleto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/idea_desc"
+        android:textSize="14sp"
+        android:textColor="@color/fontBlack"
+        app:layout_constraintTop_toBottomOf="@id/imagemIdeia"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/autorIdeia"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Por Carlos S."
-        android:textColor="@color/fontLight"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/tituloIdeia"
-        app:layout_constraintTop_toBottomOf="@id/tituloIdeia" />
+        android:text="@string/idea_author"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/textoCompleto"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="12dp" />
 
     <TextView
         android:id="@+id/dataIdeia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12/04/2025"
-        android:layout_marginTop="6dp"
-        android:textColor="@color/fontBlue"
+        android:text="@string/idea_date"
+        android:textColor="@color/fontBlack"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@id/autorIdeia"
-        app:layout_constraintTop_toBottomOf="@id/autorIdeia" />
+        app:layout_constraintTop_toBottomOf="@id/autorIdeia"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/btnFavoritar"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:id="@+id/btnContribuir"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:background="@null"
-        android:src="@drawable/baseline_settings_24"
-        android:contentDescription="Curtir"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/shape_button_blue"
+        android:contentDescription="@string/btn_contribuir_desc"
+        app:tint="@color/euroBlue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:tint="@color/euroBlue" />
+        app:layout_constraintEnd_toStartOf="@id/btnCurtir"
+        android:layout_marginEnd="12dp" />
+
+    <ImageButton
+        android:id="@+id/btnCurtir"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@null"
+        android:src="@drawable/shape_button_blue"
+        android:contentDescription="@string/btn_curtir_desc"
+        app:tint="@color/euroBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

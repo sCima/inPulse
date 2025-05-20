@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">inpulse</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="toolbar_name">Carlos S.</string>
+    <string name="toolbar_imagebutton_desc">Botão de chatbot</string>
+    <string name="search_hint">Pesquisar ideia</string>
+    <string name="fragment_bar_title">Titulo do fragment</string>
+    <string name="image_idea_desc">Imagem da ideia</string>
+    <string name="idea_problema">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat.</string>
+    <string name="idea_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec nisi in sapien dignissim dictum. Integer blandit, magna ut tincidunt feugiat, sem erat rhoncus tellus, in sodales sapien nisi at nisl. Proin tincidunt arcu in justo sodales, sed commodo sapien cursus. Pellentesque a elit at eros sodales posuere. Ut suscipit lacinia justo, vel luctus leo cursus nec.</string>
+    <string name="idea_author">Por Carlos S.</string>
+    <string name="idea_date">12/04/2025</string>
+    <string name="btn_contribuir_desc">Comentar</string>
+    <string name="btn_curtir_desc">Curtir</string>
+    <string name="button_programs"><u>Confira nossos programas</u></string>
 </resources>

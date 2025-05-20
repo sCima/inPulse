@@ -2,7 +2,7 @@
 <resources>
 
     <style name="Theme.Inpulse" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="android:windowBackground">@color/bgBlue</item>
+    <item name="android:windowBackground">@color/bgWhite</item>
 
 
     </style>

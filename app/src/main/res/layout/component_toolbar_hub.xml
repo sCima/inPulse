@@ -9,7 +9,7 @@
         android:id="@+id/toolbar_hub"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/bgBlue"
+        android:background="@color/bgWhite"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -18,24 +18,25 @@
             android:layout_height="wrap_content"
             android:padding="8dp">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/toolbar_image"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:paddingTop="8dp"
+                android:padding="3dp"
                 android:src="@mipmap/profile_default_round"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:shapeAppearanceOverlay="@style/CircleImageView" />
 
             <TextView
                 android:id="@+id/toolbar_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Carlos S."
-                android:textColor="@color/white"
+                android:text="@string/toolbar_name"
+                android:textColor="@color/fontBlue"
                 android:textSize="25sp"
                 android:layout_marginStart="8dp"
-                android:paddingTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/toolbar_image"
                 app:layout_constraintTop_toTopOf="@+id/toolbar_image"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar_image"/>
@@ -48,10 +49,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:background="@color/bgBlue"
+                android:background="@color/bgWhite"
                 android:paddingEnd="16dp"
-                android:paddingTop="8dp"
-                android:contentDescription="Botão de chatbot" />
+                android:contentDescription="@string/toolbar_imagebutton_desc" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
