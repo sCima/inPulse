@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:gravity="center_vertical">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/toolbar_image"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/profile_default_round"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:shapeAppearanceOverlay="@style/CircleImageView" />
+
+    <TextView
+        android:id="@+id/textUserName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/text_ranking_user"
+        android:textSize="16sp"
+        android:textColor="@color/fontBlack"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/textRank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ranking_tier"
+        android:textSize="16sp"
+        android:textColor="@color/fontBlack"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:id="@+id/textNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ranking"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/fontBlack" />
+
+</LinearLayout>

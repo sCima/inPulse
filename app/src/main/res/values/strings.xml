@@ -13,4 +13,18 @@
     <string name="btn_contribuir_desc">Comentar</string>
     <string name="btn_curtir_desc">Curtir</string>
     <string name="button_programs"><u>Confira nossos programas</u></string>
+    <string name="btn_ranking_colaboradores">Colaboradores</string>
+    <string name="bnt_ranking_ideias">Ideias</string>
+    <string name="btn_ranking_ordem">N° de curtidas</string>
+    <string name="text_ranking_user">Carlos S.</string>
+    <string name="text_ranking_tier">Ouro</string>
+    <string name="text_ranking">22</string>
+    <string name="text_ranking_idea">Nome da ideia</string>
+
+    <string-array name="filtros_array">
+        <item>Filtro: nenhum</item>
+        <item>Setor X</item>
+        <item>Setor Y</item>
+        <item>Setor Z</item>
+    </string-array>
 </resources>
