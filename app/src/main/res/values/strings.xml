@@ -20,6 +20,13 @@
     <string name="text_ranking_tier">Ouro</string>
     <string name="text_ranking">22</string>
     <string name="text_ranking_idea">Nome da ideia</string>
+    <string name="toolbar_appname_pulse">Pulse</string>
+    <string name="toolbar_appname_in">In</string>
+    <string name="login_text">Login</string>
+    <string name="login_hint_email">email</string>
+    <string name="login_hint_senha">senha</string>
+    <string name="login_button_cadastre"><u>Cadastre-se</u></string>
+    <string name="login_button">Entrar</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
