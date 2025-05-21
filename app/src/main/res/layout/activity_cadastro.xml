@@ -86,6 +86,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/shape_button_yellow"
             android:text="@string/cadastro_button"
+            android:textColor="@color/fontBlue"
             android:paddingHorizontal="16dp"
             android:paddingVertical="8dp"
             android:layout_marginEnd="16dp"

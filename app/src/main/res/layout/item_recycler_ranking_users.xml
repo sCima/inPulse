@@ -31,7 +31,7 @@
         android:layout_marginStart="8dp"/>
 
     <TextView
-        android:id="@+id/textRank"
+        android:id="@+id/textTier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text_ranking_tier"

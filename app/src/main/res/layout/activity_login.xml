@@ -82,7 +82,9 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_button_yellow"
                 android:text="@string/login_button"
+                android:textColor="@color/fontBlue"
                 android:paddingHorizontal="16dp"
+                android:layout_marginEnd="6dp"
                 android:paddingVertical="8dp"/>
         </LinearLayout>
 

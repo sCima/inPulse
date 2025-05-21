@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shape_recycler_ideias"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:minHeight="200dp">
 
     <include
         layout="@layout/component_bar"
         android:id="@+id/includeBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
