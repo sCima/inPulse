@@ -3,6 +3,7 @@ package br.com.fiap.inpulse
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.fragments.HomeFragment
 import br.com.fiap.inpulse.fragments.ProfileFragment
 import br.com.fiap.inpulse.fragments.RankingFragment
@@ -25,40 +26,40 @@ class HubActivity : AppCompatActivity() {
         configureToolbar(toolbarHub)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, homeFragment)
-            .commit()
+        loadFragment(homeFragment)
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, homeFragment)
-                        .commit()
+                    loadFragment(homeFragment)
                     true
                 }
                 R.id.profile -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, profileFragment)
-                        .commit()
+                    loadFragment(profileFragment)
                     true
                 }
                 R.id.ranking -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, rankingFragment)
-                        .commit()
+                    loadFragment(rankingFragment)
                     true
                 }
                 R.id.settings -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, settingsFragment)
-                        .commit()
+                    loadFragment(settingsFragment)
                     true
                 }
                 else -> false
             }
         }
 
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.enter_from_bottom,
+                0
+            )
+            .replace(R.id.container, fragment)
+            .commit()
     }
 
     private fun configureToolbar(toolbar: Toolbar) {
