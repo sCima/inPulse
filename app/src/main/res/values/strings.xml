@@ -27,6 +27,11 @@
     <string name="login_hint_senha">senha</string>
     <string name="login_button_cadastre"><u>Cadastre-se</u></string>
     <string name="login_button">Entrar</string>
+    <string name="cadastro_hint_email_corp">email corporativo</string>
+    <string name="cadastro_hint_name">nome completo</string>
+    <string name="cadastro_hint_senha">confirme a senha</string>
+    <string name="cadastro_button">confirmar</string>
+    <string name="cadastro_text">Cadastro</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
