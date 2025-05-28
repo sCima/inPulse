@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:padding="8dp"
+    android:layout_margin="4dp"
+    android:background="@drawable/shape_fragment_body_rounded">
+
+    <TextView
+        android:id="@+id/textIdeaNameProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_ranking_idea"
+        android:textSize="22sp"
+        android:textColor="@color/fontBlue"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_marginStart="2dp"/>
+
+    <TextView
+        android:id="@+id/textIdeaDescProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/idea_problema"
+        android:textSize="14sp"
+        android:textColor="@color/fontGrey"
+        android:layout_marginStart="2dp"/>
+
+</LinearLayout>

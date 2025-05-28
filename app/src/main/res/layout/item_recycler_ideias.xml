@@ -3,10 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="400dp"
     android:background="@drawable/shape_recycler_ideias"
-    android:layout_margin="8dp"
-    android:minHeight="200dp">
+    android:layout_margin="8dp">
 
     <include
         layout="@layout/component_bar"
@@ -20,11 +19,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/containerInterno"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:padding="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/includeBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="visible">
 
     <LinearLayout
         android:id="@+id/layoutIcones"
@@ -39,21 +40,21 @@
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/shape_button_yellow" />
+            android:src="@drawable/tag_setor_logistica" />
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/shape_button_yellow"
+            android:src="@drawable/tag_tipo_criacao"
             android:layout_marginStart="8dp" />
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/shape_button_yellow"
+            android:src="@drawable/tag_complexidade_baixa"
             android:layout_marginStart="8dp" />
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/shape_button_yellow"
+            android:src="@drawable/tag_urgencia_urgente"
             android:layout_marginStart="8dp" />
     </LinearLayout>
 
@@ -76,6 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/idea_problema"
         android:textSize="14sp"
+        android:layout_marginTop="6dp"
         android:textColor="@color/fontBlack"
         app:layout_constraintTop_toBottomOf="@id/layoutIcones"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,52 +94,113 @@
         app:layout_constraintTop_toBottomOf="@id/imagemIdeia"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         android:layout_marginTop="8dp" />
 
-    <TextView
-        android:id="@+id/autorIdeia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/idea_author"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/textoCompleto"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="12dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/footerContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/dataIdeia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/idea_date"
-        android:textColor="@color/fontBlack"
-        android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/autorIdeia"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/autorIdeia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/idea_author"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="12dp" />
 
-    <ImageButton
-        android:id="@+id/btnContribuir"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="@null"
-        android:src="@drawable/shape_button_blue"
-        android:contentDescription="@string/btn_contribuir_desc"
-        app:tint="@color/euroBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/btnCurtir"
-        android:layout_marginEnd="12dp" />
+            <TextView
+                android:id="@+id/dataIdeia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/idea_date"
+                android:textColor="@color/fontBlack"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@id/autorIdeia"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btnCurtir"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:background="@null"
-        android:src="@drawable/shape_button_blue"
-        android:contentDescription="@string/btn_curtir_desc"
-        app:tint="@color/euroBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <ImageButton
+                android:id="@+id/btnContribuir"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@null"
+                android:src="@drawable/baseline_conts_24"
+                android:contentDescription="@string/btn_contribuir_desc"
+                app:tint="@color/euroBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnCurtir"
+                android:layout_marginEnd="24dp" />
+
+            <TextView
+                android:id="@+id/numberLikes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_likes"
+                android:textColor="@color/fontBlue"
+                android:textSize="24sp"
+                android:gravity="center"
+                app:layout_constraintTop_toTopOf="@id/btnCurtir"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btnCurtir"
+                tools:text="0"/>
+
+            <ImageButton
+                android:id="@+id/btnCurtir"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@null"
+                android:src="@drawable/baseline_like_24"
+                android:contentDescription="@string/btn_curtir_desc"
+                app:tint="@color/euroBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerConts"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/includeBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/footerConts"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_recycler_ideias_profile" />
+
+    <LinearLayout
+        android:id="@+id/footerConts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerConts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/btnVoltarItem"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@null"
+            android:src="@drawable/baseline_back_24"
+            android:contentDescription="@string/btn_curtir_desc"
+            app:tint="@color/euroBlue"
+            android:layout_marginStart="3dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

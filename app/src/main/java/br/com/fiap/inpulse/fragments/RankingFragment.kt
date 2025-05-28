@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.fragments
 
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
@@ -45,22 +47,23 @@ class RankingFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        val btnIdeas: Button = view.findViewById(R.id.btnIdeias)
-        val btnColaboradores: Button = view.findViewById(R.id.btnColaboradores)
+        val btnIdeas: TextView = view.findViewById(R.id.btnIdeias)
+        val btnColaboradores: TextView = view.findViewById(R.id.btnColaboradores)
         val recyclerViewU = view.findViewById<RecyclerView>(R.id.recyclerViewRankingUsers)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewRankingIdeas)
+        val bgWhite = resources.getColor(R. color.bgWhite)
 
         btnIdeas.setOnClickListener {
             recyclerViewI.visibility = View.VISIBLE
             recyclerViewU.visibility = View.GONE
-            btnIdeas.setTypeface(null, Typeface.BOLD)
-            btnColaboradores.setTypeface(null, Typeface.NORMAL)
+            btnColaboradores.setBackgroundColor(bgWhite)
+            btnIdeas.setBackgroundColor(Color.TRANSPARENT)
         }
         btnColaboradores.setOnClickListener {
             recyclerViewU.visibility = View.VISIBLE
             recyclerViewI.visibility = View.GONE
-            btnColaboradores.setTypeface(null, Typeface.BOLD)
-            btnIdeas.setTypeface(null, Typeface.NORMAL)
+            btnIdeas.setBackgroundColor(bgWhite)
+            btnColaboradores.setBackgroundColor(Color.TRANSPARENT)
         }
 
         val users = mutableListOf(
