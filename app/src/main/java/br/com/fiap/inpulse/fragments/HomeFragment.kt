@@ -33,21 +33,46 @@ class HomeFragment : Fragment() {
         recyclerView.setHasFixedSize(false)
 
         val ideias = mutableListOf(
-            Idea("Ideia sobre logistica",
-                "Lorem ipsum et dolor bla bla vai corinthias texto texto aloalo",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec nisi in sapien dignissim dictum. Integer blandit, magna ut tincidunt feugiat, sem erat rhoncus tellus, in sodales sapien nisi at nisl. Proin tincidunt arcu in justo sodales, sed commodo sapien cursus. Pellentesque a elit at eros sodales posuere. Ut suscipit lacinia justo, vel luctus leo cursus nec.",
-                "21/05/2025",
-                "Zézinho", 0),
-            Idea("Automação de segurança",
-                "Problema nas máquinas agrícolas",
-                "Pellentesque a elit at eros sodales posuere. Ut suscipit lacinia justo, vel luctus leo cursus nec.",
-                "22/05/2025",
-                "Rodolfo Lanches", 4),
-            Idea("Automação de segurança",
-                "Problema nas máquinas agrícolas",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec nisi in sapien dignissim dictum. Integer blandit, magna ut tincidunt feugiat, sem erat rhoncus tellus, in sodales sapien nisi at nisl. Proin tincidunt arcu in justo sodales, sed commodo sapien cursus. Pellentesque a elit at eros sodales posuere. Ut suscipit lacinia justo, vel luctus leo cursus nec.",
-                "22/05/2025",
-                "Rodolfo Lanches", 8)
+            Idea(
+                "App de rastreio inteligente",
+                "Problemas frequentes com extravios de pacotes",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non volutpat sapien. In at erat lacus. Suspendisse tincidunt justo a orci fermentum, a gravida metus accumsan.",
+                "23/05/2025",
+                "Marina Silva", 2
+            ),
+
+            Idea(
+                "Monitoramento ambiental com drones",
+                "Falta de dados atualizados sobre áreas de risco",
+                "Proin eu sapien a libero malesuada convallis. Curabitur semper, odio a fermentum pretium, neque turpis tempus odio, vitae volutpat odio nulla in mauris.",
+                "24/05/2025",
+                "Carlos Torres", 6
+            ),
+
+            Idea(
+                "Sistema de triagem automatizada",
+                "Demora no atendimento em hospitais",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor lorem at tortor ultricies, et dapibus lacus scelerisque. Integer ac tincidunt felis.",
+                "25/05/2025",
+                "Ana Júlia", 11
+            ),
+
+            Idea(
+                "Aplicativo de economia de energia",
+                "Consumo excessivo em prédios corporativos",
+                "Aliquam erat volutpat. Aenean condimentum nec velit eget porttitor. Sed lacinia felis vel erat ullamcorper, vel sollicitudin nunc dignissim.",
+                "25/05/2025",
+                "João Pedro", 1
+            ),
+
+            Idea(
+                "Ferramenta de revisão automática de contratos",
+                "Erros frequentes em documentos jurídicos",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Vestibulum ac eros tempor, sodales sem at, fermentum metus.",
+                "26/05/2025",
+                "Beatriz Ramos", 9
+            )
+
         )
 
         adapter = IdeaAdapter(ideias)
