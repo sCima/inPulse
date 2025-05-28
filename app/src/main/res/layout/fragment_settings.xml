@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     tools:context=".fragments.SettingsFragment"
-    android:background="@color/bgWhite">
+    android:background="@color/fgBg">
 
     <include
         layout="@layout/component_bar_center"
