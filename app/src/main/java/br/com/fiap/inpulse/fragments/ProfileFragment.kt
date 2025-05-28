@@ -5,11 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,9 +18,6 @@ import br.com.fiap.inpulse.viewmodel.SeloAdapter
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var recyclerViewC: RecyclerView
-    private lateinit var recyclerViewI: RecyclerView
-    private lateinit var recyclerViewS: RecyclerView
     private lateinit var adapter: IdeaProfileAdapter
     private lateinit var adapterS: SeloAdapter
 
@@ -75,7 +68,24 @@ class ProfileFragment : Fragment() {
             btnCont.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        val ideas = mutableListOf(
+        adapter = IdeaProfileAdapter(mockIdeas())
+        recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewI.adapter = adapter
+
+        adapter = IdeaProfileAdapter(mockConts())
+        recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
+        recyclerViewC.adapter = adapter
+
+        adapterS = SeloAdapter(mockSelos())
+        val layoutManagers = GridLayoutManager(requireContext(), 4)
+        recyclerViewS.layoutManager = layoutManagers
+        recyclerViewS.adapter = adapterS
+    }
+
+}
+
+    private fun mockIdeas() : MutableList<Idea>{
+        return mutableListOf(
             Idea("Plataforma de estudos gamificada",
                 "Lorem ipsum dolor sit amet."),
 
@@ -98,7 +108,10 @@ class ProfileFragment : Fragment() {
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis, ex sed sagittis commodo, velit velit efficitur elit, eget tincidunt sapien nulla nec risus.")
 
         )
-        val conts = mutableListOf(
+    }
+
+    private fun mockConts() : MutableList<Idea>{
+        return mutableListOf(
             Idea("Aplicativo para lembrar de beber água",
                 "Muitas pessoas esquecem de se hidratar ao longo do dia"),
 
@@ -114,35 +127,22 @@ class ProfileFragment : Fragment() {
             Idea("Mapa colaborativo de lugares acessíveis",
                 "Pessoas com deficiência enfrentam obstáculos ao se locomover em locais públicos")
         )
-
-        val selos = mutableListOf(
-            Selo("Java Ninja"),
-            Selo("Kotlin Pro"),
-            Selo("SQL Mestre"),
-            Selo("UX Expert"),
-            Selo("Bug Slayer"),
-            Selo("Code Hero"),
-            Selo("Debug King"),
-            Selo("Front Star"),
-            Selo("Test Guru"),
-            Selo("Clean Code"),
-            Selo("App Maker"),
-            Selo("DB Master"),
-            Selo("API Lord")
-        )
-
-        adapter = IdeaProfileAdapter(ideas)
-        recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewI.adapter = adapter
-
-        adapter = IdeaProfileAdapter(conts)
-        recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewC.adapter = adapter
-
-        adapterS = SeloAdapter(selos)
-        val layoutManagers = GridLayoutManager(requireContext(), 4)
-        recyclerViewS.layoutManager = layoutManagers
-        recyclerViewS.adapter = adapterS
     }
 
+    private fun mockSelos() : MutableList<Selo>{
+    return mutableListOf(
+        Selo("Java Ninja"),
+        Selo("Kotlin Pro"),
+        Selo("SQL Mestre"),
+        Selo("UX Expert"),
+        Selo("Bug Slayer"),
+        Selo("Code Hero"),
+        Selo("Debug King"),
+        Selo("Front Star"),
+        Selo("Test Guru"),
+        Selo("Clean Code"),
+        Selo("App Maker"),
+        Selo("DB Master"),
+        Selo("API Lord")
+    )
 }
