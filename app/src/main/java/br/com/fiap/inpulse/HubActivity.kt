@@ -29,6 +29,7 @@ class HubActivity : AppCompatActivity() {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         loadFragment(homeFragment)
+        bottomNavigationView.itemIconTintList = null
 
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {

@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"
-        app:itemIconTint="@color/euroBlue"
+        app:itemIconTint="@null"
         app:backgroundTint="@color/bgBottomNav"
         app:labelVisibilityMode="unlabeled" />
 
