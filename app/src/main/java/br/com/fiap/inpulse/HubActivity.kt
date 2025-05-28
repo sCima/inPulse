@@ -1,6 +1,8 @@
 package br.com.fiap.inpulse
 
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -23,7 +25,7 @@ class HubActivity : AppCompatActivity() {
         setContentView(R.layout.activity_hub)
 
         val toolbarHub: Toolbar = findViewById(R.id.toolbar_hub)
-        configureToolbar(toolbarHub)
+        configureToolbar(toolbarHub, false)
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView)
         loadFragment(homeFragment)
@@ -32,18 +34,22 @@ class HubActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     loadFragment(homeFragment)
+                    configureToolbar(toolbarHub, false)
                     true
                 }
                 R.id.profile -> {
                     loadFragment(profileFragment)
+                    configureToolbar(toolbarHub, true)
                     true
                 }
                 R.id.ranking -> {
                     loadFragment(rankingFragment)
+                    configureToolbar(toolbarHub, false)
                     true
                 }
                 R.id.settings -> {
                     loadFragment(settingsFragment)
+                    configureToolbar(toolbarHub, false)
                     true
                 }
                 else -> false
@@ -62,8 +68,15 @@ class HubActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun configureToolbar(toolbar: Toolbar) {
+    private fun configureToolbar(toolbar: Toolbar, isPerfil: Boolean) {
         setSupportActionBar(toolbar)
+
+        val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
         supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgWhite))
+        toolbarButton.setBackgroundColor(getColor(R.color.bgWhite))
+        if(isPerfil){
+            supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bronze))
+            toolbarButton.setBackgroundColor(getColor(R.color.bronze))
+        }
     }
 }

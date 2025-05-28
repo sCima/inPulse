@@ -40,6 +40,9 @@ class ProfileFragment : Fragment() {
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewProfileIdeas)
         val fgBar = resources.getColor(R. color. fgBar)
 
+        val background: View = view.findViewById(R.id.profile_fragment)
+        background.setBackgroundColor(getResources().getColor(R.color.bronze))
+        
         btnIdeas.setOnClickListener {
             recyclerViewI.visibility = View.VISIBLE
             recyclerViewC.visibility = View.GONE
