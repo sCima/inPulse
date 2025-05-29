@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.idea.IdeaFragmentD"
+    android:layout_margin="16dp">
+
+    <TextView
+        android:id="@+id/txt_2_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/text_idea_2_3"
+        android:textSize="18sp"
+        android:textColor="@color/fontGrey"
+        />
+
+    <TextView
+        android:id="@+id/txt_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_2_3"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/text_desc"
+        android:textSize="28sp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/fontBlue"
+        />
+
+    <EditText
+        android:id="@+id/et_ideia_desc"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:padding="8dp"
+        android:background="@drawable/shape_edit_text"
+        android:hint="@string/et_hint_problema"
+        android:textColorHint="@color/fontGrey"
+        android:gravity="start"
+        android:textSize="14sp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

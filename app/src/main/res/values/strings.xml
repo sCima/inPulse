@@ -62,6 +62,16 @@
     <string name="text_outro_problema">Outro? Nos conte em poucas palavras:</string>
     <string name="et_hint_problema">Digite aqui...</string>
     <string name="continuar_button">Continuar</string>
+    <string name="text_idea_2_3">2 de 3</string>
+    <string name="text_desc">Dê uma descrição sobre o\nque é sua ideia, o que ela utiliza, etc</string>
+    <string name="text_idea_3_3">3 de 3</string>
+    <string name="text_imagem">Que tal enviar uma imagem que representa sua ideia e/ou o problema?</string>
+    <string name="sim_enviar_imagem">Sim, enviar imagem</string>
+    <string name="sem_enviar_imagem">Caso não queira enviar uma imagem, clique em continuar</string>
+    <string name="text_idea_resumo">Resumo</string>
+    <string name="et_hint_nome_ideia">Nome da ideia...</string>
+    <string name="text_idea_solucao">Solução</string>
+    <string name="text_idea_problema">Problema</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
