@@ -13,9 +13,9 @@
         android:name="br.com.fiap.inpulse.fragments.ProfileFragment"
         android:label="Perfil" />
 
-    <fragment
-        android:id="@+id/ideaFragment"
-        android:name="br.com.fiap.inpulse.fragments.IdeaFragment"
+    <activity
+        android:id="@+id/ideaActivity"
+        android:name="br.com.fiap.inpulse.NovaIdeiaActivity"
         android:label="Idea" />
 
     <fragment

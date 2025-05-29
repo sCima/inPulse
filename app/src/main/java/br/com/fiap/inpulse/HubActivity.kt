@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -43,6 +44,11 @@ class HubActivity : AppCompatActivity() {
                     configureToolbar(toolbarHub, true)
                     true
                 }
+                R.id.idea -> {
+                    val intent = Intent(this, NovaIdeiaActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
                 R.id.ranking -> {
                     loadFragment(rankingFragment)
                     configureToolbar(toolbarHub, false)
@@ -71,10 +77,9 @@ class HubActivity : AppCompatActivity() {
 
     private fun configureToolbar(toolbar: Toolbar, isPerfil: Boolean) {
         setSupportActionBar(toolbar)
-
         val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
-        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgWhite))
         toolbarButton.setBackgroundColor(getColor(R.color.bgWhite))
+        supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgWhite))
         if(isPerfil){
             supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bronze))
             toolbarButton.setBackgroundColor(getColor(R.color.bronze))

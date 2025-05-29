@@ -50,6 +50,18 @@
     <string name="settings_profile_password">Alterar senha</string>
     <string name="settings_app_title">App</string>
     <string name="settings_app_theme">Alterar tema (Atual: claro)</string>
+    <string name="toolbar_idea_name">Nova Ideia</string>
+    <string name="text_idea_1_3">1 de 3</string>
+    <string name="text_problema">Qual problema enfrentado\noriginou sua ideia?</string>
+    <string name="sugestao_problema1">Esteira lenta</string>
+    <string name="sugestao_problema2">Problema de contagem de caixas</string>
+    <string name="sugestao_problema3">Sugestão com base no setor</string>
+    <string name="sugestao_problema4">Sugestão do dia</string>
+    <string name="sugestao_problema5">Sugestão necessária</string>
+    <string name="sugestao_problema6">Sugestão apartir de ideias</string>
+    <string name="text_outro_problema">Outro? Nos conte em poucas palavras:</string>
+    <string name="et_hint_problema">Digite aqui...</string>
+    <string name="continuar_button">Continuar</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
