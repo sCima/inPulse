@@ -9,7 +9,7 @@
     android:background="@color/fgBg">
 
     <include
-        layout="@layout/component_bar_center"
+        layout="@layout/component_bar_center_settings"
         android:id="@+id/includeBarSettings"
         android:layout_width="match_parent"
         android:layout_height="0dp"

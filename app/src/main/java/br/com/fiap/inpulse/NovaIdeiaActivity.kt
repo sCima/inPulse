@@ -2,17 +2,15 @@ package br.com.fiap.inpulse
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.fragments.idea.IdeaFragmentD
 import br.com.fiap.inpulse.fragments.idea.IdeaFragmentI
 import br.com.fiap.inpulse.fragments.idea.IdeaFragmentP
 import br.com.fiap.inpulse.fragments.idea.IdeaFragmentR
-import com.google.android.material.button.MaterialButton
+import br.com.fiap.inpulse.fragments.idea.IdeaInfoProvider
 
 class NovaIdeiaActivity : AppCompatActivity() {
 
@@ -21,6 +19,7 @@ class NovaIdeiaActivity : AppCompatActivity() {
     private val ideaFragmentI = IdeaFragmentI()
     private val ideaFragmentR = IdeaFragmentR()
     private var etapaAtual = 0
+    private val infosIdea = Bundle()
 
     private val fragments = listOf(
         ideaFragmentP,
@@ -40,8 +39,20 @@ class NovaIdeiaActivity : AppCompatActivity() {
 
         val btnContinuar: AppCompatButton = findViewById(R.id.btn_continuar)
         btnContinuar.setOnClickListener{
+            val fragmentAtual = supportFragmentManager.findFragmentById(R.id.containerIdea)
+
+            if (fragmentAtual is IdeaInfoProvider) {
+                val novasInfos = fragmentAtual.enviarDados()
+                infosIdea.putAll(novasInfos)
+            }
+
             if (etapaAtual < fragments.size - 1) {
                 etapaAtual++
+                val proximoFragmento = fragments[etapaAtual]
+
+                if (proximoFragmento is IdeaFragmentR) {
+                    proximoFragmento.arguments = infosIdea
+                }
                 carregarFragmentoAtual()
             }
         }

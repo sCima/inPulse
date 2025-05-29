@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.fiap.inpulse.HubActivity
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.model.Idea
 import br.com.fiap.inpulse.model.Selo

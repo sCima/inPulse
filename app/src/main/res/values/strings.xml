@@ -4,7 +4,7 @@
     <string name="toolbar_name">Carlos S.</string>
     <string name="toolbar_imagebutton_desc">Botão de chatbot</string>
     <string name="search_hint">Pesquisar ideia</string>
-    <string name="fragment_bar_title">Titulo do fragment</string>
+    <string name="fragment_bar_title">Setor do usuário</string>
     <string name="image_idea_desc">Imagem da ideia</string>
     <string name="idea_problema">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat.</string>
     <string name="idea_desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur nec nisi in sapien dignissim dictum. Integer blandit, magna ut tincidunt feugiat, sem erat rhoncus tellus, in sodales sapien nisi at nisl. Proin tincidunt arcu in justo sodales, sed commodo sapien cursus. Pellentesque a elit at eros sodales posuere. Ut suscipit lacinia justo, vel luctus leo cursus nec.</string>
@@ -72,6 +72,7 @@
     <string name="et_hint_nome_ideia">Nome da ideia...</string>
     <string name="text_idea_solucao">Solução</string>
     <string name="text_idea_problema">Problema</string>
+    <string name="fragment_bar_title_settings">Configurações</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
