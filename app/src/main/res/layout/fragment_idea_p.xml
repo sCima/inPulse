@@ -50,6 +50,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema5"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema5"
@@ -63,6 +64,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema6"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema6"
@@ -82,6 +84,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema1"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema1"
@@ -93,6 +96,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema2"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema2"
@@ -114,6 +118,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema3"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema3"
@@ -127,6 +132,7 @@
 
             <TextView
                 android:id="@+id/sugestao_problema4"
+                android:elevation="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/sugestao_problema4"

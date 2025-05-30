@@ -1,6 +1,7 @@
 package br.com.fiap.inpulse
 
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
@@ -29,10 +30,16 @@ class HubActivity : AppCompatActivity() {
         val toolbarHub: Toolbar = findViewById(R.id.toolbar_hub)
         configureToolbar(toolbarHub, false)
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView)
-        loadFragment(homeFragment)
-        bottomNavigationView.itemIconTintList = null
+        val btnChatbot: ImageButton = toolbarHub.findViewById(R.id.toolbar_button)
+        btnChatbot.setOnClickListener {
+            val intent = Intent(this, ChatbotActivity::class.java)
+            startActivity(intent)
+        }
 
+        loadFragment(homeFragment)
+
+        bottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.itemIconTintList = null
         bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {

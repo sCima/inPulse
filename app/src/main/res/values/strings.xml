@@ -73,6 +73,11 @@
     <string name="text_idea_solucao">Solução</string>
     <string name="text_idea_problema">Problema</string>
     <string name="fragment_bar_title_settings">Configurações</string>
+    <string name="toolbar_chatbot_name">Chatbot</string>
+    <string name="chatbot_hint_pergunta">Faça uma pergunta...</string>
+    <string name="chatbot_btn_ideias">Ideias</string>
+    <string name="chatbot_btn_app">APP</string>
+    <string name="chatbot_btn_tags">Tags</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

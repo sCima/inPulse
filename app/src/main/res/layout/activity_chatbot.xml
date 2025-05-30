@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+            android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar_chatbot_name"
+        layout="@layout/component_toolbar_chatbot"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_weight="0" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+        android:paddingBottom="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/shape_chatbot"
+        android:elevation="8dp">
+
+        <!-- Campo de pergunta + botão seta -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/et_pergunta"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:hint="@string/chatbot_hint_pergunta"
+                android:background="@android:color/transparent"
+                android:textColor="@color/fontGrey"
+                android:textSize="14sp"
+                android:inputType="text"
+                android:layout_marginStart="6dp"/>
+
+            <ImageButton
+                android:id="@+id/btn_enviar"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/baseline_arrow_up_24"
+                android:background="@drawable/shape_button_dark_blue"
+                android:scaleType="center"
+                android:padding="4dp"
+                android:layout_marginEnd="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="4dp"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/btn_ideias"
+                android:elevation="2dp"
+                android:padding="6dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/chatbot_btn_ideias"
+                android:background="@drawable/shape_button_dark_blue"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textAlignment="center"
+                android:layout_margin="4dp"
+                />
+
+            <TextView
+                android:id="@+id/btn_app"
+                android:elevation="2dp"
+                android:padding="6dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/chatbot_btn_app"
+                android:background="@drawable/shape_button_dark_blue"
+                android:textColor="@color/white"
+                android:layout_margin="4dp"
+                android:textSize="22sp"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/btn_tags"
+                android:elevation="2dp"
+                android:padding="6dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/chatbot_btn_tags"
+                android:background="@drawable/shape_button_dark_blue"
+                android:textColor="@color/white"
+                android:layout_margin="4dp"
+
+                android:textSize="22sp"
+                android:textAlignment="center"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
