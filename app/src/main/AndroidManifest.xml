@@ -15,6 +15,8 @@
         <activity android:name=".HubActivity" />
         <activity android:name=".NovaIdeiaActivity" />
         <activity android:name=".ChatbotActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".CadastroActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
