@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_ranking_idea"
-        android:textSize="22sp"
+        android:textSize="16sp"
         android:textColor="@color/fontBlue"
         android:ellipsize="end"
         android:maxLines="1"

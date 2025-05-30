@@ -41,10 +41,6 @@ class IdeaAdapter(private var ideas: MutableList<Idea>) :
             autor.text = idea.autor
             likes.text = idea.likes.toString()
 
-            btnCurtir.setImageResource(
-                if (liked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24
-            )
-
             btnCurtir.setOnClickListener {
                 var count = likes.text.toString().toIntOrNull() ?: 0
                 liked = !liked
@@ -60,7 +56,6 @@ class IdeaAdapter(private var ideas: MutableList<Idea>) :
             recyclerConts.visibility = if (contsVisible) View.VISIBLE else View.GONE
             layoutContsFoot.visibility = if (contsVisible) View.VISIBLE else View.GONE
             btnVoltar.visibility = if (contsVisible) View.VISIBLE else View.GONE
-
 
             val conts = mutableListOf(
                 Cont("Ricardinho",
