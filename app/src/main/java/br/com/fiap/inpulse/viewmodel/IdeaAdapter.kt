@@ -59,6 +59,7 @@ class IdeaAdapter(private var ideas: MutableList<Idea>) :
             containerInterno.visibility = if (contsVisible) View.GONE else View.VISIBLE
             recyclerConts.visibility = if (contsVisible) View.VISIBLE else View.GONE
             layoutContsFoot.visibility = if (contsVisible) View.VISIBLE else View.GONE
+            btnVoltar.visibility = if (contsVisible) View.VISIBLE else View.GONE
 
 
             val conts = mutableListOf(
@@ -79,12 +80,14 @@ class IdeaAdapter(private var ideas: MutableList<Idea>) :
                 containerInterno.fadeOut()
                 recyclerConts.fadeIn()
                 layoutContsFoot.fadeIn()
+                btnVoltar.fadeIn()
             }
 
             btnVoltar.setOnClickListener {
                 contsVisible = false
                 recyclerConts.fadeOut()
                 layoutContsFoot.fadeOut()
+                btnVoltar.fadeOut()
                 containerInterno.fadeIn()
             }
         }

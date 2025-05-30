@@ -78,6 +78,7 @@
     <string name="chatbot_btn_ideias">Ideias</string>
     <string name="chatbot_btn_app">APP</string>
     <string name="chatbot_btn_tags">Tags</string>
+    <string name="conts_hint">Envie uma contribuição...</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>
