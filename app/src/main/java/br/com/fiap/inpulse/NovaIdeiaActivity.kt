@@ -57,7 +57,7 @@ class NovaIdeiaActivity : AppCompatActivity() {
             }
         }
 
-        val btnVoltar: ImageButton = findViewById(R.id.btn_voltar)
+        val btnVoltar: ImageButton = findViewById(R.id.btn_voltar_ideia)
         btnVoltar.setOnClickListener {
             if (etapaAtual > 0) {
                 etapaAtual--

@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        android:layout_alignParentBottom="true"
         android:background="@drawable/shape_chatbot"
         android:elevation="8dp">
 

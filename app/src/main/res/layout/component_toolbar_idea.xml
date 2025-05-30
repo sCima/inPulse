@@ -13,6 +13,14 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+    <ImageButton
+        android:id="@+id/btn_voltar_ideia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_back_24"
+        android:layout_marginEnd="6dp"/>
+
     <TextView
         android:id="@+id/toolbar_idea_title"
         android:layout_width="wrap_content"
