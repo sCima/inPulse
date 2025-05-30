@@ -3,7 +3,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="toolbar_name">Carlos S.</string>
     <string name="toolbar_imagebutton_desc">Botão de chatbot</string>
-    <string name="search_hint">Pesquisar ideia</string>
+    <string name="search_hint">Pesquisar</string>
     <string name="fragment_bar_title">Setor do usuário</string>
     <string name="image_idea_desc">Imagem da ideia</string>
     <string name="idea_problema">Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat.</string>
@@ -79,6 +79,7 @@
     <string name="chatbot_btn_app">APP</string>
     <string name="chatbot_btn_tags">Tags</string>
     <string name="conts_hint">Envie uma contribuição...</string>
+    <string name="btn_ideias_programas">Ideias</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

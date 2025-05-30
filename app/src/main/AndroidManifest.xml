@@ -15,8 +15,10 @@
         <activity android:name=".HubActivity" />
         <activity android:name=".NovaIdeiaActivity" />
         <activity android:name=".ChatbotActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".CadastroActivity" />
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".CadastroActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
