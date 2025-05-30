@@ -80,6 +80,10 @@
     <string name="chatbot_btn_tags">Tags</string>
     <string name="conts_hint">Envie uma contribuição...</string>
     <string name="btn_ideias_programas">Ideias</string>
+    <string name="programa_data_fim">Até 12/06/2025</string>
+    <string name="programa_btn_ver_ideias">Ver ideias</string>
+    <string name="fragment_bar_title_p">Nome do Programa</string>
+    <string name="programa_data_inicio">12/04/2025</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

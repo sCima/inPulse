@@ -13,7 +13,8 @@
         android:theme="@style/Theme.Inpulse"
         tools:targetApi="31">
         <activity android:name=".HubActivity"/>
-        <activity android:name=".NovaIdeiaActivity" />
+        <activity android:name=".NovaIdeiaActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"/>
         <activity android:name=".ChatbotActivity" />
         <activity android:name=".LoginActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
