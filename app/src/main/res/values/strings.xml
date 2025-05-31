@@ -84,6 +84,7 @@
     <string name="programa_btn_ver_ideias">Ver ideias</string>
     <string name="fragment_bar_title_p">Nome do Programa</string>
     <string name="programa_data_inicio">12/04/2025</string>
+    <string name="ate_data">Até %1$s</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

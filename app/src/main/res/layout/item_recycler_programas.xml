@@ -85,4 +85,30 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageButton
+        android:id="@+id/btnVoltarItemP"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@null"
+        android:src="@drawable/baseline_back_24"
+        app:tint="@color/euroBlue"
+        android:layout_marginStart="3dp"
+        app:layout_constraintTop_toBottomOf="@id/includeBarP"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerIdeiasP"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/btnVoltarItemP"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:nestedScrollingEnabled="true"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

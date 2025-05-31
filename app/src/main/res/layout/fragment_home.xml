@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
     tools:context=".fragments.HomeFragment">
 
     <include
@@ -29,7 +28,6 @@
         android:textColor="@color/fontBlue"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@id/search_idea"
-        app:layout_constraintBottom_toTopOf="@id/recyclerViewHome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -43,13 +41,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_recycler_ideias" />
+        tools:listitem="@layout/item_recycler_ideias"
+        android:visibility="visible"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewHomeP"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingHorizontal="10dp"
+        android:paddingHorizontal="14dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_ideias_programas"
         app:layout_constraintBottom_toBottomOf="parent"
