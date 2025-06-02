@@ -14,13 +14,15 @@ import br.com.fiap.inpulse.HubActivity
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.model.Idea
 import br.com.fiap.inpulse.model.Selo
+import br.com.fiap.inpulse.viewmodel.IdeaAdapter
 import br.com.fiap.inpulse.viewmodel.IdeaProfileAdapter
 import br.com.fiap.inpulse.viewmodel.SeloAdapter
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var adapter: IdeaProfileAdapter
+    private lateinit var adapter: IdeaAdapter
     private lateinit var adapterS: SeloAdapter
+    private lateinit var adapterC: IdeaProfileAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +35,7 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val btnIdeas: TextView = view.findViewById(R.id.btn_ideias_profile)
-        val btnCont: TextView = view.findViewById(R.id.btn_contribuicoes_profile)
+        val btnProg: TextView = view.findViewById(R.id.btn_programas_profile)
         val btnStats: TextView = view.findViewById(R.id.btnStatsProfile)
         val recyclerViewC = view.findViewById<RecyclerView>(R.id.recyclerViewProfileContribuicoes)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewProfileIdeas)
@@ -49,14 +51,14 @@ class ProfileFragment : Fragment() {
             recyclerViewC.visibility = View.GONE
             containerStats.visibility = View.GONE
             btnIdeas.setBackgroundColor(fgBar)
-            btnCont.setBackgroundColor(Color.TRANSPARENT)
+            btnProg.setBackgroundColor(Color.TRANSPARENT)
             btnStats.setBackgroundColor(Color.TRANSPARENT)
         }
-        btnCont.setOnClickListener {
+        btnProg.setOnClickListener {
             recyclerViewC.visibility = View.VISIBLE
             recyclerViewI.visibility = View.GONE
             containerStats.visibility = View.GONE
-            btnCont.setBackgroundColor(fgBar)
+            btnProg.setBackgroundColor(fgBar)
             btnIdeas.setBackgroundColor(Color.TRANSPARENT)
             btnStats.setBackgroundColor(Color.TRANSPARENT)
         }
@@ -66,16 +68,17 @@ class ProfileFragment : Fragment() {
             containerStats.visibility = View.VISIBLE
             btnStats.setBackgroundColor(fgBar)
             btnIdeas.setBackgroundColor(Color.TRANSPARENT)
-            btnCont.setBackgroundColor(Color.TRANSPARENT)
+            btnProg.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        adapter = IdeaProfileAdapter(mockIdeas())
+        adapter = IdeaAdapter(mockIdeas(), "ProfileFragment")
         recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewI.adapter = adapter
+        recyclerViewI.setHasFixedSize(false)
 
-        adapter = IdeaProfileAdapter(mockConts())
+        adapterC = IdeaProfileAdapter(mockConts())
         recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewC.adapter = adapter
+        recyclerViewC.adapter = adapterC
 
         adapterS = SeloAdapter(mockSelos())
         val layoutManagers = GridLayoutManager(requireContext(), 4)
@@ -85,31 +88,50 @@ class ProfileFragment : Fragment() {
 
 }
 
-    private fun mockIdeas() : MutableList<Idea>{
-        return mutableListOf(
-            Idea("Plataforma de estudos gamificada",
-                "Lorem ipsum dolor sit amet."),
+private fun mockIdeas() : MutableList<Idea> {
+    return mutableListOf(
+        Idea(
+            "App de rastreio inteligente",
+            "Problemas frequentes com extravios de pacotes",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non volutpat sapien. In at erat lacus. Suspendisse tincidunt justo a orci fermentum, a gravida metus accumsan.",
+            "23/05/2025",
+            "Marina Silva", 2
+        ),
 
-            Idea("Rede social para pets",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel neque nec nulla scelerisque efficitur."),
+        Idea(
+            "Monitoramento ambiental com drones",
+            "Falta de dados atualizados sobre áreas de risco",
+            "Proin eu sapien a libero malesuada convallis. Curabitur semper, odio a fermentum pretium, neque turpis tempus odio, vitae volutpat odio nulla in mauris.",
+            "24/05/2025",
+            "Carlos Torres", 6
+        ),
 
-            Idea("Organizador de tarefas por voz",
-                "Lorem ipsum dolor sit amet, consectetur."),
+        Idea(
+            "Sistema de triagem automatizada",
+            "Demora no atendimento em hospitais",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tempor lorem at tortor ultricies, et dapibus lacus scelerisque. Integer ac tincidunt felis.",
+            "25/05/2025",
+            "Ana Júlia", 11
+        ),
 
-            Idea("App para dividir contas de casa",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in tortor ut est fringilla sollicitudin."),
+        Idea(
+            "Aplicativo de economia de energia",
+            "Consumo excessivo em prédios corporativos",
+            "Aliquam erat volutpat. Aenean condimentum nec velit eget porttitor. Sed lacinia felis vel erat ullamcorper, vel sollicitudin nunc dignissim.",
+            "25/05/2025",
+            "João Pedro", 1
+        ),
 
-            Idea("Monitor de produtividade em tempo real",
-                "Lorem ipsum."),
-
-            Idea("Consultoria de moda com IA",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. Morbi eu nisl nec velit fermentum rutrum."),
-
-            Idea("Detector de mentiras por texto",
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis, ex sed sagittis commodo, velit velit efficitur elit, eget tincidunt sapien nulla nec risus.")
-
+        Idea(
+            "Ferramenta de revisão automática de contratos",
+            "Erros frequentes em documentos jurídicos",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisi. Vestibulum ac eros tempor, sodales sem at, fermentum metus.",
+            "26/05/2025",
+            "Beatriz Ramos", 9
         )
-    }
+
+    )
+}
 
     private fun mockConts() : MutableList<Idea>{
         return mutableListOf(

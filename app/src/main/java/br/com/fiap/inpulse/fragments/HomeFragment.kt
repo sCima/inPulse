@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView.setHasFixedSize(false)
-        adapter = IdeaAdapter(mockIdeas())
+        adapter = IdeaAdapter(mockIdeas(), "HomeFragment")
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
