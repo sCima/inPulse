@@ -7,12 +7,15 @@
     android:background="@drawable/shape_recycler_ideias"
     android:layout_margin="8dp"
     android:id="@+id/layout_ideias"
-    android:elevation="0dp">
+    android:elevation="0dp"
+    android:clickable="false"
+    android:focusable="false">
 
     <include
         layout="@layout/component_bar"
         android:id="@+id/includeBar"
         android:clickable="true"
+        android:focusable="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

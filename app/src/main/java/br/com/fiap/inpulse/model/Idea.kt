@@ -12,11 +12,11 @@ class Idea (
     val autor: String,
     val likes: Int
 ) {
-    constructor(nome: String, problema: String) : this(
+    constructor(nome: String, autor: String) : this(
         nome = nome,
-        problema = problema,
+        problema = "",
         descricao = "",
-        autor = "",
+        autor = autor,
         data = "",
         likes = 0
     )

@@ -7,7 +7,9 @@
     android:gravity="center"
     tools:context=".fragments.ProfileFragment"
     android:background="@color/bronze"
-    android:id="@+id/profile_fragment">
+    android:id="@+id/profile_fragment"
+    android:clickable="false"
+    android:focusable="false">
 
     <include
         layout="@layout/component_bar_center"
@@ -108,7 +110,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/bgWhite"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
         <TextView

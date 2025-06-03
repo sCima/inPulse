@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
@@ -18,7 +19,7 @@ class IdeaAdapter(private var ideas: MutableList<Idea>, private val fragment: St
     class InfoViewHolder(itemView: View, private val fragment: String) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById<View>(R.id.includeBar)
             .findViewById(R.id.fragment_bar_title)
-        val barraTitutlo: View = itemView.findViewById(R.id.includeBar)
+        val barraTitulo = itemView.findViewById<ConstraintLayout>(R.id.includeBar)
         val problema: TextView = itemView.findViewById(R.id.resumoIdeia)
         val descricao: TextView = itemView.findViewById(R.id.textoCompleto)
         val data: TextView = itemView.findViewById(R.id.dataIdeia)
@@ -43,13 +44,14 @@ class IdeaAdapter(private var ideas: MutableList<Idea>, private val fragment: St
             autor.text = idea.autor
             likes.text = idea.likes.toString()
 
-            if(fragment.equals("ProfileFragment")){
+
+            if(fragment == "ProfileFragment"){
                 containerInterno.visibility = View.GONE
                 val params = layoutCompleto.layoutParams
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutCompleto.layoutParams = params
 
-                barraTitutlo.setOnClickListener {
+                barraTitulo.setOnClickListener {
                     if(containerInterno.visibility == View.GONE) {
                         containerInterno.visibility = View.VISIBLE
                         val params = layoutCompleto.layoutParams

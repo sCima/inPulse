@@ -6,7 +6,9 @@
     android:layout_margin="8dp"
     android:padding="8dp"
     android:background="@drawable/shape_fragment_bar"
-    android:id="@+id/component_bar">
+    android:id="@+id/component_bar"
+    android:clickable="true"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/fragment_bar_title"

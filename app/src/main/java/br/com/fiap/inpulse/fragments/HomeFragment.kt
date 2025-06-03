@@ -39,7 +39,6 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
         recyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
-
         recyclerViewP = view.findViewById(R.id.recyclerViewHomeP)
         recyclerViewP.setHasFixedSize(false)
         adapterP = ProgramaAdapter(mockProgramas())
@@ -59,7 +58,7 @@ class HomeFragment : Fragment() {
                 recyclerView.visibility = View.GONE
                 recyclerViewP.visibility = View.VISIBLE
                 recyclerViewP.scheduleLayoutAnimation()
-                btnIdeiasProgramas.text = "Programas"
+                btnIdeiasProgramas.text = "Programas de inovação"
             } else {
                 recyclerView.visibility = View.VISIBLE
                 recyclerViewP.visibility = View.GONE

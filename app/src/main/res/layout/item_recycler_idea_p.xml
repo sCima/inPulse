@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:gravity="center_vertical"
     android:padding="2dp"
-    android:layout_margin="2dp"
-    android:background="@drawable/shape_fragment_body_rounded">
+    android:layout_margin="2dp">
 
     <TextView
         android:id="@+id/ideaPNome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/toolbar_idea_name"
-        android:textSize="14sp"
-        android:textColor="@color/fontBlue"
+        android:textSize="12sp"
+        android:textColor="@color/fontGrey"
         android:ellipsize="end"
         android:maxLines="1"
         android:layout_marginStart="2dp"/>
@@ -23,7 +22,7 @@
         android:id="@+id/ideiaPAutor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/idea_author"
+        android:text="@string/idea_author_programa"
         android:textSize="12sp"
         android:textColor="@color/fontGrey"
         android:layout_marginStart="2dp"/>
