@@ -71,7 +71,7 @@ class ProfileFragment : Fragment() {
             btnProg.setBackgroundColor(Color.TRANSPARENT)
         }
 
-        adapter = IdeaAdapter(mockIdeas(), "ProfileFragment")
+        adapter = IdeaAdapter(mutableListOf(), "ProfileFragment")
         recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewI.adapter = adapter
         recyclerViewI.setHasFixedSize(false)

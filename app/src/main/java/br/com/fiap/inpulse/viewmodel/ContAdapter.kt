@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.Cont
+import br.com.fiap.inpulse.model.response.Contribuicao
 
-class ContAdapter(private var conts: MutableList<Cont>) :
+class ContAdapter(private var conts: MutableList<Contribuicao>) :
     RecyclerView.Adapter<ContAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -24,13 +24,13 @@ class ContAdapter(private var conts: MutableList<Cont>) :
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
         val conts = conts[position]
-        holder.nome.text = conts.user
-        holder.cont.text = conts.cont
+        holder.nome.text = conts.nomeAutor
+        holder.cont.text = conts.coment
     }
 
     override fun getItemCount(): Int = conts.size
 
-    fun addItemAtTop(cont: Cont) {
+    fun addItemAtTop(cont: Contribuicao) {
         conts.add(0, cont)
         notifyItemInserted(0)
     }
