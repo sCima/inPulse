@@ -1,21 +1,17 @@
     package br.com.fiap.inpulse.viewmodel
 
-    import android.util.TypedValue
     import android.view.LayoutInflater
     import android.view.View
     import android.view.ViewGroup
-    import android.widget.ImageButton
     import android.widget.TextView
-    import androidx.core.content.ContentProviderCompat.requireContext
     import androidx.recyclerview.widget.GridLayoutManager
-    import androidx.recyclerview.widget.LinearLayoutManager
     import androidx.recyclerview.widget.RecyclerView
     import br.com.fiap.inpulse.R
-    import br.com.fiap.inpulse.model.Cont
-    import br.com.fiap.inpulse.model.Idea
-    import br.com.fiap.inpulse.model.Programa
+    import br.com.fiap.inpulse.model.response.ProgramaResponse
+    import java.text.SimpleDateFormat
+    import java.util.Locale
 
-    class ProgramaAdapter(private var programas: MutableList<Programa>) :
+    class ProgramaAdapter(var programas: MutableList<ProgramaResponse>) :
         RecyclerView.Adapter<ProgramaAdapter.InfoViewHolder>() {
 
         class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -27,25 +23,35 @@
             val btnEnviarIdeia: TextView = itemView.findViewById(R.id.btnEnviarIdeia)
             val recyclerIdeasP: RecyclerView = itemView.findViewById(R.id.recyclerViewIdeasPrograma)
 
-            fun bind(programa: Programa) {
-                nome.text = programa.nome
-                dataInicio.text = programa.dataInicio
-                dataFim.text = itemView.context.getString(R.string.ate_data, programa.dataInicio)
-                desc.text = programa.desc
+            fun bind(programa: ProgramaResponse) {
+                nome.text = programa.nome_programa
+                val inputFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                try {
+                    val date = inputFormat.parse(programa.dataInicio)
+                    if (date != null) {
+                        dataInicio.text = outputFormat.format(date)
+                    } else {
+                        dataInicio.text = "Data inválida"
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    dataInicio.text = "Erro na data"
+                }
 
-                val ideias = mutableListOf(
-                    Idea("Ideia X",
-                        "Felipe C."),
-                    Idea("Ideia Y",
-                        "Lucas de L."),
-                    Idea("Ideia Z",
-                        "Guilherme B.") ,
-                    Idea("Ideia A",
-                    "Rodolfo S."),
-                    Idea("Ideia B",
-                    "Carlos S.")
-                )
-
+                try {
+                    val dateF = inputFormat.parse(programa.dataFim)
+                    if (dateF != null) {
+                        dataFim.text = itemView.context.getString(R.string.ate_data, outputFormat.format(dateF))
+                    } else {
+                        dataFim.text = "Data inválida"
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    dataFim.text = "Erro na data"
+                }
+                desc.text = programa.descricao_programa
+                val ideias = programa.funcionarios_nome
                 val adapter = IdeaProgramaAdapter(ideias)
                 recyclerIdeasP.layoutManager = GridLayoutManager(itemView.context, 2)
                 recyclerIdeasP.adapter = adapter
@@ -64,7 +70,7 @@
 
         override fun getItemCount(): Int = programas.size
 
-        fun addItemAtTop(programa: Programa) {
+        fun addItemAtTop(programa: ProgramaResponse) {
             programas.add(0, programa)
             notifyItemInserted(0)
         }
