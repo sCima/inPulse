@@ -2,73 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="3dp">
-
-    <LinearLayout
-        android:background="@drawable/shape_fragment_bar_ranking"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="3dp"
+    android:layout_marginBottom="4dp"
+    android:layout_weight="2">
 
         <TextView
             android:id="@+id/btnColaboradores"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:minHeight="0dp"
-            android:padding="0dp"
+            android:layout_weight="1"
+            android:padding="4dp"
+            android:layout_marginHorizontal="4dp"
             android:text="@string/btn_ranking_colaboradores"
             android:textSize="18sp"
-            android:textAlignment="center"
             android:gravity="center"
-            android:background="@android:color/transparent"
+            android:background="@drawable/shape_button_blue"
             android:textColor="@color/euroBlue"/>
 
-        <TextView
-            android:id="@+id/btnIdeias"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:minHeight="0dp"
-            android:padding="0dp"
-            android:text="@string/bnt_ranking_ideias"
-            android:background="@color/bgWhite"
-            android:textColor="@color/euroBlue"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            android:gravity="center"/>
-    </LinearLayout>
-
     <LinearLayout
-        android:background="@color/fgBar"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/btnCurtidas"
             android:layout_weight="1"
-            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:minHeight="0dp"
-            android:padding="0dp"
+            android:padding="4dp"
             android:text="@string/btn_ranking_ordem"
-            android:background="@android:color/transparent"
-            android:textColor="@color/fontGrey"
-            android:textSize="18sp"
-            android:textAlignment="center"
-            android:gravity="center"/>
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginBottom="2dp"
+            android:background="@drawable/shape_button_blue"
+            android:textColor="@color/euroBlue"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            />
 
         <Spinner
             android:id="@+id/spinnerFiltro"
+            android:layout_width="match_parent"
             android:layout_weight="1"
-            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:padding="0dp"
+            android:background="@drawable/shape_button_blue"
+            android:padding="4dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="2dp"
             android:textColor="@color/fontGrey"
             android:popupBackground="@color/fgBg"
             android:textAlignment="center"/>
     </LinearLayout>
+
 </LinearLayout>

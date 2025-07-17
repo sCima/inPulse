@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.model.IdeaRanking
+import br.com.fiap.inpulse.model.response.IdeiaResponse
 
-class IdeaRankingAdapter(private var ideas: MutableList<IdeaRanking>) :
+class IdeaRankingAdapter(var ideas: MutableList<IdeiaResponse>) :
     RecyclerView.Adapter<IdeaRankingAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,9 +26,17 @@ class IdeaRankingAdapter(private var ideas: MutableList<IdeaRanking>) :
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
         val idea = ideas[position]
         holder.nome.text = idea.nome
-        holder.numero.text = idea.numero.toString()
+        holder.numero.text = idea.curtidas.toString()
 
     }
 
     override fun getItemCount(): Int = ideas.size
+
+    fun updateAndSortIdeas(newIdeas: List<IdeiaResponse>) {
+        this.ideas.clear()
+        this.ideas.addAll(newIdeas)
+        this.ideas.sortByDescending { it.curtidas }
+
+        notifyDataSetChanged()
+    }
 }

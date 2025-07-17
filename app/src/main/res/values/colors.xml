@@ -8,8 +8,9 @@
     <color name="btnYellow">#FFD700</color>
     <color name="btnBlue">#2A3F5F</color>
     <color name="btnGrey">#EBEBEB</color>
-    <color name="btnLightBlue">#E6B7E4FA</color>
-    <color name="btnLighterBlue">#88A3E5FF</color>
+    <color name="btnLightBlue">#B7E4FA</color>
+    <color name="btnLighterBlue">#A3E5FF</color>
+    <color name="btnLighterBlue2">#DDF2FD</color>
 
     <color name="fgBar">#F1F3F4</color>
     <color name="fgBg">#F6F6F6</color>
