@@ -2,11 +2,16 @@ package br.com.fiap.inpulse
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import androidx.lifecycle.lifecycleScope
+import br.com.fiap.inpulse.data.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,17 +27,14 @@ class LoginActivity : AppCompatActivity() {
             val email = etEmail.text.toString().trim()
             val senha = etSenha.text.toString().trim()
 
-            if(email == "adm@email.com"){
-                if(senha == "123"){
+            fetchFuncionarioData(email, senha) { loginSucesso ->
+                if (loginSucesso) {
                     val intent = Intent(this, HubActivity::class.java)
                     startActivity(intent)
+                    finish()
                 } else {
-                    etSenha.error = "Senha incorreta"
-                    return@setOnClickListener
+                    Toast.makeText(this, "Email ou senha incorretos.", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                etEmail.error = "Email incorreto"
-                return@setOnClickListener
             }
         }
 
@@ -42,4 +44,24 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
+
+    fun fetchFuncionarioData(email: String, senha: String, onLoginResult: (Boolean) -> Unit) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val funcionario = RetrofitClient.inPulseApiService.getFuncionarioByEmail(email)
+                    withContext(Dispatchers.Main) {
+                        val isLoginValid = funcionario.senha == senha
+                        onLoginResult(isLoginValid)
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@LoginActivity, "Falha ao buscar login: ${e.message}", Toast.LENGTH_LONG).show()
+                        onLoginResult(false)
+                    }
+                }
+            }
+        }
+    }
+
 }

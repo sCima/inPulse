@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.RetrofitClient
-import br.com.fiap.inpulse.model.Programa
 import br.com.fiap.inpulse.viewmodel.IdeaAdapter
 import br.com.fiap.inpulse.viewmodel.ProgramaAdapter
 import kotlinx.coroutines.Dispatchers
