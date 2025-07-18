@@ -87,6 +87,9 @@
     <string name="ate_data">- %1$s</string>
     <string name="idea_author_programa">, de %1$s</string>
     <string name="btn_enviar_ideia">Enviar uma ideia</string>
+    <string name="cadastro_hint_primeiro_nome">primeiro nome</string>
+    <string name="cadastro_hint_ultimo_sobrenome">último sobrenome</string>
+    <string name="cadastro_modo_anonimo">modo anônimo de perfil</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

@@ -1,4 +1,4 @@
-package br.com.fiap.inpulse.model.response
+package br.com.fiap.inpulse.data.response
 
 import java.time.LocalDate
 

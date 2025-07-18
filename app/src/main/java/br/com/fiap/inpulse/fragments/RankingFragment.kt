@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.RetrofitClient
-import br.com.fiap.inpulse.model.IdeaRanking
 import br.com.fiap.inpulse.model.UserRanking
 import br.com.fiap.inpulse.viewmodel.IdeaRankingAdapter
 import br.com.fiap.inpulse.viewmodel.UserRankingAdapter

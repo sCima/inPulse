@@ -7,7 +7,7 @@
     import androidx.recyclerview.widget.GridLayoutManager
     import androidx.recyclerview.widget.RecyclerView
     import br.com.fiap.inpulse.R
-    import br.com.fiap.inpulse.model.response.ProgramaResponse
+    import br.com.fiap.inpulse.data.response.ProgramaResponse
     import java.text.SimpleDateFormat
     import java.util.Locale
 

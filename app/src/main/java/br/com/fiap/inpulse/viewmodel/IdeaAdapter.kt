@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.response.IdeiaResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 

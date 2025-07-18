@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.response.Contribuicao
+import br.com.fiap.inpulse.data.response.Contribuicao
 
 class ContAdapter(private var conts: MutableList<Contribuicao>) :
     RecyclerView.Adapter<ContAdapter.InfoViewHolder>() {

@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.IdeaRanking
-import br.com.fiap.inpulse.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.response.IdeiaResponse
 
 class IdeaRankingAdapter(var ideas: MutableList<IdeiaResponse>) :
     RecyclerView.Adapter<IdeaRankingAdapter.InfoViewHolder>() {

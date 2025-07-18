@@ -1,4 +1,4 @@
-package br.com.fiap.inpulse.model.response
+package br.com.fiap.inpulse.data.response
 
 data class FuncionarioResponse(
     val funcionario_id: Int,
