@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -9,11 +10,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.data.RetrofitClient
+import br.com.fiap.inpulse.data.response.FuncionarioResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class LoginActivity : AppCompatActivity() {
+
+    private val PREFS_NAME = "InPulsePrefs"
+    private val KEY_USER_ID = "loggedInUserId"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -27,9 +33,15 @@ class LoginActivity : AppCompatActivity() {
             val email = etEmail.text.toString().trim()
             val senha = etSenha.text.toString().trim()
 
-            fetchFuncionarioData(email, senha) { loginSucesso ->
-                if (loginSucesso) {
+            fetchFuncionarioData(email, senha) { funcionario, loginSucesso ->
+                if (loginSucesso && funcionario != null) {
+                    val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    with(sharedPref.edit()) {
+                        putInt(KEY_USER_ID, funcionario.funcionario_id)
+                        apply()
+                    }
                     val intent = Intent(this, HubActivity::class.java)
+                    intent.putExtra("funcionario_data", funcionario)
                     startActivity(intent)
                     finish()
                 } else {
@@ -45,19 +57,19 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun fetchFuncionarioData(email: String, senha: String, onLoginResult: (Boolean) -> Unit) {
+    private fun fetchFuncionarioData(email: String, senha: String, onLoginResult: (FuncionarioResponse?, Boolean) -> Unit) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val funcionario = RetrofitClient.inPulseApiService.getFuncionarioByEmail(email)
                     withContext(Dispatchers.Main) {
                         val isLoginValid = funcionario.senha == senha
-                        onLoginResult(isLoginValid)
+                        onLoginResult(funcionario, isLoginValid)
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(this@LoginActivity, "Falha ao buscar login: ${e.message}", Toast.LENGTH_LONG).show()
-                        onLoginResult(false)
+                        onLoginResult(null, false)
                     }
                 }
             }

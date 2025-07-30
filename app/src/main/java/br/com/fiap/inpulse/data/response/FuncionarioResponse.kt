@@ -1,5 +1,9 @@
 package br.com.fiap.inpulse.data.response
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class FuncionarioResponse(
     val funcionario_id: Int,
     val primeiro_nome: String,
@@ -14,8 +18,9 @@ data class FuncionarioResponse(
     val programas: List<String>,
     val selos: List<String>,
     val logs: List<String>
-)
+) : Parcelable
 
+@Parcelize
 data class IdeiaFuncionario(
     val ideia_id: Int,
     val nome: String,
@@ -26,4 +31,4 @@ data class IdeiaFuncionario(
     val curtidas: Int,
     val programas_nome: List<String>,
     val categoriasIcone: List<String>
-)
+) : Parcelable

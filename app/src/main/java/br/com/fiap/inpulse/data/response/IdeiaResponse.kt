@@ -14,7 +14,26 @@ data class IdeiaResponse (
     val programas_nome: List<String>,
     val categoriasIcone: List<String>,
     val contribuicoes: List<Contribuicao>
-)
+) {
+    // Construtor auxiliar para converter de IdeiaFuncionario para IdeiaResponse
+    constructor(
+        ideiaFuncionario: IdeiaFuncionario,
+        funcionarioNome: String,
+        contribuicoesPadrao: List<Contribuicao> = emptyList() // Default para lista vazia
+    ) : this(
+        ideia_id = ideiaFuncionario.ideia_id,
+        nome = ideiaFuncionario.nome,
+        problema = ideiaFuncionario.problema,
+        descricao = ideiaFuncionario.descricao,
+        imagem = ideiaFuncionario.imagem,
+        data = ideiaFuncionario.data,
+        curtidas = ideiaFuncionario.curtidas,
+        funcionario_nome = funcionarioNome, // Preenchido com o nome do FuncionarioResponse
+        programas_nome = ideiaFuncionario.programas_nome,
+        categoriasIcone = ideiaFuncionario.categoriasIcone,
+        contribuicoes = contribuicoesPadrao // Contribuições não vem em IdeiaFuncionario
+    )
+}
 
 data class Contribuicao(
     val coment: String,

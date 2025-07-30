@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.model.UserRanking
 
-class UserRankingAdapter(private var users: MutableList<UserRanking>) :
+class UserRankingAdapter(var users: MutableList<UserRanking>) :
     RecyclerView.Adapter<UserRankingAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

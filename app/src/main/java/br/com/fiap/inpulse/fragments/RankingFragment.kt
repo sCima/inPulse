@@ -66,7 +66,7 @@ class RankingFragment : Fragment() {
             }
         }
 
-        adapterU = UserRankingAdapter(usersMock())
+        adapterU = UserRankingAdapter(mutableListOf())
         recyclerViewU.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewU.adapter = adapterU
 
@@ -74,6 +74,7 @@ class RankingFragment : Fragment() {
         recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewI.adapter = adapterI
 
+        loadFuncionariosFromApi()
         loadIdeiasFromApi()
     }
 
@@ -103,29 +104,30 @@ class RankingFragment : Fragment() {
         }
     }
 
-}
+    private fun loadFuncionariosFromApi() {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                try {
+                    val users = RetrofitClient.inPulseApiService.loadFuncionarios()
+                    withContext(Dispatchers.Main) {
+                        if (users.isNotEmpty()) {
+                            adapterU.users.clear()
+                            adapterU.users.addAll(users)
+                            adapterI.notifyDataSetChanged()
 
-
-
-    private fun usersMock() : MutableList<UserRanking>{
-        return mutableListOf(
-            UserRanking("Zé zinho",
-                "Prata",
-                23),
-            UserRanking("Rodolfo Lanches",
-                "Prata",
-                20),
-            UserRanking("Emerson",
-                "Bronze",
-                1),
-            UserRanking("Souza",
-                "Bronze",
-                1),
-            UserRanking("Renato",
-                "Bronze",
-                1),
-            UserRanking("Nikolai Gogol",
-                "Bronze",
-                1),
-        )
+                            adapterU.updateAndSortUsers(users)
+                        } else {
+                            Toast.makeText(context, "Nenhum usuário encontrado.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                } catch (e: Exception) {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(context, "Falha ao carregar usuários: ${e.message}", Toast.LENGTH_LONG).show()
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
     }
+
+}

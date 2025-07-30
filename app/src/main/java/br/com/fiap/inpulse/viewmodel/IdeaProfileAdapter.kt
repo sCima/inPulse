@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.Idea
+import br.com.fiap.inpulse.data.response.IdeiaFuncionario
 
-class IdeaProfileAdapter(private var ideas: MutableList<Idea>) :
+class IdeaProfileAdapter(private var ideas: MutableList<IdeiaFuncionario>) :
     RecyclerView.Adapter<IdeaProfileAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nome: TextView = itemView.findViewById<TextView>(R.id.textIdeaNameProfile)
+        val nome: TextView = itemView.findViewById(R.id.textIdeaNameProfile)
         val problema: TextView = itemView.findViewById(R.id.textIdeaDescProfile)
     }
 
@@ -30,7 +30,7 @@ class IdeaProfileAdapter(private var ideas: MutableList<Idea>) :
 
     override fun getItemCount(): Int = ideas.size
 
-    fun addItemAtTop(idea: Idea) {
+    fun addItemAtTop(idea: IdeiaFuncionario) {
         ideas.add(0, idea)
         notifyItemInserted(0)
     }

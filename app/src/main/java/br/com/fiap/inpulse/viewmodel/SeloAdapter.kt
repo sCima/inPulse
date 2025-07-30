@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.Cont
 import br.com.fiap.inpulse.model.Selo
 
 class SeloAdapter(private var selos: MutableList<Selo>) :

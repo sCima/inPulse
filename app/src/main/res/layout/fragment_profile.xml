@@ -192,6 +192,7 @@
             android:weightSum="2">
 
             <TextView
+                android:id="@+id/text_stat_ideias"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
@@ -201,6 +202,7 @@
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/text_stat_strike"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
@@ -224,6 +226,7 @@
             android:weightSum="2">
 
             <TextView
+                android:id="@+id/text_stat_likes"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"
@@ -233,6 +236,7 @@
                 android:textSize="18sp"/>
 
             <TextView
+                android:id="@+id/text_stat_conts"
                 android:layout_width="0dp"
                 android:layout_height="36dp"
                 android:layout_weight="1"

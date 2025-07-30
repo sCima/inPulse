@@ -10,11 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.response.Contribuicao
 import br.com.fiap.inpulse.data.response.IdeiaResponse
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: String) : // Mude 'Idea' para 'IdeiaResponse'
+class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: String) :
     RecyclerView.Adapter<IdeaAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View, private val fragment: String) : RecyclerView.ViewHolder(itemView) {
@@ -24,7 +25,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
         val problema: TextView = itemView.findViewById(R.id.resumoIdeia)
         val descricao: TextView = itemView.findViewById(R.id.textoCompleto)
         val data: TextView = itemView.findViewById(R.id.dataIdeia)
-        val autor: TextView = itemView.findViewById(R.id.autorIdeia) // Este campo não existe em IdeiaResponse diretamente
+        val autor: TextView = itemView.findViewById(R.id.autorIdeia)
         val likes: TextView = itemView.findViewById(R.id.numberLikes)
         val btnCurtir: ImageButton = itemView.findViewById(R.id.btnCurtir)
         val btnConts: ImageButton = itemView.findViewById(R.id.btnContribuir)
@@ -96,7 +97,6 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                 likes.text = itemView.context.getString(R.string.number_likes, count)
             }
 
-            // Remova estas linhas, elas estão fora de lugar e tornam o container interno visível/invisível sempre
             containerInterno.visibility = if (contsVisible) View.GONE else View.VISIBLE
             recyclerConts.visibility = if (contsVisible) View.VISIBLE else View.GONE
             layoutContsFoot.visibility = if (contsVisible) View.VISIBLE else View.GONE
