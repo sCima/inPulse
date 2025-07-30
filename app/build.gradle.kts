@@ -73,5 +73,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("org.mindrot:jbcrypt:0.4")
 
 }

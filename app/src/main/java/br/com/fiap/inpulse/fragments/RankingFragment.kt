@@ -47,6 +47,7 @@ class RankingFragment : Fragment() {
         spinner.adapter = adapter
 
         val btnColaboradores: TextView = view.findViewById(R.id.btnColaboradores)
+        val btnOrdenacao: TextView = view.findViewById(R.id.btnOrdenacao)
         val recyclerViewU = view.findViewById<RecyclerView>(R.id.recyclerViewRankingUsers)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewRankingIdeas)
         var rankingIdeias: Boolean = false
@@ -56,12 +57,14 @@ class RankingFragment : Fragment() {
                 recyclerViewU.visibility = View.VISIBLE
                 recyclerViewI.visibility = View.GONE
                 btnColaboradores.text = "Colaboradores"
+                btnOrdenacao.text = "Ideias"
                 rankingIdeias =! rankingIdeias
             }
             else {
                 recyclerViewI.visibility = View.VISIBLE
                 recyclerViewU.visibility = View.GONE
                 btnColaboradores.text = "Ideias"
+                btnOrdenacao.text = "Likes"
                 rankingIdeias =! rankingIdeias
             }
         }
@@ -113,7 +116,7 @@ class RankingFragment : Fragment() {
                         if (users.isNotEmpty()) {
                             adapterU.users.clear()
                             adapterU.users.addAll(users)
-                            adapterI.notifyDataSetChanged()
+                            adapterU.notifyDataSetChanged()
 
                             adapterU.updateAndSortUsers(users)
                         } else {

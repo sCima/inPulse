@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.data.RetrofitClient
 import br.com.fiap.inpulse.data.response.FuncionarioResponse
+import br.com.fiap.inpulse.utils.PasswordHasher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,13 +58,13 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun fetchFuncionarioData(email: String, senha: String, onLoginResult: (FuncionarioResponse?, Boolean) -> Unit) {
+    private fun fetchFuncionarioData(email: String, senhaDigitada: String, onLoginResult: (FuncionarioResponse?, Boolean) -> Unit) {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val funcionario = RetrofitClient.inPulseApiService.getFuncionarioByEmail(email)
                     withContext(Dispatchers.Main) {
-                        val isLoginValid = funcionario.senha == senha
+                        val isLoginValid = PasswordHasher.checkPassword(senhaDigitada, funcionario.senha)
                         onLoginResult(funcionario, isLoginValid)
                     }
                 } catch (e: Exception) {

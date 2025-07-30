@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.model.UserRanking
+import br.com.fiap.inpulse.data.response.FuncionarioResponse
 
-class UserRankingAdapter(var users: MutableList<UserRanking>) :
+class UserRankingAdapter(var users: MutableList<FuncionarioResponse>) :
     RecyclerView.Adapter<UserRankingAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -25,11 +25,19 @@ class UserRankingAdapter(var users: MutableList<UserRanking>) :
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
         val user = users[position]
-        holder.nome.text = user.nome
+        holder.nome.text = user.primeiro_nome
         holder.tier.text = user.tier
-        holder.numero.text = user.numero.toString()
+        holder.numero.text = user.ideias.size.toString()
 
     }
 
     override fun getItemCount(): Int = users.size
+
+    fun updateAndSortUsers(newUsers: List<FuncionarioResponse>) {
+        this.users.clear()
+        this.users.addAll(newUsers)
+        this.users.sortByDescending { it.ideias.size }
+
+        notifyDataSetChanged()
+    }
 }

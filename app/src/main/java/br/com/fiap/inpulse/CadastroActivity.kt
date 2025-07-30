@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.data.RetrofitClient
 import br.com.fiap.inpulse.data.request.FuncionarioRequest
+import br.com.fiap.inpulse.utils.PasswordHasher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -70,11 +71,13 @@ class CadastroActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            val senhaCript = PasswordHasher.hashPassword(senha)
+
             val funcionarioRequest = FuncionarioRequest(
                 primeiro_nome = primeiroNome,
                 ultimo_sobrenome = ultimoSobrenome,
                 email = email,
-                senha = senha,
+                senha = senhaCript,
                 modo_anonimo = modoAnonimo
             )
 
