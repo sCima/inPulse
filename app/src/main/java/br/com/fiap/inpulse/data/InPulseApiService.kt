@@ -26,6 +26,9 @@ interface InPulseApiService {
     @GET("funcionarios/email/{email}")
     suspend fun getFuncionarioByEmail(@Path("email") email: String): FuncionarioResponse
 
+    @GET("funcionarios/{id}")
+    suspend fun getFuncionarioById(@Path("id") id: Int): FuncionarioResponse
+
     @POST("funcionarios")
     suspend fun cadastrarFuncionario(@Body request: FuncionarioRequest): FuncionarioResponse
 

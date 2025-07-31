@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +27,8 @@ class RankingFragment : Fragment() {
 
     private lateinit var adapterU: UserRankingAdapter
     private lateinit var adapterI: IdeaRankingAdapter
+    private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var recyclerViewU: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +39,8 @@ class RankingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
 
         val spinner: Spinner = view.findViewById(R.id.spinnerFiltro)
         val adapter = ArrayAdapter.createFromResource(
@@ -48,7 +53,7 @@ class RankingFragment : Fragment() {
 
         val btnColaboradores: TextView = view.findViewById(R.id.btnColaboradores)
         val btnOrdenacao: TextView = view.findViewById(R.id.btnOrdenacao)
-        val recyclerViewU = view.findViewById<RecyclerView>(R.id.recyclerViewRankingUsers)
+        recyclerViewU = view.findViewById<RecyclerView>(R.id.recyclerViewRankingUsers)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewRankingIdeas)
         var rankingIdeias: Boolean = false
 
@@ -108,23 +113,31 @@ class RankingFragment : Fragment() {
     }
 
     private fun loadFuncionariosFromApi() {
+        loadingProgressBar.visibility = View.VISIBLE
+        recyclerViewU.visibility = View.GONE
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val users = RetrofitClient.inPulseApiService.loadFuncionarios()
                     withContext(Dispatchers.Main) {
                         if (users.isNotEmpty()) {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerViewU.visibility = View.VISIBLE
                             adapterU.users.clear()
                             adapterU.users.addAll(users)
                             adapterU.notifyDataSetChanged()
 
                             adapterU.updateAndSortUsers(users)
                         } else {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerViewU.visibility = View.VISIBLE
                             Toast.makeText(context, "Nenhum usuário encontrado.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
+                        loadingProgressBar.visibility = View.GONE
+                        recyclerViewU.visibility = View.VISIBLE
                         Toast.makeText(context, "Falha ao carregar usuários: ${e.message}", Toast.LENGTH_LONG).show()
                         e.printStackTrace()
                     }

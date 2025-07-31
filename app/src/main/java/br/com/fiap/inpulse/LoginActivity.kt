@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.data.RetrofitClient
 import br.com.fiap.inpulse.data.response.FuncionarioResponse
 import br.com.fiap.inpulse.utils.PasswordHasher
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +38,9 @@ class LoginActivity : AppCompatActivity() {
             fetchFuncionarioData(email, senha) { funcionario, loginSucesso ->
                 if (loginSucesso && funcionario != null) {
                     val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                    val gson = Gson()
+                    val json = gson.toJson(funcionario)
+                    sharedPref.edit().putString("funcionario_json", json).apply()
                     with(sharedPref.edit()) {
                         putInt(KEY_USER_ID, funcionario.funcionario_id)
                         apply()

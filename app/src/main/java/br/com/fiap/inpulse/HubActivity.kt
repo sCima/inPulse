@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse
 
+import android.content.Context
 import android.content.Intent
 import android.media.Image
 import android.os.Build
@@ -17,6 +18,7 @@ import br.com.fiap.inpulse.fragments.ProfileFragment
 import br.com.fiap.inpulse.fragments.RankingFragment
 import br.com.fiap.inpulse.fragments.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 
 class HubActivity : AppCompatActivity() {
 
@@ -27,17 +29,22 @@ class HubActivity : AppCompatActivity() {
     private val settingsFragment = SettingsFragment()
 
     private var funcionarioData: FuncionarioResponse? = null
-    private val KEY_USER_ID = "loggedInUserId"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hub)
 
-        funcionarioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val funcionarioFromIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getParcelableExtra("funcionario_data", FuncionarioResponse::class.java)
         } else {
             @Suppress("DEPRECATION")
             intent.getParcelableExtra("funcionario_data") as? FuncionarioResponse
+        }
+
+        funcionarioData = funcionarioFromIntent ?: run {
+            val json = getSharedPreferences("InPulsePrefs", Context.MODE_PRIVATE)
+                .getString("funcionario_json", null)
+            json?.let { Gson().fromJson(it, FuncionarioResponse::class.java) }
         }
 
         funcionarioData?.let {
