@@ -2,6 +2,7 @@ package br.com.fiap.inpulse.data.api
 
 import br.com.fiap.inpulse.data.model.request.ContribuicaoRequest
 import br.com.fiap.inpulse.data.model.request.FuncionarioRequest
+import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.data.model.request.LikeRequest
 import br.com.fiap.inpulse.data.model.response.ContribuicaoResponse
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
@@ -21,6 +22,9 @@ interface InPulseApiService {
 
     @PUT("ideias/{id}")
     suspend fun updateIdeia(@Path("id") id: Int, @Body requestBody: LikeRequest): IdeiaResponse
+
+    @POST("ideias")
+    suspend fun sendIdeia(@Body requestBody: IdeiaRequest): IdeiaResponse
 
     @POST("contribuicoes")
     suspend fun sendContribuicao(@Body requestBody: ContribuicaoRequest): ContribuicaoResponse

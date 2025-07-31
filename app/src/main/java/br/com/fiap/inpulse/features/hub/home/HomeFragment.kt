@@ -15,9 +15,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeFragment : Fragment() {
 
@@ -102,7 +106,16 @@ class HomeFragment : Fragment() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    val ideias = RetrofitClient.inPulseApiService.loadIdeias()
+                    val ideiasFetched = RetrofitClient.inPulseApiService.loadIdeias()
+                    val sortedIdeias = ideiasFetched.sortedByDescending { ideaResponse ->
+                        try {
+                            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                            dateFormat.parse(ideaResponse.data)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Date(0)
+                        }
+                    }
                     withContext(Dispatchers.Main) {
                         if (isRefreshing) {
                             swipeRefreshLayout.isRefreshing = false
@@ -110,9 +123,9 @@ class HomeFragment : Fragment() {
                             loadingProgressBar.visibility = View.GONE
                         }
 
-                        if (ideias.isNotEmpty()) {
+                        if (sortedIdeias.isNotEmpty()) {
                             adapter.ideas.clear()
-                            adapter.ideas.addAll(ideias)
+                            adapter.ideas.addAll(sortedIdeias)
                             adapter.notifyDataSetChanged()
                         } else {
                             Toast.makeText(context, "Nenhuma ideia encontrada.", Toast.LENGTH_SHORT).show()
