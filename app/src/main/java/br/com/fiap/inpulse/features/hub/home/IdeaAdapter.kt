@@ -1,12 +1,15 @@
 package br.com.fiap.inpulse.features.hub.home
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -55,10 +58,16 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
         var layoutCompleto: View = itemView.findViewById(R.id.layout_ideias)
         val btnEnviarCont: ImageButton = itemView.findViewById(R.id.btn_enviar_c)
         val etCont: EditText = itemView.findViewById(R.id.et_pergunta)
+        val imgSetor: ImageView = itemView.findViewById(R.id.imgSetor)
+        val imgTipo: ImageView = itemView.findViewById(R.id.imgTipo)
+        val imgComplex: ImageView = itemView.findViewById(R.id.imgComplex)
+        val imgUrgencia: ImageView = itemView.findViewById(R.id.imgUrgencia)
+
+
+        val imagemIdeia: ImageView = itemView.findViewById(R.id.imagemIdeia)
 
         private var liked = false
         private var contsVisible = false
-        private var contribuicao: String = "N"
         private lateinit var contAdapter: ContAdapter
 
         private val PREFS_NAME = "InPulsePrefs"
@@ -69,6 +78,38 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
             nome.text = idea.nome
             problema.text = idea.problema
             descricao.text = idea.descricao
+            val iconImageViews = listOf(imgSetor, imgTipo, imgComplex, imgUrgencia)
+
+            val iconMap = mapOf(
+                "administracao" to R.drawable.administracao,
+                "alta" to R.drawable.alta,
+                "automacao" to R.drawable.automacao,
+                "baixa" to R.drawable.baixa,
+                "comunicacao" to R.drawable.comunicacao,
+                "criacao" to R.drawable.criacao,
+                "critica" to R.drawable.critica,
+                "fabrica" to R.drawable.fabrica,
+                "logistica" to R.drawable.logistica,
+                "media" to R.drawable.media,
+                "melhoria" to R.drawable.melhoria,
+                "ped" to R.drawable.ped,
+                "prioritaria" to R.drawable.prioritaria,
+                "programada" to R.drawable.programada,
+                "sustentabilidade" to R.drawable.sustentabilidade,
+                "ti" to R.drawable.ti,
+                "vendas" to R.drawable.vendas,
+                "otimizacao" to R.drawable.otimizacao,
+
+            )
+
+            idea.categoriasIcone.forEachIndexed { index, iconName ->
+                if (index < iconImageViews.size) {
+                    val imageView = iconImageViews[index]
+                    val drawableId = iconMap[iconName.lowercase()] ?: R.drawable.ic_launcher_foreground
+                    imageView.setImageResource(drawableId)
+                }
+            }
+
 
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -87,14 +128,32 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
             autor.text = idea.funcionario_nome
             likes.text = idea.curtidas.toString()
 
+            if (!idea.imagem.isNullOrEmpty()) {
+                try {
+                    val decodedString = Base64.decode(idea.imagem, Base64.DEFAULT)
+                    val decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    imagemIdeia.setImageBitmap(decodedBitmap)
+                    imagemIdeia.visibility = View.VISIBLE
+                } catch (e: IllegalArgumentException) {
+                    e.printStackTrace()
+                    imagemIdeia.visibility = View.GONE
+                }
+            } else {
+                imagemIdeia.visibility = View.GONE
+            }
+
             if (fragment == "ProfileFragment") {
                 containerInterno.visibility = View.GONE
                 val params = layoutCompleto.layoutParams
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutCompleto.layoutParams = params
 
+                barraTitulo.setBackgroundResource(R.drawable.shape_fragment_body_rounded_p)
+
                 barraTitulo.setOnClickListener {
                     if (containerInterno.visibility == View.GONE) {
+                        barraTitulo.setBackgroundResource(R.drawable.shape_fragment_bar)
+
                         containerInterno.visibility = View.VISIBLE
                         val params = layoutCompleto.layoutParams
                         val pixels = TypedValue.applyDimension(
@@ -106,6 +165,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                         layoutCompleto.layoutParams = params
                     } else if (containerInterno.visibility == View.VISIBLE) {
                         containerInterno.visibility = View.GONE
+                        barraTitulo.setBackgroundResource(R.drawable.shape_fragment_body_rounded_p)
                         val params = layoutCompleto.layoutParams
                         params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         layoutCompleto.layoutParams = params

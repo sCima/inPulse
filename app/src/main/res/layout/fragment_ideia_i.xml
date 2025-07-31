@@ -32,17 +32,18 @@
         android:textColor="@color/fontBlue"
         />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sim_enviar_imagem"
         android:elevation="2dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sim_enviar_imagem"
+        android:textAllCaps="false"
         android:padding="8dp"
         android:layout_marginTop="16dp"
         android:textColor="@color/fontDarkGrey"
         android:background="@drawable/shape_button_blue"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_imagem"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -60,5 +61,26 @@
         app:layout_constraintTop_toBottomOf="@id/sim_enviar_imagem"
         app:layout_constraintEnd_toEndOf="parent"
         android:gravity="center"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewImagePreview"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txt_sem_imagem">
+
+        <ImageView
+            android:id="@+id/imagePreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_image_rounded"
+            android:contentDescription="Preview da imagem selecionada"
+            android:background="@drawable/bg_image_rounded"/>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

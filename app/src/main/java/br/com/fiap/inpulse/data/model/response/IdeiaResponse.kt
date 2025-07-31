@@ -25,7 +25,7 @@ data class IdeiaResponse (
         nome = ideiaFuncionario.nome,
         problema = ideiaFuncionario.problema,
         descricao = ideiaFuncionario.descricao,
-        imagem = ideiaFuncionario.imagem,
+        imagem = ideiaFuncionario.imagem.toString(),
         data = ideiaFuncionario.data,
         curtidas = ideiaFuncionario.curtidas,
         funcionario_nome = funcionarioNome, // Preenchido com o nome do FuncionarioResponse

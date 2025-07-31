@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.Inpulse" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     <item name="android:windowBackground">@color/bgWhite</item>
-
+        <item name="colorPrimary">@color/euroBlue</item>
+        <item name="colorPrimaryVariant">@color/euroBlue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/euroYellow</item>
+        <item name="colorSecondaryVariant">@color/euroYellow</item>
+        <item name="colorOnSecondary">@color/fontDarkGrey</item>
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
 
     </style>
 </resources>

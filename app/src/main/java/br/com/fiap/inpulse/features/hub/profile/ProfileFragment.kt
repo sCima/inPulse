@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
@@ -21,7 +22,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var adapter: IdeaAdapter
     private lateinit var adapterS: SeloAdapter
-    private lateinit var adapterC: IdeaProfileAdapter
+    private lateinit var adapterP: ProgramaProfileAdapter
     private var funcionarioData: FuncionarioResponse? = null
 
     override fun onCreateView(
@@ -83,7 +84,7 @@ class ProfileFragment : Fragment() {
             recyclerViewI.visibility = View.VISIBLE
             recyclerViewC.visibility = View.GONE
             containerStats.visibility = View.GONE
-            btnIdeas.setBackgroundColor(fgBar)
+            btnIdeas.setBackgroundResource(R.drawable.shape_button_blue)
             btnProg.setBackgroundColor(Color.TRANSPARENT)
             btnStats.setBackgroundColor(Color.TRANSPARENT)
         }
@@ -91,7 +92,7 @@ class ProfileFragment : Fragment() {
             recyclerViewC.visibility = View.VISIBLE
             recyclerViewI.visibility = View.GONE
             containerStats.visibility = View.GONE
-            btnProg.setBackgroundColor(fgBar)
+            btnProg.setBackgroundResource(R.drawable.shape_button_blue)
             btnIdeas.setBackgroundColor(Color.TRANSPARENT)
             btnStats.setBackgroundColor(Color.TRANSPARENT)
         }
@@ -99,7 +100,7 @@ class ProfileFragment : Fragment() {
             recyclerViewC.visibility = View.GONE
             recyclerViewI.visibility = View.GONE
             containerStats.visibility = View.VISIBLE
-            btnStats.setBackgroundColor(fgBar)
+            btnStats.setBackgroundResource(R.drawable.shape_button_blue)
             btnIdeas.setBackgroundColor(Color.TRANSPARENT)
             btnProg.setBackgroundColor(Color.TRANSPARENT)
         }
@@ -119,6 +120,14 @@ class ProfileFragment : Fragment() {
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
 
+            if(!funcionarioData?.programas.isNullOrEmpty()){
+                val programasParticipando = funcionarioData!!.programas
+                adapterP = ProgramaProfileAdapter(programasParticipando)
+                recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
+                recyclerViewC.adapter = adapterP
+                recyclerViewC.visibility = View.GONE
+            }
+
             val selosDoFuncionario: MutableList<Selo> = funcionario.selos.map { Selo(it) }.toMutableList()
             adapterS = SeloAdapter(selosDoFuncionario)
             val layoutManagers = GridLayoutManager(requireContext(), 4)
@@ -131,11 +140,6 @@ class ProfileFragment : Fragment() {
             recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
-
-            adapterC = IdeaProfileAdapter(mutableListOf())
-            recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
-            recyclerViewC.adapter = adapterC
-            recyclerViewC.visibility = View.GONE
 
             adapterS = SeloAdapter(mutableListOf())
             val layoutManagers = GridLayoutManager(requireContext(), 4)

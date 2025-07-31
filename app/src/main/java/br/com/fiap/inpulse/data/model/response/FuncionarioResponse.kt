@@ -26,7 +26,7 @@ data class IdeiaFuncionario(
     val nome: String,
     val problema: String,
     val descricao: String,
-    val imagem: String,
+    val imagem: String?,
     val data: String,
     val curtidas: Int,
     val programas_nome: List<String>,

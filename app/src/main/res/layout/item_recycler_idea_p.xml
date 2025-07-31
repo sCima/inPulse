@@ -18,13 +18,4 @@
         android:maxLines="1"
         android:layout_marginStart="2dp"/>
 
-    <TextView
-        android:id="@+id/ideiaPAutor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/idea_author_programa"
-        android:textSize="12sp"
-        android:textColor="@color/fontGrey"
-        android:layout_marginStart="2dp"/>
-
 </LinearLayout>

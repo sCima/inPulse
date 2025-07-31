@@ -6,7 +6,7 @@
     android:gravity="center_vertical"
     android:padding="8dp"
     android:layout_margin="4dp"
-    android:background="@drawable/shape_fragment_body_rounded">
+    android:background="@drawable/shape_fragment_body_rounded_p">
 
     <TextView
         android:id="@+id/textIdeaNameProfile"
@@ -19,13 +19,13 @@
         android:maxLines="1"
         android:layout_marginStart="2dp"/>
 
-    <TextView
-        android:id="@+id/textIdeaDescProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/idea_problema"
-        android:textSize="14sp"
-        android:textColor="@color/fontGrey"
-        android:layout_marginStart="2dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/textIdeaDescProfile"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/idea_problema"-->
+<!--        android:textSize="14sp"-->
+<!--        android:textColor="@color/fontGrey"-->
+<!--        android:layout_marginStart="2dp"/>-->
 
 </LinearLayout>

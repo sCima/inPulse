@@ -2,9 +2,14 @@ package br.com.fiap.inpulse.features.newidea
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.Toolbar
@@ -14,6 +19,7 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.features.hub.HubActivity
+import br.com.fiap.inpulse.features.login.LoginActivity
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentD
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentI
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentP
@@ -22,8 +28,10 @@ import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.util.Base64
 
-class NovaIdeiaActivity : AppCompatActivity() {
+class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
 
     private val ideaFragmentP = IdeaFragmentP()
     private val ideaFragmentD = IdeaFragmentD()
@@ -32,6 +40,31 @@ class NovaIdeiaActivity : AppCompatActivity() {
     private var etapaAtual = 0
     private val infosIdea = Bundle()
     private lateinit var btnContinuar: AppCompatButton
+
+    private var imageBase64: String? = null
+
+    private val pickImageLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val imageUri: Uri? = result.data?.data
+                imageUri?.let {
+                    try {
+                        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            val compressedBitmap = resizeAndCompressBitmap(bitmap, 800, 80)
+                            val base64 = bitmapToBase64(compressedBitmap)
+                            withContext(Dispatchers.Main) {
+                                imageBase64 = base64
+                                (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentI)?.updateImagePreview(imageBase64)
+                            }
+                        }
+                    } catch (e: Exception) {
+                        Toast.makeText(this, "Erro ao carregar imagem: ${e.message}", Toast.LENGTH_LONG).show()
+                        e.printStackTrace()
+                    }
+                }
+            }
+        }
 
     private val fragments = listOf(
         ideaFragmentP,
@@ -67,6 +100,7 @@ class NovaIdeiaActivity : AppCompatActivity() {
                 val proximoFragmento = fragments[etapaAtual]
 
                 if (proximoFragmento is IdeaFragmentR) {
+                    infosIdea.putString("imagemBase64", imageBase64)
                     proximoFragmento.arguments = infosIdea
                 }
                 carregarFragmentoAtual()
@@ -76,13 +110,13 @@ class NovaIdeiaActivity : AppCompatActivity() {
                 val descricaoIdeia = infosIdea.getString("resumoSolucao") ?: ""
                 val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 val funcionarioId = sharedPref.getInt(KEY_USER_ID, -1)
-                val categorias = listOf(1, 2, 3, 4)
+                val categorias = listOf(5, 9, 11, 14)
 
-                val ideiaRequest: IdeiaRequest = IdeiaRequest(
+                val ideiaRequest = IdeiaRequest(
                     nome = nomeIdeia,
                     problema = problemaIdeia,
                     descricao = descricaoIdeia,
-                    imagem = "null",
+                    imagem = imageBase64,
                     funcionario_id = funcionarioId,
                     categorias_id = categorias
                 )
@@ -110,10 +144,19 @@ class NovaIdeiaActivity : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgBottomNav))
     }
 
-    private fun carregarFragmentoAtual(): Fragment {
+    private fun carregarFragmentoAtual() {
         val fragment = fragments[etapaAtual]
+
+        if (fragment is IdeaFragmentI) {
+            fragment.setImageSelectionListener(this)
+        }
+
+        if (fragment is IdeaFragmentR) {
+            fragment.arguments = infosIdea
+        }
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.containerIdea, fragment)
+            .replace(R.id.containerIdea, fragment as Fragment)
             .commit()
 
         if (fragment is IdeaFragmentR) {
@@ -121,8 +164,43 @@ class NovaIdeiaActivity : AppCompatActivity() {
         } else {
             btnContinuar.text = "Continuar"
         }
+    }
 
-        return fragment
+    override fun openImagePicker() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickImageLauncher.launch(intent)
+    }
+
+    override fun onImageSelected(base64Image: String?) {
+        this.imageBase64 = base64Image
+        (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentI)?.updateImagePreview(base64Image)
+    }
+
+    private fun resizeAndCompressBitmap(bitmap: Bitmap, maxWidth: Int, quality: Int): Bitmap {
+        val width = bitmap.width
+        val height = bitmap.height
+
+        val ratio: Float = width.toFloat() / height.toFloat()
+
+        val newWidth: Int
+        val newHeight: Int
+
+        if (width > height) {
+            newWidth = maxWidth
+            newHeight = (newWidth / ratio).toInt()
+        } else {
+            newHeight = maxWidth
+            newWidth = (newHeight * ratio).toInt()
+        }
+
+        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+    }
+
+    private fun bitmapToBase64(bitmap: Bitmap): String? {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT)
     }
 
     private fun enviarIdeia(ideiaRequest: IdeiaRequest) {
@@ -133,11 +211,9 @@ class NovaIdeiaActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response != null) {
-                            Toast.makeText(
-                                this@NovaIdeiaActivity,
-                                "Sucesso",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            val intent = Intent(this@NovaIdeiaActivity, HubActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(
                                 this@NovaIdeiaActivity,
@@ -159,4 +235,7 @@ class NovaIdeiaActivity : AppCompatActivity() {
             }
         }
     }
+
+
 }
+

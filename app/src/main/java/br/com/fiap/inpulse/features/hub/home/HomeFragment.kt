@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
 
         recyclerViewP = view.findViewById(R.id.recyclerViewHomeP)
         recyclerViewP.setHasFixedSize(false)
-        adapterP = ProgramaAdapter(mutableListOf())
+        adapterP = ProgramaAdapter(mutableListOf(),  "HomeFragment", viewLifecycleOwner)
         recyclerViewP.layoutManager = LinearLayoutManager(requireContext())
         recyclerViewP.adapter = adapterP
         recyclerViewP.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
@@ -234,12 +234,9 @@ class HomeFragment : Fragment() {
 
         if (programasVisible) {
             val filteredList = originalProgramas.filter {
-                if (it is ProgramaResponse) {
-                    it.nome_programa.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                            it.descricao_programa.lowercase(Locale.getDefault()).contains(lowerCaseQuery)
-                } else {
-                    false
-                }
+                it.nome_programa.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        it.descricao_programa.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        it.funcionarios_nome.toString().lowercase(Locale.getDefault()).contains(lowerCaseQuery)
             }
             adapterP.programas.clear()
             adapterP.programas.addAll(filteredList)

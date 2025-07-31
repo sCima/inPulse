@@ -12,7 +12,6 @@ class IdeaProgramaAdapter(private var ideas: List<String>) :
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById(R.id.ideaPNome)
-        val autor: TextView = itemView.findViewById(R.id.ideiaPAutor)
 
         fun bind(ideas: String) {
             nome.text = ideas

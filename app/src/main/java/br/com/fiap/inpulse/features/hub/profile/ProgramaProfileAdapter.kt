@@ -8,12 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.response.IdeiaFuncionario
 
-class IdeaProfileAdapter(private var ideas: MutableList<IdeiaFuncionario>) :
-    RecyclerView.Adapter<IdeaProfileAdapter.InfoViewHolder>() {
+class ProgramaProfileAdapter(private var programas: List<String>) :
+    RecyclerView.Adapter<ProgramaProfileAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById(R.id.textIdeaNameProfile)
-        val problema: TextView = itemView.findViewById(R.id.textIdeaDescProfile)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
@@ -23,15 +22,9 @@ class IdeaProfileAdapter(private var ideas: MutableList<IdeiaFuncionario>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val idea = ideas[position]
-        holder.nome.text = idea.nome
-        holder.problema.text = idea.problema
+        val programa = programas[position]
+        holder.nome.text = programa
     }
 
-    override fun getItemCount(): Int = ideas.size
-
-    fun addItemAtTop(idea: IdeiaFuncionario) {
-        ideas.add(0, idea)
-        notifyItemInserted(0)
-    }
+    override fun getItemCount(): Int = programas.size
 }
