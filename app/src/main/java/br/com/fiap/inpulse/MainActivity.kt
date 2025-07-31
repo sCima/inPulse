@@ -5,7 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import br.com.fiap.inpulse.data.RetrofitClient
+import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.features.hub.HubActivity
+import br.com.fiap.inpulse.features.login.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

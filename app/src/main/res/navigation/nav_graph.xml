@@ -5,27 +5,27 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="br.com.fiap.inpulse.fragments.HomeFragment"
+        android:name="br.com.fiap.inpulse.features.hub.home.HomeFragment"
         android:label="Home" />
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="br.com.fiap.inpulse.fragments.ProfileFragment"
+        android:name="br.com.fiap.inpulse.features.hub.profile.ProfileFragment"
         android:label="Perfil" />
 
     <activity
         android:id="@+id/ideaActivity"
-        android:name="br.com.fiap.inpulse.NovaIdeiaActivity"
+        android:name="br.com.fiap.inpulse.features.newidea.NovaIdeiaActivity"
         android:label="Idea" />
 
     <fragment
         android:id="@+id/rankingFragment"
-        android:name="br.com.fiap.inpulse.fragments.RankingFragment"
+        android:name="br.com.fiap.inpulse.features.hub.ranking.RankingFragment"
         android:label="Ranking" />
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="br.com.fiap.inpulse.fragments.SettingsFragment"
+        android:name="br.com.fiap.inpulse.features.hub.settings.SettingsFragment"
         android:label="Configurações" />
 
 </navigation>

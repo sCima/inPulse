@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
-    tools:context=".fragments.ProfileFragment"
+    tools:context=".features.hub.profile.ProfileFragment"
     android:background="@color/bronze"
     android:id="@+id/profile_fragment"
     android:clickable="false"

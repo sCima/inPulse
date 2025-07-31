@@ -5,22 +5,22 @@
 
     <fragment
         android:id="@+id/ideaFragmentP"
-        android:name="br.com.fiap.inpulse.fragments.idea.IdeaFragmentP"
+        android:name="br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentP"
         android:label="Problema" />
 
     <fragment
         android:id="@+id/ideaFragmentD"
-        android:name="br.com.fiap.inpulse.fragments.idea.IdeaFragmentD"
+        android:name="br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentD"
         android:label="Descricao" />
 
     <fragment
         android:id="@+id/ideaFragmentI"
-        android:name="br.com.fiap.inpulse.fragments.idea.IdeaFragmentI"
+        android:name="br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentI"
         android:label="Imagens" />
 
     <fragment
         android:id="@+id/ideaFragmentR"
-        android:name="br.com.fiap.inpulse.fragments.idea.IdeaFragmentR"
+        android:name="br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentR"
         android:label="Resumo" />
 
 </navigation>
