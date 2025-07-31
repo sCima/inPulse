@@ -117,7 +117,7 @@ class ProfileFragment : Fragment() {
                 )
             }.toMutableList()
 
-            adapter = IdeaAdapter(ideiasConvertidas, "ProfileFragment")
+            adapter = IdeaAdapter(ideiasConvertidas, "ProfileFragment", viewLifecycleOwner)
             recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
@@ -130,7 +130,7 @@ class ProfileFragment : Fragment() {
             recyclerViewS.visibility = View.GONE
 
         } ?: run {
-            adapter = IdeaAdapter(mutableListOf(), "ProfileFragment")
+            adapter = IdeaAdapter(mutableListOf(), "ProfileFragment", viewLifecycleOwner)
             recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE

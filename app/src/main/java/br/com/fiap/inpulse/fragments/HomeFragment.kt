@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.RetrofitClient
 import br.com.fiap.inpulse.viewmodel.IdeaAdapter
@@ -27,6 +28,9 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerViewP: RecyclerView
     private lateinit var adapterP: ProgramaAdapter
     private lateinit var loadingProgressBar: ProgressBar
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+    private var programasVisible = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +44,7 @@ class HomeFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView.setHasFixedSize(false)
-        adapter = IdeaAdapter(mutableListOf(), "HomeFragment")
+        adapter = IdeaAdapter(mutableListOf(), "HomeFragment", viewLifecycleOwner)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
@@ -53,9 +57,13 @@ class HomeFragment : Fragment() {
         recyclerViewP.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
         val btnIdeiasProgramas: TextView = view.findViewById(R.id.btn_ideias_programas)
-        var programasVisible = false
 
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar)
+
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshPage()
+        }
 
         recyclerViewP.visibility = View.GONE
         recyclerView.visibility = View.VISIBLE
@@ -79,12 +87,33 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadIdeiasFromApi() {
+    private fun refreshPage() {
+        if (programasVisible) {
+            loadProgramasFromApi(isRefreshing = true)
+        } else {
+            loadIdeiasFromApi(isRefreshing = true)
+        }
+    }
+
+    private fun loadIdeiasFromApi(isRefreshing: Boolean = false) {
+
+        if (!isRefreshing) {
+            loadingProgressBar.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        }
+
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val ideias = RetrofitClient.inPulseApiService.loadIdeias()
                     withContext(Dispatchers.Main) {
+                        if (isRefreshing) {
+                            swipeRefreshLayout.isRefreshing = false
+                        } else {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerView.visibility = View.VISIBLE
+                        }
+
                         if (ideias.isNotEmpty()) {
                             adapter.ideas.clear()
                             adapter.ideas.addAll(ideias)
@@ -95,6 +124,12 @@ class HomeFragment : Fragment() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
+                        if (isRefreshing) {
+                            swipeRefreshLayout.isRefreshing = false
+                        } else {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerView.visibility = View.GONE
+                        }
                         Toast.makeText(context, "Falha ao carregar ideias: ${e.message}", Toast.LENGTH_LONG).show()
                         e.printStackTrace()
                     }
@@ -103,17 +138,25 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun loadProgramasFromApi() {
-        loadingProgressBar.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
+    private fun loadProgramasFromApi(isRefreshing: Boolean = false) {
+
+        if (!isRefreshing) {
+            loadingProgressBar.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+        }
 
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
                     val programas = RetrofitClient.inPulseApiService.loadProgramas()
                     withContext(Dispatchers.Main) {
-                        loadingProgressBar.visibility = View.GONE
-                        recyclerView.visibility = View.VISIBLE
+                        if (isRefreshing) {
+                            swipeRefreshLayout.isRefreshing = false
+                        } else {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerViewP.visibility = View.VISIBLE
+                        }
+
                         if (programas.isNotEmpty()) {
                             adapterP.programas.clear()
                             adapterP.programas.addAll(programas)
@@ -124,8 +167,12 @@ class HomeFragment : Fragment() {
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        loadingProgressBar.visibility = View.GONE
-                        recyclerView.visibility = View.GONE
+                        if (isRefreshing) {
+                            swipeRefreshLayout.isRefreshing = false
+                        } else {
+                            loadingProgressBar.visibility = View.GONE
+                            recyclerViewP.visibility = View.GONE
+                        }
                         Toast.makeText(context, "Falha ao carregar programas: ${e.message}", Toast.LENGTH_LONG).show()
                         e.printStackTrace()
                     }

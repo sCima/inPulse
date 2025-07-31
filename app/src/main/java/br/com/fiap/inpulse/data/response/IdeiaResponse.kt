@@ -9,7 +9,7 @@ data class IdeiaResponse (
     val descricao: String,
     val imagem: String,
     val data: String,
-    val curtidas: Int,
+    var curtidas: Int,
     val funcionario_nome: String,
     val programas_nome: List<String>,
     val categoriasIcone: List<String>,

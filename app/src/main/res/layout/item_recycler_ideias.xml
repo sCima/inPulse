@@ -141,21 +141,21 @@
                 android:contentDescription="@string/btn_contribuir_desc"
                 app:tint="@color/euroBlue"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnCurtir"
-                android:layout_marginEnd="24dp" />
+                app:layout_constraintEnd_toStartOf="@id/numberLikes"
+                android:layout_marginEnd="10dp" />
 
             <TextView
                 android:id="@+id/numberLikes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/number_likes"
                 android:textColor="@color/fontBlue"
                 android:textSize="24sp"
-                android:gravity="center"
-                app:layout_constraintTop_toTopOf="@id/btnCurtir"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/btnCurtir"
-                tools:text="0"/>
+                app:layout_constraintTop_toTopOf="@id/btnCurtir"
+                tools:text="0" />
 
             <ImageButton
                 android:id="@+id/btnCurtir"

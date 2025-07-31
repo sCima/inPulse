@@ -1,12 +1,14 @@
 package br.com.fiap.inpulse.data
 
 import br.com.fiap.inpulse.data.request.FuncionarioRequest
+import br.com.fiap.inpulse.data.request.LikeRequest
 import br.com.fiap.inpulse.data.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.response.IdeiaResponse
 import br.com.fiap.inpulse.data.response.ProgramaResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface InPulseApiService {
@@ -14,6 +16,9 @@ interface InPulseApiService {
     //ideias
     @GET("ideias")
     suspend fun loadIdeias(): List<IdeiaResponse>
+
+    @PUT("ideias/{id}")
+    suspend fun updateIdeia(@Path("id") id: Int, @Body requestBody: LikeRequest): IdeiaResponse
 
     //programas
     @GET("programas")

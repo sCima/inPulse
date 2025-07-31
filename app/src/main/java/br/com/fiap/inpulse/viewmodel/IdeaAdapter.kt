@@ -6,19 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.RetrofitClient
 import br.com.fiap.inpulse.data.response.Contribuicao
+import androidx.lifecycle.lifecycleScope
+import br.com.fiap.inpulse.data.request.LikeRequest
 import br.com.fiap.inpulse.data.response.IdeiaResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: String) :
+class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: String, private val lifecycleOwner: LifecycleOwner) :
     RecyclerView.Adapter<IdeaAdapter.InfoViewHolder>() {
 
-    class InfoViewHolder(itemView: View, private val fragment: String) : RecyclerView.ViewHolder(itemView) {
+    class InfoViewHolder(
+        itemView: View,
+        private val fragment: String,
+        private val lifecycleOwner: LifecycleOwner
+    ) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById<View>(R.id.includeBar)
             .findViewById(R.id.fragment_bar_title)
         val barraTitulo: ConstraintLayout = itemView.findViewById(R.id.includeBar)
@@ -60,14 +72,14 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
             autor.text = idea.funcionario_nome
             likes.text = idea.curtidas.toString()
 
-            if(fragment == "ProfileFragment"){
+            if (fragment == "ProfileFragment") {
                 containerInterno.visibility = View.GONE
                 val params = layoutCompleto.layoutParams
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                 layoutCompleto.layoutParams = params
 
                 barraTitulo.setOnClickListener {
-                    if(containerInterno.visibility == View.GONE) {
+                    if (containerInterno.visibility == View.GONE) {
                         containerInterno.visibility = View.VISIBLE
                         val params = layoutCompleto.layoutParams
                         val pixels = TypedValue.applyDimension(
@@ -77,11 +89,37 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                         ).toInt()
                         params.height = pixels
                         layoutCompleto.layoutParams = params
-                    } else if (containerInterno.visibility == View.VISIBLE){
+                    } else if (containerInterno.visibility == View.VISIBLE) {
                         containerInterno.visibility = View.GONE
                         val params = layoutCompleto.layoutParams
                         params.height = ViewGroup.LayoutParams.WRAP_CONTENT
                         layoutCompleto.layoutParams = params
+                    }
+                }
+            }
+
+            fun sendLike(ideiaId: Int, newLikesCount: Int) {
+                lifecycleOwner.lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        try {
+                            val requestBody = LikeRequest(curtidas = newLikesCount)
+                            RetrofitClient.inPulseApiService.updateIdeia(ideiaId, requestBody)
+                            withContext(Dispatchers.Main) {
+
+                            }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    itemView.context,
+                                    "Erro: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                e.printStackTrace()
+                                liked = !liked
+                                likes.text = (newLikesCount - (if (liked) 1 else -1)).toString()
+                                btnCurtir.setImageResource(if (liked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24)
+                            }
+                        }
                     }
                 }
             }
@@ -95,6 +133,12 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                     if (liked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24
                 )
                 likes.text = itemView.context.getString(R.string.number_likes, count)
+                if (liked) {
+                    sendLike(idea.ideia_id, 1)
+                } else {
+                    sendLike(idea.ideia_id, -1)
+                }
+                idea.curtidas += 1
             }
 
             containerInterno.visibility = if (contsVisible) View.GONE else View.VISIBLE
@@ -133,11 +177,10 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recycler_ideias, parent, false)
-        return InfoViewHolder(view, fragment)
+        return InfoViewHolder(view, fragment, lifecycleOwner)
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
