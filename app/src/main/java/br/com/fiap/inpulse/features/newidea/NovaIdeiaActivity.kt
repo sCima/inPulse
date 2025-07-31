@@ -78,7 +78,7 @@ class NovaIdeiaActivity : AppCompatActivity() {
                 val funcionarioId = sharedPref.getInt(KEY_USER_ID, -1)
                 val categorias = listOf(1, 2, 3, 4)
 
-                val ideiaRequest = IdeiaRequest(
+                val ideiaRequest: IdeiaRequest = IdeiaRequest(
                     nome = nomeIdeia,
                     problema = problemaIdeia,
                     descricao = descricaoIdeia,
@@ -86,7 +86,8 @@ class NovaIdeiaActivity : AppCompatActivity() {
                     funcionario_id = funcionarioId,
                     categorias_id = categorias
                 )
-                    enviarIdeia(ideiaRequest)
+
+                enviarIdeia(ideiaRequest)
             }
         }
 
