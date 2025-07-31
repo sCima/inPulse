@@ -99,7 +99,6 @@ class HomeFragment : Fragment() {
 
         if (!isRefreshing) {
             loadingProgressBar.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
         }
 
         lifecycleScope.launch {
@@ -111,7 +110,6 @@ class HomeFragment : Fragment() {
                             swipeRefreshLayout.isRefreshing = false
                         } else {
                             loadingProgressBar.visibility = View.GONE
-                            recyclerView.visibility = View.VISIBLE
                         }
 
                         if (ideias.isNotEmpty()) {
@@ -128,7 +126,6 @@ class HomeFragment : Fragment() {
                             swipeRefreshLayout.isRefreshing = false
                         } else {
                             loadingProgressBar.visibility = View.GONE
-                            recyclerView.visibility = View.GONE
                         }
                         Toast.makeText(context, "Falha ao carregar ideias: ${e.message}", Toast.LENGTH_LONG).show()
                         e.printStackTrace()
@@ -142,7 +139,6 @@ class HomeFragment : Fragment() {
 
         if (!isRefreshing) {
             loadingProgressBar.visibility = View.VISIBLE
-            recyclerView.visibility = View.GONE
         }
 
         lifecycleScope.launch {
@@ -154,7 +150,6 @@ class HomeFragment : Fragment() {
                             swipeRefreshLayout.isRefreshing = false
                         } else {
                             loadingProgressBar.visibility = View.GONE
-                            recyclerViewP.visibility = View.VISIBLE
                         }
 
                         if (programas.isNotEmpty()) {
@@ -171,7 +166,6 @@ class HomeFragment : Fragment() {
                             swipeRefreshLayout.isRefreshing = false
                         } else {
                             loadingProgressBar.visibility = View.GONE
-                            recyclerViewP.visibility = View.GONE
                         }
                         Toast.makeText(context, "Falha ao carregar programas: ${e.message}", Toast.LENGTH_LONG).show()
                         e.printStackTrace()

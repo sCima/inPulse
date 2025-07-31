@@ -1,9 +1,11 @@
 package br.com.fiap.inpulse.viewmodel
 
+import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -13,10 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.RetrofitClient
-import br.com.fiap.inpulse.data.response.Contribuicao
 import androidx.lifecycle.lifecycleScope
+import br.com.fiap.inpulse.data.request.ContribuicaoRequest
 import br.com.fiap.inpulse.data.request.LikeRequest
+import br.com.fiap.inpulse.data.response.Contribuicao
+import br.com.fiap.inpulse.data.response.ContribuicaoResponse
+import br.com.fiap.inpulse.data.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.response.IdeiaResponse
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -46,9 +52,17 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
         val containerInterno: View = itemView.findViewById(R.id.containerInterno)
         val recyclerConts: RecyclerView = itemView.findViewById(R.id.recyclerConts)
         var layoutCompleto: View = itemView.findViewById(R.id.layout_ideias)
+        val btnEnviarCont: ImageButton = itemView.findViewById(R.id.btn_enviar_c)
+        val etCont: EditText = itemView.findViewById(R.id.et_pergunta)
 
-        var liked = false
+        private var liked = false
         private var contsVisible = false
+        private var contribuicao: String = "N"
+        private lateinit var contAdapter: ContAdapter
+
+        private val PREFS_NAME = "InPulsePrefs"
+        private val KEY_USER_ID = "loggedInUserId"
+        private val KEY_FUNCIONARIO_JSON = "funcionario_json"
 
         fun bind(idea: IdeiaResponse) {
             nome.text = idea.nome
@@ -124,6 +138,34 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                 }
             }
 
+            fun sendCont(ideiaId: Int, funcionarioId: Int, cont: String, nome: String) {
+                lifecycleOwner.lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        try {
+                            val requestBody = ContribuicaoRequest(ideia_id = ideiaId, funcionario_id = funcionarioId, comentario = cont)
+                            val response = RetrofitClient.inPulseApiService.sendContribuicao(requestBody)
+                            withContext(Dispatchers.Main) {
+                                val newContribuicao = Contribuicao(
+                                    coment = response.comentario,
+                                    nomeAutor = response.funcionario
+                                )
+                                contAdapter.addItemAtTop(newContribuicao)
+                                etCont.text.clear()
+                            }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    itemView.context,
+                                    "Erro: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                }
+            }
+
             btnCurtir.setOnClickListener {
                 var count = likes.text.toString().toIntOrNull() ?: 0
                 liked = !liked
@@ -148,9 +190,22 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
 
             val conts = idea.contribuicoes
 
-            val adapter = ContAdapter(conts.toMutableList())
+            contAdapter = ContAdapter(conts.toMutableList())
             recyclerConts.layoutManager = LinearLayoutManager(itemView.context)
-            recyclerConts.adapter = adapter
+            recyclerConts.adapter = contAdapter
+
+            btnEnviarCont.setOnClickListener {
+                val sharedPref = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val comentario = etCont.text.toString().trim()
+                val funcionarioJson = sharedPref.getString(KEY_FUNCIONARIO_JSON, null) // Lê o JSON
+                if (comentario.isNotEmpty()) {
+                    val userId = sharedPref.getInt(KEY_USER_ID, -1)
+                    val gson = Gson()
+                    val funcionario = gson.fromJson(funcionarioJson, FuncionarioResponse::class.java)
+                    val funcionarioNomeCompleto = "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}"
+                    sendCont(idea.ideia_id, userId, comentario, funcionarioNomeCompleto)
+                }
+            }
 
             btnConts.setOnClickListener {
                 contsVisible = !contsVisible

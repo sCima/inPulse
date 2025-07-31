@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         val userId = sharedPref.getInt(KEY_USER_ID, -1)
 
         if (userId != -1) {
-            // Busca os dados do funcionário via API antes de ir pra HubActivity
             lifecycleScope.launch {
                 try {
                     val funcionario = withContext(Dispatchers.IO) {

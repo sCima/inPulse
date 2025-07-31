@@ -12,7 +12,7 @@ class ContAdapter(private var conts: MutableList<Contribuicao>) :
     RecyclerView.Adapter<ContAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nome: TextView = itemView.findViewById<TextView>(R.id.textContUser)
+        val nome: TextView = itemView.findViewById(R.id.textContUser)
         val cont: TextView = itemView.findViewById(R.id.textCont)
     }
 
