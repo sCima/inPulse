@@ -23,15 +23,22 @@ class ContAdapter(private var conts: MutableList<Contribuicao>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val conts = conts[position]
-        holder.nome.text = conts.nomeAutor
-        holder.cont.text = conts.coment
+        if (position < conts.size) {
+            val contribuicao = conts[position]
+            holder.nome.text = contribuicao.nomeAutor
+            holder.cont.text = contribuicao.coment
+        }
     }
 
-    override fun getItemCount(): Int = conts.size
+    override fun getItemCount(): Int {return minOf(conts.size, 5)}
 
     fun addItemAtTop(cont: Contribuicao) {
         conts.add(0, cont)
         notifyItemInserted(0)
+
+        if (conts.size > 5) {
+            conts.removeAt(conts.size - 1)
+            notifyItemRemoved(conts.size)
+        }
     }
 }

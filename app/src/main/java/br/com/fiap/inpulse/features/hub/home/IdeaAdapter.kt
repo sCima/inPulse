@@ -190,8 +190,8 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
             btnVoltar.visibility = if (contsVisible) View.VISIBLE else View.GONE
 
             val conts = idea.contribuicoes
-
-            contAdapter = ContAdapter(conts.toMutableList())
+            val latestFiveConts = conts.takeLast(5).reversed()
+            contAdapter = ContAdapter(latestFiveConts.toMutableList())
             recyclerConts.layoutManager = LinearLayoutManager(itemView.context)
             recyclerConts.adapter = contAdapter
 
