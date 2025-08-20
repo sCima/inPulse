@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/nome_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_item_name"
+        android:textColor="@color/fontBlack"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        />
+
+    <ImageView
+        android:id="@+id/img_item"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:contentDescription="Imagem do item da loja"
+        android:src="@drawable/item_loja"
+        android:layout_gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/preco_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/text_preco_item"
+        android:textAlignment="center"
+        android:textColor="@color/fontBlack"
+        android:textSize="11sp" />
+
+</LinearLayout>

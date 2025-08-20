@@ -92,6 +92,9 @@
     <string name="cadastro_modo_anonimo">modo anônimo de perfil</string>
     <string name="text_stat_programas">Total de programas: 0</string>
     <string name="text_stat_missoes">Total de missões: 0</string>
+    <string name="text_pontos">0 Pontos disponíveis</string>
+    <string name="text_preco_item">0 EP</string>
+    <string name="text_item_name">Item</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

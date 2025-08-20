@@ -11,18 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.model.ItemLoja
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.Selo
 import br.com.fiap.inpulse.features.hub.home.IdeaAdapter
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 
 class ProfileFragment : Fragment() {
 
     private lateinit var adapter: IdeaAdapter
     private lateinit var adapterS: SeloAdapter
     private lateinit var adapterP: ProgramaProfileAdapter
+    private lateinit var adapterL: LojaAdapter
     private var funcionarioData: FuncionarioResponse? = null
 
     override fun onCreateView(
@@ -50,7 +53,15 @@ class ProfileFragment : Fragment() {
         val recyclerViewC = view.findViewById<RecyclerView>(R.id.recyclerViewProfileContribuicoes)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewProfileIdeas)
         val recyclerViewS = view.findViewById<RecyclerView>(R.id.recyclerViewProfileSelos)
+        val recyclerViewLB = view.findViewById<RecyclerView>(R.id.recycler_view_bronze)
+        val recyclerViewLP = view.findViewById<RecyclerView>(R.id.recycler_view_prata)
+        val recyclerViewLO = view.findViewById<RecyclerView>(R.id.recycler_view_ouro)
         val containerStats = view.findViewById<View>(R.id.containerStats)
+        val perfilContent = view.findViewById<View>(R.id.perfil_content)
+        val lojaContent = view.findViewById<View>(R.id.loja_content)
+        val switch = view.findViewById<MaterialButtonToggleGroup>(R.id.switch_loja)
+        val switchPerfil = view.findViewById<MaterialButton>(R.id.button_perfil)
+        val switchLoja = view.findViewById<MaterialButton>(R.id.button_loja)
         val fgBar = resources.getColor(R. color. fgBar)
 
         val tvProximoNivel = view.findViewById<TextView>(R.id.next_tier)
@@ -74,11 +85,41 @@ class ProfileFragment : Fragment() {
         val soma = funcionarioData?.ideias?.sumOf{it.curtidas}
         tvNumeroLikes.text = "Curtidas: ${soma.toString()}"
 
+        val tvPontos = view.findViewById<TextView>(R.id.text_pontos)
+        val pontos = funcionarioData?.pontos
+        tvPontos.text =  "$pontos Pontos disponíveis"
+
         val tvNumeroConts = view.findViewById<TextView>(R.id.text_stat_conts)
         tvNumeroConts.text = "Contribuições: 0"
 
         val background: View = view.findViewById(R.id.profile_fragment)
         background.setBackgroundColor(getResources().getColor(R.color.bronze))
+
+        switch.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
+            if (isChecked) {
+                when (checkedId) {
+                    R.id.button_perfil -> {
+                        perfilContent.visibility = View.VISIBLE
+                        lojaContent.visibility = View.GONE
+                    }
+                    R.id.button_loja -> {
+                        perfilContent.visibility = View.GONE
+                        lojaContent.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+        adapterL = LojaAdapter(mockItens())
+
+        recyclerViewLB.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
+        recyclerViewLB.adapter = adapterL
+
+        recyclerViewLP.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
+        recyclerViewLP.adapter = adapterL
+
+        recyclerViewLO.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
+        recyclerViewLO.adapter = adapterL
 
         btnIdeas.setOnClickListener {
             recyclerViewI.visibility = View.VISIBLE
@@ -100,6 +141,7 @@ class ProfileFragment : Fragment() {
             recyclerViewC.visibility = View.GONE
             recyclerViewI.visibility = View.GONE
             containerStats.visibility = View.VISIBLE
+            perfilContent.visibility = View.VISIBLE
             btnStats.setBackgroundResource(R.drawable.shape_button_blue)
             btnIdeas.setBackgroundColor(Color.TRANSPARENT)
             btnProg.setBackgroundColor(Color.TRANSPARENT)
@@ -133,7 +175,6 @@ class ProfileFragment : Fragment() {
             val layoutManagers = GridLayoutManager(requireContext(), 4)
             recyclerViewS.layoutManager = layoutManagers
             recyclerViewS.adapter = adapterS
-            recyclerViewS.visibility = View.GONE
 
         } ?: run {
             adapter = IdeaAdapter(mutableListOf(), "ProfileFragment", viewLifecycleOwner)
@@ -148,6 +189,11 @@ class ProfileFragment : Fragment() {
             recyclerViewS.visibility = View.GONE
 
         }
+    }
+
+    private fun mockItens(): MutableList<ItemLoja> {
+        return mutableListOf(ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"),
+            ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"))
     }
 
 }
