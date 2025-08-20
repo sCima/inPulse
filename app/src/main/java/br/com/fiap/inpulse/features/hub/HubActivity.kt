@@ -20,6 +20,7 @@ import br.com.fiap.inpulse.features.hub.profile.ProfileFragment
 import br.com.fiap.inpulse.features.hub.ranking.RankingFragment
 import br.com.fiap.inpulse.features.hub.settings.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 
 class HubActivity : AppCompatActivity() {
@@ -69,6 +70,13 @@ class HubActivity : AppCompatActivity() {
         btnChatbot.setOnClickListener {
             val intent = Intent(this, ChatbotActivity::class.java)
             startActivity(intent)
+        }
+
+
+        val btnPerfil = toolbarHub.findViewById<ShapeableImageView>(R.id.toolbar_image)
+        btnPerfil.setOnClickListener {
+            loadFragment(profileFragment)
+            configureToolbar(toolbarHub, true)
         }
 
         loadFragment(homeFragment)

@@ -18,7 +18,8 @@ data class FuncionarioResponse(
     val ideias: List<IdeiaFuncionario>,
     val programas: List<String>,
     val selos: List<String>,
-    val logs: List<String>
+    val logs: List<String>,
+    var valorOrdenacao: String? = null
 ) : Parcelable
 
 @Parcelize

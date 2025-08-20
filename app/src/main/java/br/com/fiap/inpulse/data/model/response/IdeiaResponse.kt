@@ -13,7 +13,8 @@ data class IdeiaResponse (
     val funcionario_nome: String,
     val programas_nome: List<String>,
     val categoriasIcone: List<String>,
-    val contribuicoes: List<Contribuicao>
+    val contribuicoes: List<Contribuicao>,
+    var valorOrdenacao: String? = null
 ) {
     // Construtor auxiliar para converter de IdeiaFuncionario para IdeiaResponse
     constructor(

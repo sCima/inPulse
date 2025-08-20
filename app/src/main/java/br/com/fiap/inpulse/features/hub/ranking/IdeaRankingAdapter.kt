@@ -25,17 +25,29 @@ class IdeaRankingAdapter(var ideas: MutableList<IdeiaResponse>) :
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
         val idea = ideas[position]
         holder.nome.text = idea.nome
-        holder.numero.text = idea.curtidas.toString()
-
+        holder.numero.text = idea.valorOrdenacao
     }
 
     override fun getItemCount(): Int = ideas.size
 
-    fun updateAndSortIdeas(newIdeas: List<IdeiaResponse>) {
+    fun updateAndSortIdeas(newIdeas: List<IdeiaResponse>, sortBy: String) {
         this.ideas.clear()
         this.ideas.addAll(newIdeas)
-        this.ideas.sortByDescending { it.curtidas }
 
+        when (sortBy.lowercase()) {
+            "contribuições" -> {
+                this.ideas.sortByDescending { it.contribuicoes.size }
+                ideas.forEach { it.valorOrdenacao = it.contribuicoes.size.toString() }
+            }
+            "programas" -> {
+                this.ideas.sortByDescending { it.programas_nome.size }
+                ideas.forEach { it.valorOrdenacao = it.programas_nome.size.toString() }
+            }
+            else -> {
+                this.ideas.sortByDescending { it.curtidas }
+                ideas.forEach { it.valorOrdenacao = it.curtidas.toString() }
+            }
+        }
         notifyDataSetChanged()
     }
 }

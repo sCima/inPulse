@@ -27,16 +27,45 @@ class UserRankingAdapter(var users: MutableList<FuncionarioResponse>) :
         val user = users[position]
         holder.nome.text = user.primeiro_nome
         holder.tier.text = user.tier
-        holder.numero.text = user.ideias.size.toString()
-
+        holder.numero.text = user.valorOrdenacao
     }
 
     override fun getItemCount(): Int = users.size
 
-    fun updateAndSortUsers(newUsers: List<FuncionarioResponse>) {
+    fun updateAndSortUsers(newUsers: List<FuncionarioResponse>, sortBy: String) {
         this.users.clear()
         this.users.addAll(newUsers)
-        this.users.sortByDescending { it.ideias.size }
+        when (sortBy.lowercase()) {
+            "ideias" -> {
+                this.users.sortByDescending { it.ideias.size }
+                users.forEach { it.valorOrdenacao = it.ideias.size.toString() }
+            }
+
+            "curtidas" -> {
+                this.users.sortByDescending { user -> user.ideias.sumOf { it.curtidas } }
+                users.forEach { it -> it.valorOrdenacao = it.ideias.sumOf { it.curtidas }.toString() }
+            }
+
+            "pontos" -> {
+                this.users.sortByDescending { it.pontos }
+                users.forEach { it.valorOrdenacao = it.pontos.toString() }
+            }
+
+            "selos" -> {
+                this.users.sortByDescending { it.selos.size }
+                users.forEach { it.valorOrdenacao = it.selos.size.toString() }
+            }
+
+            "programas" -> {
+                this.users.sortByDescending { it.programas.size }
+                users.forEach { it.valorOrdenacao = it.programas.size.toString() }
+            }
+
+            else -> {
+                this.users.sortByDescending { it.ideias.size }
+                users.forEach { it.valorOrdenacao = it.ideias.size.toString() }
+            }
+        }
 
         notifyDataSetChanged()
     }
