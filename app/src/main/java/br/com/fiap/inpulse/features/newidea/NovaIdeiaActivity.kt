@@ -51,7 +51,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
                     try {
                         val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
                         lifecycleScope.launch(Dispatchers.IO) {
-                            val compressedBitmap = resizeAndCompressBitmap(bitmap, 800, 80)
+                            val compressedBitmap = resizeAndCompressBitmap(bitmap, 300, 40)
                             val base64 = bitmapToBase64(compressedBitmap)
                             withContext(Dispatchers.Main) {
                                 imageBase64 = base64

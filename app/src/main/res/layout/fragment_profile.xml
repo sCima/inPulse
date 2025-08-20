@@ -74,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProfileContribuicoes"
@@ -102,7 +102,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_fragment_bar_white"
-        android:visibility="gone"
+        android:visibility="visible"
         >
 
         <TextView
@@ -121,147 +121,175 @@
             android:textSize="16sp"
             />
 
-        <LinearLayout
-            android:id="@+id/layoutIcones"
-            android:layout_width="0dp"
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/switch_loja"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_marginTop="6dp"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@id/button_perfil"
             app:layout_constraintTop_toBottomOf="@id/next_tier"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:weightSum="5">
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:src="@drawable/logistica"
-                android:scaleType="centerInside" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_perfil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Perfil"
+                android:textSize="12sp"
+                app:backgroundTint="@drawable/toggle_button_background" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:src="@drawable/sustentabilidade"
-                android:scaleType="centerInside" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_loja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loja"
+                android:textSize="12sp"
+                app:backgroundTint="@drawable/toggle_button_background" />
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:src="@drawable/alta"
-                android:scaleType="centerInside" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:src="@drawable/critica"
-                android:scaleType="centerInside" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:src="@drawable/critica"
-                android:scaleType="centerInside" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutStats1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layoutIcones"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/text_stat_ideias"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:text="@string/text_stat_ideias"
-                android:textColor="@color/fontDarkGrey"
-                android:textAlignment="center"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/text_stat_strike"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:text="@string/text_stat_strike"
-                android:textColor="@color/fontDarkGrey"
-                android:textAlignment="center"
-                android:textSize="18sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layoutStats2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/layoutStats1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:weightSum="2">
-
-            <TextView
-                android:id="@+id/text_stat_likes"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:text="@string/text_stat_likes"
-                android:textColor="@color/fontDarkGrey"
-                android:textAlignment="center"
-                android:textSize="18sp"/>
-
-            <TextView
-                android:id="@+id/text_stat_conts"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:layout_weight="1"
-                android:text="@string/text_stat_conts"
-                android:textColor="@color/fontDarkGrey"
-                android:textAlignment="center"
-                android:textSize="18sp"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/text_selos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layoutStats2"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:text="@string/text_stat_selos"
-            android:textColor="@color/fontBlack"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewProfileSelos"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/perfil_content"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_margin="4dp"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/switch_loja"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_selos"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_recycler_selos" />
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/layoutStats1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/text_stat_ideias"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_ideias"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_stat_strike"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_strike"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutStats2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/layoutStats1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/text_stat_likes"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_likes"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_stat_conts"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_conts"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutStats3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/layoutStats2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/text_stat_programas"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_programas"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:id="@+id/text_stat_missoes"
+                    android:layout_width="0dp"
+                    android:layout_height="36dp"
+                    android:layout_weight="1"
+                    android:text="@string/text_stat_missoes"
+                    android:textColor="@color/fontDarkGrey"
+                    android:textAlignment="center"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewProfileSelos"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutStats3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                tools:listitem="@layout/item_recycler_selos" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/loja_content"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/switch_loja"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

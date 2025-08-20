@@ -38,9 +38,9 @@
     <string name="text_cont_user">Nome do user</string>
     <string name="cont">Lorem ipsum et dolor acilare et siemt.</string>
     <string name="next_tier">Próximo nível: Prata</string>
-    <string name="text_stat_ideias">Total de Ideias: 0</string>
+    <string name="text_stat_ideias">Total de ideias: 0</string>
     <string name="text_stat_strike">Strike de ideias: 0</string>
-    <string name="text_stat_likes">Likes: 0</string>
+    <string name="text_stat_likes">Total de likes: 0</string>
     <string name="text_stat_conts">Contribuições: 0</string>
     <string name="text_stat_selos">Selos</string>
     <string name="text_selo_name">Nome do selo</string>
@@ -90,6 +90,8 @@
     <string name="cadastro_hint_primeiro_nome">primeiro nome</string>
     <string name="cadastro_hint_ultimo_sobrenome">último sobrenome</string>
     <string name="cadastro_modo_anonimo">modo anônimo de perfil</string>
+    <string name="text_stat_programas">Total de programas: 0</string>
+    <string name="text_stat_missoes">Total de missões: 0</string>
 
     <string-array name="filtros_array">
         <item>Filtro: nenhum</item>

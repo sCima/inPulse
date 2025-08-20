@@ -14,6 +14,7 @@ data class FuncionarioResponse(
     val moedas: Int,
     val tier: String,
     val modo_anonimo: Boolean,
+    val imagem_funcionario: String,
     val ideias: List<IdeiaFuncionario>,
     val programas: List<String>,
     val selos: List<String>,

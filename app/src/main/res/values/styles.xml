@@ -6,4 +6,13 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="ToggleButtonStyleUnselected" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/btnLighterBlue2</item>
+        <item name="strokeColor">@color/btnLighterBlue2</item>
+    </style>
+
+    <style name="ToggleButtonStyleSelected" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/btnLighterBlue</item>
+        <item name="android:textColor">@android:color/white</item> </style>
+
 </resources>

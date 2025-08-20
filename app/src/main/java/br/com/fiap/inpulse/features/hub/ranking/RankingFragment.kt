@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,8 @@ class RankingFragment : Fragment() {
     private lateinit var adapterI: IdeaRankingAdapter
     private lateinit var loadingProgressBar: ProgressBar
     private lateinit var recyclerViewU: RecyclerView
+    private lateinit var btnColaboradores: AppCompatButton
+    private lateinit var btnOrdenacao: AppCompatButton
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,26 +50,22 @@ class RankingFragment : Fragment() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
-        val btnColaboradores: TextView = view.findViewById(R.id.btnColaboradores)
-        val btnOrdenacao: TextView = view.findViewById(R.id.btnOrdenacao)
-        recyclerViewU = view.findViewById<RecyclerView>(R.id.recyclerViewRankingUsers)
+        btnColaboradores = view.findViewById(R.id.btnColaboradores)
+        btnOrdenacao = view.findViewById(R.id.btnOrdenacao)
+        recyclerViewU = view.findViewById(R.id.recyclerViewRankingUsers)
         val recyclerViewI = view.findViewById<RecyclerView>(R.id.recyclerViewRankingIdeas)
-        var rankingIdeias: Boolean = false
 
         btnColaboradores.setOnClickListener {
-            if (!rankingIdeias) {
-                recyclerViewU.visibility = View.VISIBLE
-                recyclerViewI.visibility = View.GONE
-                btnColaboradores.text = "Colaboradores"
-                btnOrdenacao.text = "Ideias"
-                rankingIdeias =! rankingIdeias
-            }
-            else {
+            if (recyclerViewU.visibility == View.VISIBLE) {
                 recyclerViewI.visibility = View.VISIBLE
                 recyclerViewU.visibility = View.GONE
                 btnColaboradores.text = "Ideias"
                 btnOrdenacao.text = "Likes"
-                rankingIdeias =! rankingIdeias
+            } else {
+                recyclerViewU.visibility = View.VISIBLE
+                recyclerViewI.visibility = View.GONE
+                btnColaboradores.text = "Colaboradores"
+                btnOrdenacao.text = "Ideias"
             }
         }
 
