@@ -99,6 +99,8 @@
     <string name="text_settings_anonimo">Adminstradores podem ver seu nome mesmo com perfil anônimo.</string>
     <string name="tema_claro">Tema claro</string>
     <string name="tema_escuro">Tema escuro</string>
+    <string name="btn_inscrever">Inscrever-se</string>
+    <string name="dica_programa">Selecione qual ideia deseja enviar ao programa</string>
 
     <string-array name="filtros_array">
         <item>N° de Ideias</item>

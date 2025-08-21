@@ -1,6 +1,7 @@
 package br.com.fiap.inpulse.features.hub.home
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
 import kotlinx.coroutines.Dispatchers
@@ -45,6 +47,7 @@ class HomeFragment : Fragment() {
 
     private var originalIdeias: List<IdeiaResponse> = emptyList()
     private var originalProgramas: List<ProgramaResponse> = emptyList()
+    private var funcionarioData: FuncionarioResponse? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +58,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.let { bundle ->
+            funcionarioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                bundle.getParcelable("funcionario_profile_data", FuncionarioResponse::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                bundle.getParcelable("funcionario_profile_data")
+            }
+        }
 
         val searchInclude = view.findViewById<View>(R.id.search_idea)
         searchEditText = searchInclude.findViewById(R.id.editTextSearch)
@@ -69,10 +81,6 @@ class HomeFragment : Fragment() {
 
         recyclerViewP = view.findViewById(R.id.recyclerViewHomeP)
         recyclerViewP.setHasFixedSize(false)
-        adapterP = ProgramaAdapter(mutableListOf(),  "HomeFragment", viewLifecycleOwner)
-        recyclerViewP.layoutManager = LinearLayoutManager(requireContext())
-        recyclerViewP.adapter = adapterP
-        recyclerViewP.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
         val btnIdeiasProgramas: TextView = view.findViewById(R.id.btn_ideias_programas)
 
@@ -205,9 +213,27 @@ class HomeFragment : Fragment() {
                         originalProgramas = programasFetched
 
                         if (originalProgramas.isNotEmpty()) {
-                            adapterP.programas.clear()
-                            adapterP.programas.addAll(originalProgramas)
-                            adapterP.notifyDataSetChanged()
+
+                            funcionarioData?.let { funcionario ->
+
+                                val ideiasConvertidas: MutableList<IdeiaResponse> = funcionario.ideias.map { ideiaFuncionario ->
+                                    IdeiaResponse(
+                                        ideiaFuncionario = ideiaFuncionario,
+                                        funcionarioNome = "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}",
+                                        contribuicoesPadrao = emptyList()
+                                    )
+                                }.toMutableList()
+
+                                adapterP = ProgramaAdapter(mutableListOf(), ideiasConvertidas, "HomeFragment", viewLifecycleOwner)
+
+                                recyclerViewP.adapter = adapterP
+                                recyclerViewP.layoutManager = LinearLayoutManager(requireContext())
+                                recyclerViewP.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+                                adapterP.programas.clear()
+                                adapterP.programas.addAll(originalProgramas)
+                                adapterP.notifyDataSetChanged()
+                            }
 
                             applySearchFilter(searchEditText.text.toString())
                         } else {

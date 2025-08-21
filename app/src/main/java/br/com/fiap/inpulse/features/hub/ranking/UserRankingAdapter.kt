@@ -15,6 +15,7 @@ class UserRankingAdapter(var users: MutableList<FuncionarioResponse>) :
         val nome: TextView = itemView.findViewById(R.id.textUserName)
         val tier: TextView = itemView.findViewById(R.id.textTier)
         val numero: TextView = itemView.findViewById(R.id.textNumber)
+        val pos: TextView = itemView.findViewById(R.id.ranking_user_pos)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
@@ -28,6 +29,7 @@ class UserRankingAdapter(var users: MutableList<FuncionarioResponse>) :
         holder.nome.text = user.primeiro_nome
         holder.tier.text = user.tier
         holder.numero.text = user.valorOrdenacao
+        holder.pos.text = "#${position + 1}"
     }
 
     override fun getItemCount(): Int = users.size

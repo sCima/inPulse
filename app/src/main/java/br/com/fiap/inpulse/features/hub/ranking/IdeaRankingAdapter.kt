@@ -14,6 +14,7 @@ class IdeaRankingAdapter(var ideas: MutableList<IdeiaResponse>) :
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById(R.id.textIdeaName)
         val numero: TextView = itemView.findViewById(R.id.textIdeaNumber)
+        val pos: TextView = itemView.findViewById(R.id.ranking_idea_pos)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
@@ -26,6 +27,7 @@ class IdeaRankingAdapter(var ideas: MutableList<IdeiaResponse>) :
         val idea = ideas[position]
         holder.nome.text = idea.nome
         holder.numero.text = idea.valorOrdenacao
+        holder.pos.text = "#${position + 1}"
     }
 
     override fun getItemCount(): Int = ideas.size
