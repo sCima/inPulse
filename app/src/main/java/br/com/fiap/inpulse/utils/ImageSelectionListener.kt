@@ -1,4 +1,4 @@
-package br.com.fiap.inpulse.features.newidea
+package br.com.fiap.inpulse.utils
 
 interface ImageSelectionListener {
     fun openImagePicker()

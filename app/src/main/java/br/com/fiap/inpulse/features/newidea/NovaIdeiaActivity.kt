@@ -19,17 +19,16 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.features.hub.HubActivity
-import br.com.fiap.inpulse.features.login.LoginActivity
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentD
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentI
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentP
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentR
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
+import br.com.fiap.inpulse.utils.ImageSelectionListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.util.Base64
 
 class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
 

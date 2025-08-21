@@ -13,7 +13,7 @@ data class FuncionarioResponse(
     val pontos: Int,
     val moedas: Int,
     val tier: String,
-    val modo_anonimo: Boolean,
+    var modo_anonimo: Boolean,
     val imagem_funcionario: String?,
     val ideias: List<IdeiaFuncionario>,
     val programas: List<String>,

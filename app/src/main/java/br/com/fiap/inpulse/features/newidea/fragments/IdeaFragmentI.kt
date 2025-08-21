@@ -6,14 +6,13 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView // Importar ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.features.newidea.ImageSelectionListener // Importar a interface
+import br.com.fiap.inpulse.utils.ImageSelectionListener // Importar a interface
 
 class IdeaFragmentI : Fragment(), IdeaInfoProvider {
 

@@ -55,6 +55,7 @@ class HubActivity : AppCompatActivity() {
             bundle.putParcelable("funcionario_profile_data", it)
             profileFragment.arguments = bundle
             homeFragment.arguments = bundle
+            settingsFragment.arguments = bundle
         } ?: run {
             Toast.makeText(this, "Erro ao carregar dados do usuário. Faça login novamente.", Toast.LENGTH_LONG).show()
             val intent = Intent(this, LoginActivity::class.java)
@@ -64,7 +65,7 @@ class HubActivity : AppCompatActivity() {
         }
 
         val toolbarHub: Toolbar = findViewById(R.id.toolbar_hub)
-        configureToolbar(toolbarHub, false)
+        configureToolbar(toolbarHub)
 
         val btnChatbot: ImageButton = toolbarHub.findViewById(R.id.toolbar_button)
         btnChatbot.setOnClickListener {
@@ -87,7 +88,7 @@ class HubActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.home -> {
                     loadFragment(homeFragment)
-                    configureToolbar(toolbarHub, false)
+                    configureToolbar(toolbarHub)
                     true
                 }
                 R.id.profile -> {
@@ -102,12 +103,12 @@ class HubActivity : AppCompatActivity() {
                 }
                 R.id.ranking -> {
                     loadFragment(rankingFragment)
-                    configureToolbar(toolbarHub, false)
+                    configureToolbar(toolbarHub)
                     true
                 }
                 R.id.settings -> {
                     loadFragment(settingsFragment)
-                    configureToolbar(toolbarHub, false)
+                    configureToolbar(toolbarHub)
                     true
                 }
                 else -> false
@@ -126,7 +127,7 @@ class HubActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun configureToolbar(toolbar: Toolbar, isPerfil: Boolean) {
+    private fun configureToolbar(toolbar: Toolbar, isPerfil: Boolean = false) {
         setSupportActionBar(toolbar)
         val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
         val toolbarTitle: TextView? = toolbar.findViewById(R.id.toolbar_text)

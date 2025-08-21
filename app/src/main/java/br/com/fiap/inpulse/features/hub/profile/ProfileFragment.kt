@@ -60,9 +60,6 @@ class ProfileFragment : Fragment() {
         val perfilContent = view.findViewById<View>(R.id.perfil_content)
         val lojaContent = view.findViewById<View>(R.id.loja_content)
         val switch = view.findViewById<MaterialButtonToggleGroup>(R.id.switch_loja)
-        val switchPerfil = view.findViewById<MaterialButton>(R.id.button_perfil)
-        val switchLoja = view.findViewById<MaterialButton>(R.id.button_loja)
-        val fgBar = resources.getColor(R. color. fgBar)
 
         val tvProximoNivel = view.findViewById<TextView>(R.id.next_tier)
         tvProximoNivel.text = (when (funcionarioData?.tier) {
@@ -87,7 +84,7 @@ class ProfileFragment : Fragment() {
 
         val tvPontos = view.findViewById<TextView>(R.id.text_pontos)
         val pontos = funcionarioData?.pontos
-        tvPontos.text =  "$pontos Pontos disponíveis"
+        tvPontos.text =  "$pontos Eurocoins disponíveis"
 
         val tvNumeroConts = view.findViewById<TextView>(R.id.text_stat_conts)
         tvNumeroConts.text = "Contribuições: 0"
@@ -192,8 +189,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun mockItens(): MutableList<ItemLoja> {
-        return mutableListOf(ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"),
-            ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"), ItemLoja("Item", "0 EP"))
+        return mutableListOf(ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"),
+            ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"))
     }
 
 }

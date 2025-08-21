@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.features.hub.HubActivity
@@ -22,6 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val userId = sharedPref.getInt(KEY_USER_ID, -1)
+
+        val sharedPreferences = getSharedPreferences("ThemePrefs", Context.MODE_PRIVATE)
+        val themeMode = sharedPreferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO)
+
+        AppCompatDelegate.setDefaultNightMode(themeMode)
 
         if (userId != -1) {
             lifecycleScope.launch {
