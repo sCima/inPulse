@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.features.hub.profile
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -7,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -87,14 +91,11 @@ class ProfileFragment : Fragment() {
         tvNumeroLikes.text = "Curtidas: ${soma.toString()}"
 
         val tvPontos = view.findViewById<TextView>(R.id.text_pontos)
-        val pontos = funcionarioData?.pontos
-        tvPontos.text =  "$pontos Eurocoins disponíveis"
+        val moedas = funcionarioData?.moedas
+        tvPontos.text =  "$moedas Eurocoins disponíveis"
 
         val tvNumeroConts = view.findViewById<TextView>(R.id.text_stat_conts)
         tvNumeroConts.text = "Contribuições: 0"
-
-        val background: View = view.findViewById(R.id.profile_fragment)
-        background.setBackgroundColor(getResources().getColor(R.color.bronze))
 
         switch.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
             if (isChecked) {
@@ -129,6 +130,28 @@ class ProfileFragment : Fragment() {
 
         recyclerViewLO.layoutManager = GridLayoutManager(requireContext(), 4)
         recyclerViewLO.adapter = adapterOuro
+
+
+        val tierColorResId = when (userTier) {
+            "Prata" -> R.color.silver
+            "Ouro" -> R.color.gold
+            else -> R.color.bronze
+        }
+
+        val background: View = view.findViewById(R.id.profile_fragment)
+        val resolvedColor = ContextCompat.getColor(requireContext(), tierColorResId)
+        background.setBackgroundColor(resolvedColor)
+
+        val proximoNivelColorResId = when (userTier) {
+            "Bronze" -> R.color.silver
+            "Prata" -> R.color.gold
+            "Ouro" -> R.color.gold
+            else -> R.color.silver
+        }
+
+        val proximoNivelColor = ContextCompat.getColor(requireContext(), proximoNivelColorResId)
+
+        tvProximoNivel.backgroundTintList = ColorStateList.valueOf(proximoNivelColor)
 
         btnIdeas.setOnClickListener {
             recyclerViewI.visibility = View.VISIBLE
@@ -171,7 +194,7 @@ class ProfileFragment : Fragment() {
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
 
-            if(!funcionarioData?.programas.isNullOrEmpty()){
+            if(!funcionario.programas.isNullOrEmpty()){
                 val programasParticipando = funcionarioData!!.programas
                 adapterP = ProgramaProfileAdapter(programasParticipando)
                 recyclerViewC.layoutManager = LinearLayoutManager(requireContext())
@@ -199,6 +222,7 @@ class ProfileFragment : Fragment() {
 
         }
     }
+
 
     private fun mockItens(): MutableList<ItemLoja> {
         return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),

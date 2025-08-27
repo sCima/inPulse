@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.features.chatbot.ChatbotActivity
 import br.com.fiap.inpulse.features.login.LoginActivity
@@ -131,6 +132,7 @@ class HubActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
         val toolbarTitle: TextView? = toolbar.findViewById(R.id.toolbar_text)
+        var tierColor: Int = R.color.bronze
         funcionarioData?.let { funcionario ->
             val primeiroNome = funcionario.primeiro_nome.trim()
             val ultimoSobrenome = funcionario.ultimo_sobrenome.trim()
@@ -144,21 +146,22 @@ class HubActivity : AppCompatActivity() {
                 "Funcionario"
             }
             toolbarTitle?.text = nomeFormatado
+
+            tierColor = when (funcionario.tier) {
+                "Prata" -> R.color.silver
+                "Ouro" -> R.color.gold
+                else -> R.color.bronze
+            }
         } ?: run {
             toolbarTitle?.text = "InPulse"
+            tierColor = R.color.bronze
         }
         toolbarButton.setBackgroundColor(getColor(R.color.bgWhite))
         supportActionBar?.setBackgroundDrawable(getDrawable(R.color.bgWhite))
 
         if(isPerfil){
-            val tierColorResId = when (funcionarioData?.tier) {
-                "Bronze" -> R.color.bronze
-                "Prata" -> R.color.silver
-                "Ouro" -> R.color.gold
-                else -> R.color.bronze
-            }
-            supportActionBar?.setBackgroundDrawable(getDrawable(tierColorResId))
-            toolbarButton.setBackgroundColor(getColor(tierColorResId))
+            supportActionBar?.setBackgroundDrawable(getDrawable(tierColor))
+            toolbarButton.setBackgroundColor(getColor(tierColor))
         }
     }
 }

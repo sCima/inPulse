@@ -6,10 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     tools:context=".features.hub.profile.ProfileFragment"
-    android:background="@color/bronze"
     android:id="@+id/profile_fragment"
-    android:clickable="false"
-    android:focusable="false">
+    android:background="@color/bronze"
+    android:clickable="false">
 
         <LinearLayout
             android:id="@+id/button_bar_profile"
@@ -113,6 +112,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/shape_next_tier"
+            android:backgroundTint="@color/bronze"
             android:layout_margin="12dp"
             android:text="@string/next_tier"
             android:textAlignment="center"
