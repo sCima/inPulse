@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/shape_edit_text"
+    android:padding="9dp">
+
+    <TextView
+        android:id="@+id/text_missao_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/text_ranking_idea"
+        android:textColor="@color/fontDarkGrey"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/numberMoedas"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_missao_desc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/idea_problema"
+        android:textColor="@color/fontGrey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@id/text_missao_title"
+        app:layout_constraintStart_toStartOf="@id/text_missao_title"
+        app:layout_constraintTop_toBottomOf="@id/text_missao_title" />
+
+    <ImageView
+        android:id="@+id/imgMoedas"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/btn_curtir_desc"
+        android:src="@drawable/eurocoin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/numberMoedas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="@string/number_likes"
+        android:textColor="@color/fontBlue"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/imgMoedas"
+        app:layout_constraintEnd_toStartOf="@id/imgMoedas"
+        app:layout_constraintStart_toEndOf="@id/text_missao_desc"
+        app:layout_constraintTop_toTopOf="@id/imgMoedas"
+        tools:text="0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

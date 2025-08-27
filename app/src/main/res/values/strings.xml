@@ -101,6 +101,8 @@
     <string name="tema_escuro">Tema escuro</string>
     <string name="btn_inscrever">Inscrever-se</string>
     <string name="dica_programa">Selecione qual ideia deseja enviar ao programa</string>
+    <string name="text_idea_antes">Antes de mais nada</string>
+    <string name="text_missoes">Suas próximas missões</string>
 
     <string-array name="filtros_array">
         <item>N° de Ideias</item>

@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
 
-class IdeaFragmentD : Fragment(), IdeaInfoProvider {
+class IdeaFragmentDescricao : Fragment(), IdeaInfoProvider {
 
     private lateinit var etSolucao: EditText
 
@@ -16,7 +16,7 @@ class IdeaFragmentD : Fragment(), IdeaInfoProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ideia_d, container, false)
+        return inflater.inflate(R.layout.fragment_ideia_descricao, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

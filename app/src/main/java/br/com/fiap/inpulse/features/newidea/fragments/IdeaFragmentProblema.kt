@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
 
-public class IdeaFragmentP : Fragment(), IdeaInfoProvider {
+public class IdeaFragmentProblema : Fragment(), IdeaInfoProvider {
 
     private lateinit var etProblema: EditText
 
@@ -18,7 +18,7 @@ public class IdeaFragmentP : Fragment(), IdeaInfoProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_idea_p, container, false)
+        return inflater.inflate(R.layout.fragment_ideia_problema, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

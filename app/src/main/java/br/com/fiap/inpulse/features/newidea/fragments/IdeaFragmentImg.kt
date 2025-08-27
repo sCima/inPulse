@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.utils.ImageSelectionListener // Importar a interface
 
-class IdeaFragmentI : Fragment(), IdeaInfoProvider {
+class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
 
     private lateinit var btnSelectImage: AppCompatButton
     private lateinit var imagePreview: ImageView
@@ -27,7 +27,7 @@ class IdeaFragmentI : Fragment(), IdeaInfoProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ideia_i, container, false)
+        return inflater.inflate(R.layout.fragment_ideia_img, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

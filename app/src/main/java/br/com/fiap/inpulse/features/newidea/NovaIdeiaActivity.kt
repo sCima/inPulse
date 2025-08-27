@@ -19,10 +19,11 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.features.hub.HubActivity
-import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentD
-import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentI
-import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentP
-import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentR
+import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentDescricao
+import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentImg
+import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentMissoes
+import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentProblema
+import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentResumo
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
 import br.com.fiap.inpulse.utils.ImageSelectionListener
 import kotlinx.coroutines.Dispatchers
@@ -32,10 +33,11 @@ import java.io.ByteArrayOutputStream
 
 class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
 
-    private val ideaFragmentP = IdeaFragmentP()
-    private val ideaFragmentD = IdeaFragmentD()
-    private val ideaFragmentI = IdeaFragmentI()
-    private val ideaFragmentR = IdeaFragmentR()
+    private val ideaFragmentProblema = IdeaFragmentProblema()
+    private val ideaFragmentDescricao = IdeaFragmentDescricao()
+    private val ideaFragmentImg = IdeaFragmentImg()
+    private val ideaFragmentResumo = IdeaFragmentResumo()
+    private val ideaFragmentMissoes = IdeaFragmentMissoes()
     private var etapaAtual = 0
     private val infosIdea = Bundle()
     private lateinit var btnContinuar: AppCompatButton
@@ -54,7 +56,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
                             val base64 = bitmapToBase64(compressedBitmap)
                             withContext(Dispatchers.Main) {
                                 imageBase64 = base64
-                                (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentI)?.updateImagePreview(imageBase64)
+                                (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg)?.updateImagePreview(imageBase64)
                             }
                         }
                     } catch (e: Exception) {
@@ -66,10 +68,11 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
         }
 
     private val fragments = listOf(
-        ideaFragmentP,
-        ideaFragmentD,
-        ideaFragmentI,
-        ideaFragmentR
+        ideaFragmentMissoes,
+        ideaFragmentProblema,
+        ideaFragmentDescricao,
+        ideaFragmentImg,
+        ideaFragmentResumo
     )
 
     private val PREFS_NAME = "InPulsePrefs"
@@ -98,7 +101,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
                 etapaAtual++
                 val proximoFragmento = fragments[etapaAtual]
 
-                if (proximoFragmento is IdeaFragmentR) {
+                if (proximoFragmento is IdeaFragmentResumo) {
                     infosIdea.putString("imagemBase64", imageBase64)
                     proximoFragmento.arguments = infosIdea
                 }
@@ -146,11 +149,11 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
     private fun carregarFragmentoAtual() {
         val fragment = fragments[etapaAtual]
 
-        if (fragment is IdeaFragmentI) {
+        if (fragment is IdeaFragmentImg) {
             fragment.setImageSelectionListener(this)
         }
 
-        if (fragment is IdeaFragmentR) {
+        if (fragment is IdeaFragmentResumo) {
             fragment.arguments = infosIdea
         }
 
@@ -158,7 +161,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
             .replace(R.id.containerIdea, fragment as Fragment)
             .commit()
 
-        if (fragment is IdeaFragmentR) {
+        if (fragment is IdeaFragmentResumo) {
             btnContinuar.text = "Enviar"
         } else {
             btnContinuar.text = "Continuar"
@@ -172,7 +175,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
 
     override fun onImageSelected(base64Image: String?) {
         this.imageBase64 = base64Image
-        (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentI)?.updateImagePreview(base64Image)
+        (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg)?.updateImagePreview(base64Image)
     }
 
     private fun resizeAndCompressBitmap(bitmap: Bitmap, maxWidth: Int, quality: Int): Bitmap {

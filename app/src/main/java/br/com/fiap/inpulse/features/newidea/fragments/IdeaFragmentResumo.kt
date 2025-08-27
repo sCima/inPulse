@@ -13,7 +13,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
 
-class IdeaFragmentR : Fragment(), IdeaInfoProvider {
+class IdeaFragmentResumo : Fragment(), IdeaInfoProvider {
 
     private lateinit var resumoProblemaTextView: TextView
     private lateinit var resumoSolucaoTextView: TextView
@@ -26,7 +26,7 @@ class IdeaFragmentR : Fragment(), IdeaInfoProvider {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_ideia_r, container, false)
+        return inflater.inflate(R.layout.fragment_ideia_resumo, container, false)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
