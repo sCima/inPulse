@@ -66,10 +66,10 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
 
         val imagemIdeia: ImageView = itemView.findViewById(R.id.imagemIdeia)
 
-        private var liked = false
         private var contsVisible = false
         private lateinit var contAdapter: ContAdapter
 
+        private val KEY_LIKED_IDEAS = "liked_ideas_set"
         private val PREFS_NAME = "InPulsePrefs"
         private val KEY_USER_ID = "loggedInUserId"
         private val KEY_FUNCIONARIO_JSON = "funcionario_json"
@@ -173,30 +173,55 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                 }
             }
 
+            val prefs = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val likedIdeasSet = prefs.getStringSet(KEY_LIKED_IDEAS, emptySet()) ?: emptySet()
+            val isLiked = likedIdeasSet.contains(idea.ideia_id.toString())
+
+            btnCurtir.setImageResource(
+                if (isLiked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24
+            )
+
             fun sendLike(ideiaId: Int, newLikesCount: Int) {
                 lifecycleOwner.lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
                             val requestBody = LikeRequest(curtidas = newLikesCount)
                             RetrofitClient.inPulseApiService.updateIdeia(ideiaId, requestBody)
-                            withContext(Dispatchers.Main) {
-
-                            }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    itemView.context,
-                                    "Erro: ${e.message}",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                                e.printStackTrace()
-                                liked = !liked
-                                likes.text = (newLikesCount - (if (liked) 1 else -1)).toString()
-                                btnCurtir.setImageResource(if (liked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24)
+                                Toast.makeText(itemView.context, "Erro de rede: ${e.message}", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
                 }
+            }
+
+            btnCurtir.setOnClickListener {
+                val sharedPrefs = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val editor = sharedPrefs.edit()
+                val likedIdeas = sharedPrefs.getStringSet(KEY_LIKED_IDEAS, emptySet())?.toMutableSet() ?: mutableSetOf()
+                val ideaIdString = idea.ideia_id.toString()
+
+                var currentLikesCount = likes.text.toString().toIntOrNull() ?: 0
+
+                if (likedIdeas.contains(ideaIdString)) {
+                    likedIdeas.remove(ideaIdString)
+                    btnCurtir.setImageResource(R.drawable.baseline_like_24)
+                    currentLikesCount--
+                    sendLike(idea.ideia_id, -1)
+
+                } else {
+                    likedIdeas.add(ideaIdString)
+                    btnCurtir.setImageResource(R.drawable.baseline_liked_24)
+                    currentLikesCount++
+                    sendLike(idea.ideia_id, 1)
+
+                }
+
+                likes.text = currentLikesCount.toString()
+
+                editor.putStringSet(KEY_LIKED_IDEAS, likedIdeas)
+                editor.apply()
             }
 
             fun sendCont(ideiaId: Int, funcionarioId: Int, cont: String, nome: String) {
@@ -225,23 +250,6 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                         }
                     }
                 }
-            }
-
-            btnCurtir.setOnClickListener {
-                var count = likes.text.toString().toIntOrNull() ?: 0
-                liked = !liked
-                count = if (liked) count + 1 else count - 1
-
-                btnCurtir.setImageResource(
-                    if (liked) R.drawable.baseline_liked_24 else R.drawable.baseline_like_24
-                )
-                likes.text = itemView.context.getString(R.string.number_likes, count)
-                if (liked) {
-                    sendLike(idea.ideia_id, 1)
-                } else {
-                    sendLike(idea.ideia_id, -1)
-                }
-                idea.curtidas += 1
             }
 
             containerInterno.visibility = if (contsVisible) View.GONE else View.VISIBLE
