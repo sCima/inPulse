@@ -17,14 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Inpulse"
         tools:targetApi="31">
-        <activity android:name=".features.hub.HubActivity"/>
+        <activity android:name=".features.hub.HubActivity"
+            android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".features.newidea.NovaIdeiaActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+
         <activity android:name=".features.chatbot.ChatbotActivity" />
+
         <activity android:name=".features.login.LoginActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+
         <activity android:name=".features.signup.CadastroActivity"
             android:windowSoftInputMode="adjustResize|stateHidden"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

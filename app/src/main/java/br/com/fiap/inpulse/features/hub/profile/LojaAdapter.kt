@@ -8,9 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.ItemLoja
-import br.com.fiap.inpulse.data.model.Selo
 
-class LojaAdapter(private var itens: MutableList<ItemLoja>) :
+class LojaAdapter(private var itens: MutableList<ItemLoja>, private var tier: String?) :
     RecyclerView.Adapter<LojaAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,9 +25,26 @@ class LojaAdapter(private var itens: MutableList<ItemLoja>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val itens = itens[position]
-        holder.nome.text = itens.nome
-        holder.preco.text = itens.preco
+        val item = itens[position]
+        holder.nome.text = item.nome
+        holder.preco.text = item.preco
+
+        val itemDesbloqueado = isItemDesbloqueado(item.tier, this.tier)
+
+        if (itemDesbloqueado) {
+            holder.img.setImageResource(R.drawable.item_loja)
+        } else {
+            holder.img.setImageResource(R.drawable.item_loja_bloq)
+        }
+    }
+
+    private fun isItemDesbloqueado(itemTier: String, userTier: String?): Boolean {
+        return when (userTier) {
+            "Ouro" -> true
+            "Prata" -> itemTier == "Bronze" || itemTier == "Prata"
+            "Bronze" -> itemTier == "Bronze"
+            else -> false
+        }
     }
 
     override fun getItemCount(): Int = itens.size

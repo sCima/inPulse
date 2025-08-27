@@ -76,7 +76,11 @@ class ProfileFragment : Fragment() {
 
         val tvNumeroIdeias = view.findViewById<TextView>(R.id.text_stat_ideias)
         val numero = funcionarioData?.ideias?.size.toString()
-        tvNumeroIdeias.text = "Total de ideias: $numero"
+        tvNumeroIdeias.text = "Ideias: $numero"
+
+        val tvNumeroProgramas = view.findViewById<TextView>(R.id.text_stat_programas)
+        val qntd = funcionarioData?.programas?.size.toString()
+        tvNumeroProgramas.text = "Programas: $qntd"
 
         val tvNumeroLikes = view.findViewById<TextView>(R.id.text_stat_likes)
         val soma = funcionarioData?.ideias?.sumOf{it.curtidas}
@@ -107,16 +111,24 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        adapterL = LojaAdapter(mockItens())
+        val todosOsItens = mockItens()
+        val itensBronze = todosOsItens.filter { it.tier == "Bronze" }.toMutableList()
+        val itensPrata = todosOsItens.filter { it.tier == "Prata" }.toMutableList()
+        val itensOuro = todosOsItens.filter { it.tier == "Ouro" }.toMutableList()
+        val userTier = funcionarioData?.tier
 
-        recyclerViewLB.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
-        recyclerViewLB.adapter = adapterL
+        val adapterBronze = LojaAdapter(itensBronze, userTier)
+        val adapterPrata = LojaAdapter(itensPrata, userTier)
+        val adapterOuro = LojaAdapter(itensOuro, userTier)
 
-        recyclerViewLP.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
-        recyclerViewLP.adapter = adapterL
+        recyclerViewLB.layoutManager = GridLayoutManager(requireContext(), 4)
+        recyclerViewLB.adapter = adapterBronze
 
-        recyclerViewLO.layoutManager = GridLayoutManager(requireContext(), 4) // Nova instância
-        recyclerViewLO.adapter = adapterL
+        recyclerViewLP.layoutManager = GridLayoutManager(requireContext(), 4)
+        recyclerViewLP.adapter = adapterPrata
+
+        recyclerViewLO.layoutManager = GridLayoutManager(requireContext(), 4)
+        recyclerViewLO.adapter = adapterOuro
 
         btnIdeas.setOnClickListener {
             recyclerViewI.visibility = View.VISIBLE
@@ -189,8 +201,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun mockItens(): MutableList<ItemLoja> {
-        return mutableListOf(ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"),
-            ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"), ItemLoja("Item", "0 EC"))
+        return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),
+            ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Ouro"))
     }
 
 }
