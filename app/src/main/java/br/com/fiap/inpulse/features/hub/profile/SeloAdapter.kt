@@ -5,15 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.data.model.Selo
+import br.com.fiap.inpulse.data.model.response.Selo
 
 class SeloAdapter(private var selos: MutableList<Selo>) :
     RecyclerView.Adapter<SeloAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nome: TextView = itemView.findViewById<TextView>(R.id.nome_selo)
+        val nome: TextView = itemView.findViewById(R.id.nome_selo)
         val img: ImageView = itemView.findViewById(R.id.img_selo)
     }
 
@@ -24,14 +25,10 @@ class SeloAdapter(private var selos: MutableList<Selo>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        val selos = selos[position]
-        holder.nome.text = selos.nome
+        val selo = selos[position]
+        holder.nome.text = selo.nome
+        TooltipCompat.setTooltipText(holder.itemView, selo.descricao)
     }
 
     override fun getItemCount(): Int = selos.size
-
-    fun addItemAtTop(selo: Selo) {
-        selos.add(0, selo)
-        notifyItemInserted(0)
-    }
 }

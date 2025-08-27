@@ -15,7 +15,7 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.ItemLoja
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
-import br.com.fiap.inpulse.data.model.Selo
+import br.com.fiap.inpulse.data.model.response.Selo
 import br.com.fiap.inpulse.features.hub.home.IdeaAdapter
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
@@ -167,7 +167,7 @@ class ProfileFragment : Fragment() {
                 recyclerViewC.visibility = View.GONE
             }
 
-            val selosDoFuncionario: MutableList<Selo> = funcionario.selos.map { Selo(it.toString()) }.toMutableList()
+            val selosDoFuncionario: MutableList<Selo> = funcionario.selos.toMutableList()
             adapterS = SeloAdapter(selosDoFuncionario)
             val layoutManagers = GridLayoutManager(requireContext(), 4)
             recyclerViewS.layoutManager = layoutManagers
