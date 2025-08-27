@@ -6,6 +6,7 @@ import br.com.fiap.inpulse.data.model.request.FuncionarioRequest
 import br.com.fiap.inpulse.data.model.request.IdeiaIdRequest
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.data.model.request.LikeRequest
+import br.com.fiap.inpulse.data.model.request.SenhaRequest
 import br.com.fiap.inpulse.data.model.request.UpdateStatsRequest
 import br.com.fiap.inpulse.data.model.response.ContribuicaoResponse
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
@@ -57,6 +58,9 @@ interface InPulseApiService {
 
     @PUT("funcionarios/{id}")
     suspend fun updateFuncionarioStats(@Path("id") id: Int, @Body requestBody: UpdateStatsRequest): FuncionarioResponse
+
+    @PUT("funcionarios/senha/{id}")
+    suspend fun updateSenha(@Path("id") id: Int, @Body requestBody: SenhaRequest): FuncionarioResponse
 
 
 }

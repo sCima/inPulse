@@ -9,7 +9,7 @@ data class FuncionarioResponse(
     val primeiro_nome: String,
     val ultimo_sobrenome: String,
     val email: String,
-    val senha: String,
+    var senha: String,
     val pontos: Int,
     val moedas: Int,
     val tier: String,

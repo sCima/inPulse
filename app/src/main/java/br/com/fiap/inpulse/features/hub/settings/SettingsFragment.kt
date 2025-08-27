@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.data.model.request.SenhaRequest
 import br.com.fiap.inpulse.data.model.request.UpdateStatsRequest
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.features.login.LoginActivity
@@ -30,6 +31,7 @@ import kotlinx.coroutines.withContext
 class SettingsFragment : Fragment() {
 
     private var funcionarioData: FuncionarioResponse? = null
+    private lateinit var passwordContainer: View
 
 
     override fun onCreateView(
@@ -46,16 +48,14 @@ class SettingsFragment : Fragment() {
         val btnTema = view.findViewById<MaterialButton>(R.id.settings_theme)
         val toggleGroupAnonimo = view.findViewById<MaterialButtonToggleGroup>(R.id.toggle_group_anonimo)
         val toggleGroupTema = view.findViewById<MaterialButtonToggleGroup>(R.id.toggle_group_theme)
-
-
         val btnPassword = view.findViewById<MaterialButton>(R.id.settings_password)
-        val passwordContainer = view.findViewById<View>(R.id.password_change_container)
+        passwordContainer = view.findViewById(R.id.password_change_container)
         val editTextPassword = view.findViewById<EditText>(R.id.edit_text_new_password)
         val editTextOldPassword = view.findViewById<EditText>(R.id.edit_text_old_password)
         val btnSavePassword = view.findViewById<Button>(R.id.button_save_password)
         val tvAnonimo = view.findViewById<TextView>(R.id.text_desc_anonimo)
         val btnLogoff = view.findViewById<MaterialButton>(R.id.settings_logoff)
-
+        val btnFotoPerfil = view.findViewById<MaterialButton>(R.id.settings_photo)
 
         arguments?.let { bundle ->
             funcionarioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -81,6 +81,10 @@ class SettingsFragment : Fragment() {
 
         btnTema.setOnClickListener {
             toggleGroupTema.isVisible = !toggleGroupTema.isVisible
+        }
+
+        btnFotoPerfil.setOnClickListener {
+
         }
 
         toggleGroupAnonimo.addOnButtonCheckedListener { group, checkedId, isChecked ->
@@ -131,7 +135,11 @@ class SettingsFragment : Fragment() {
                     )
                 }
                 if(oldMatches == true){
-
+                    if(oldPassword == newPassword){
+                        Toast.makeText(context, "A nova senha deve ser diferente da atual.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        updateSenha(newPassword)
+                    }
                 } else (
                     Toast.makeText(context, "A senha atual está incorreta.", Toast.LENGTH_SHORT).show()
                 )
@@ -171,6 +179,30 @@ class SettingsFragment : Fragment() {
                             toggleGroupAnonimo?.check(R.id.button_publico)
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun updateSenha(novaSenha: String) {
+        val funcionarioId = funcionarioData?.funcionario_id ?: return
+        lifecycleScope.launch {
+            try {
+                val senhaCript = PasswordHasher.hashPassword(novaSenha)
+                val requestBody = SenhaRequest(senhaCript)
+                val updatedSenhaRequest = withContext(Dispatchers.IO) {
+                    RetrofitClient.inPulseApiService.updateSenha(funcionarioId, requestBody)
+                }
+                withContext(Dispatchers.Main) {
+                    funcionarioData?.senha = updatedSenhaRequest.senha
+                    passwordContainer.isVisible = !passwordContainer.isVisible
+                    Toast.makeText(context, "Senha alterada!", Toast.LENGTH_SHORT).show()
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(context, "Falha ao alterar. Tente novamente.", Toast.LENGTH_LONG).show()
+                    e.printStackTrace()
                 }
             }
         }
