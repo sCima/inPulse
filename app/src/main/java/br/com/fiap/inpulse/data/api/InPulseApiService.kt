@@ -1,7 +1,9 @@
 package br.com.fiap.inpulse.data.api
 
 import br.com.fiap.inpulse.data.model.request.ContribuicaoRequest
+import br.com.fiap.inpulse.data.model.request.FuncionarioIdRequest
 import br.com.fiap.inpulse.data.model.request.FuncionarioRequest
+import br.com.fiap.inpulse.data.model.request.IdeiaIdRequest
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.data.model.request.LikeRequest
 import br.com.fiap.inpulse.data.model.request.UpdateStatsRequest
@@ -33,6 +35,12 @@ interface InPulseApiService {
     //programas
     @GET("programas")
     suspend fun loadProgramas(): List<ProgramaResponse>
+
+    @PUT("programas/funcionarios/{id}")
+    suspend fun subscribePrograma(@Path("id") programaId: Int, @Body requestBody: FuncionarioIdRequest): ProgramaResponse
+
+    @PUT("programas/ideias/{id}")
+    suspend fun subscribeIdeia(@Path("id") programaId: Int, @Body requestBody: IdeiaIdRequest): ProgramaResponse
 
     //funcionarios
     @GET("funcionarios")

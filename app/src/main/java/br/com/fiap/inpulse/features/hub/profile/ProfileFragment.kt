@@ -167,7 +167,7 @@ class ProfileFragment : Fragment() {
                 recyclerViewC.visibility = View.GONE
             }
 
-            val selosDoFuncionario: MutableList<Selo> = funcionario.selos.map { Selo(it) }.toMutableList()
+            val selosDoFuncionario: MutableList<Selo> = funcionario.selos.map { Selo(it.toString()) }.toMutableList()
             adapterS = SeloAdapter(selosDoFuncionario)
             val layoutManagers = GridLayoutManager(requireContext(), 4)
             recyclerViewS.layoutManager = layoutManagers

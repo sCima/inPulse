@@ -304,9 +304,4 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
     }
 
     override fun getItemCount(): Int = ideas.size
-
-    fun addItemAtTop(idea: IdeiaResponse) {
-        ideas.add(0, idea)
-        notifyItemInserted(0)
-    }
 }

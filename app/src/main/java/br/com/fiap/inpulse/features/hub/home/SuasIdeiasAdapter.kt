@@ -1,26 +1,52 @@
 package br.com.fiap.inpulse.features.hub.home
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.data.model.response.IdeiaFuncionario
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 
-class SuasIdeiasAdapter(private var ideas: List<IdeiaResponse>) :
-    RecyclerView.Adapter<SuasIdeiasAdapter.InfoViewHolder>() {
+class SuasIdeiasAdapter(
+    private var ideas: List<IdeiaResponse>,
+    private val onIdeiaClicked: (IdeiaResponse) -> Unit
+) : RecyclerView.Adapter<SuasIdeiasAdapter.InfoViewHolder>() {
+
+    private var selectedIdeiaId: Int? = null
+
+    fun updateSelection(ideiaId: Int?) {
+        this.selectedIdeiaId = ideiaId
+        notifyDataSetChanged()
+    }
+
+    fun updateData(newIdeas: List<IdeiaResponse>) {
+        this.ideas = newIdeas
+        notifyDataSetChanged()
+    }
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nome: TextView = itemView.findViewById(R.id.ideaPNome)
+        private val nome: TextView = itemView.findViewById(R.id.ideaPNome)
 
-        fun bind(ideas: IdeiaResponse) {
-            nome.text = ideas.nome
-            nome.setTextColor(itemView.resources.getColor(R.color.euroBlue))
+        fun bind(
+            idea: IdeiaResponse,
+            isSelected: Boolean,
+            onIdeiaClicked: (IdeiaResponse) -> Unit
+        ) {
+            nome.text = idea.nome
 
-            nome.setOnClickListener {
+            if (isSelected) {
+                itemView.setBackgroundColor(ContextCompat.getColor(itemView.context, R.color.btnLighterBlue))
+                nome.setTextColor(ContextCompat.getColor(itemView.context, R.color.euroBlue))
+            } else {
+                itemView.setBackgroundColor(Color.TRANSPARENT)
+                nome.setTextColor(ContextCompat.getColor(itemView.context, R.color.euroBlue))
+            }
 
+            itemView.setOnClickListener {
+                onIdeiaClicked(idea)
             }
         }
     }
@@ -32,8 +58,9 @@ class SuasIdeiasAdapter(private var ideas: List<IdeiaResponse>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        holder.bind(ideas[position])
-
+        val idea = ideas[position]
+        val isSelected = idea.ideia_id == selectedIdeiaId
+        holder.bind(idea, isSelected, onIdeiaClicked)
     }
 
     override fun getItemCount(): Int = ideas.size

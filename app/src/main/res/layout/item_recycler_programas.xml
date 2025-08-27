@@ -117,8 +117,8 @@
 
         <ImageButton
             android:id="@+id/btnEnviarIdeia"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:background="@drawable/baseline_enviar_ideias_bloq_24"
             android:layout_marginEnd="6dp"
             android:contentDescription="Icone de enviar ideia ao programa"

@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.features.hub.home
 
+import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.data.model.request.FuncionarioIdRequest
+import br.com.fiap.inpulse.data.model.request.IdeiaIdRequest
+import br.com.fiap.inpulse.data.model.response.Contribuicao
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
+import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -42,8 +52,14 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
         val containerInternoP: ConstraintLayout = itemView.findViewById(R.id.containerInternoP)
         var layoutCompleto: View = itemView.findViewById(R.id.layout_programas)
         val barraTitulo: ConstraintLayout = itemView.findViewById(R.id.includeBarP)
+        val textDica: TextView = itemView.findViewById(R.id.text_dica)
 
         private var subscribed = false
+
+        private lateinit var suasIdeiasAdapter: SuasIdeiasAdapter
+
+        private val PREFS_NAME = "InPulsePrefs"
+        private val KEY_USER_ID = "loggedInUserId"
 
         fun bind(programa: ProgramaResponse) {
             nome.text = programa.nome_programa
@@ -80,50 +96,83 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
 
             updateEnviarIdeiaButtonState()
 
-//            btnInscrever.setOnClickListener {
-//                lifecycleOwner.lifecycleScope.launch {
-//                    withContext(Dispatchers.IO) {
-//                        try {
-//                            val requestBody =
-//                                //RetrofitClient.inPulseApiService.sendInscricao()
-//                                withContext(Dispatchers.Main) {
-//                                    subscribed = true
-//                                    btnInscrever.text = "Inscrito"
-//                                    updateEnviarIdeiaButtonState()
-//                                }
-//                        } catch (e: Exception) {
-//                            withContext(Dispatchers.Main) {
-//                                Toast.makeText(
-//                                    itemView.context,
-//                                    "Erro: ${e.message}",
-//                                    Toast.LENGTH_LONG
-//                                ).show()
-//                                e.printStackTrace()
-//                                subscribed = false
-//                                btnInscrever.text = "Inscrever-se"
-//                                updateEnviarIdeiaButtonState()
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            val sharedPref = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val userId = sharedPref.getInt(KEY_USER_ID, -1)
 
-            if(ideiasR.isNotEmpty()) {
-                val adapterS = SuasIdeiasAdapter(ideiasR)
-                recyclerIdeasS.layoutManager = GridLayoutManager(itemView.context, 2)
-                recyclerIdeasS.adapter = adapterS
-            } else {
-                val adapterS = SuasIdeiasAdapter(mutableListOf())
-                recyclerIdeasS.layoutManager = GridLayoutManager(itemView.context, 2)
-                recyclerIdeasS.adapter = adapterS
+            btnInscrever.setOnClickListener {
+                lifecycleOwner.lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        try {
+                            val newFunc = FuncionarioIdRequest(
+                                funcionarios_id = listOf(userId)
+                            )
+                            RetrofitClient.inPulseApiService.subscribePrograma(programaId = programa.programa_id, newFunc)
+                                withContext(Dispatchers.Main) {
+                                    subscribed = true
+                                    btnInscrever.text = "Inscrito"
+                                    updateEnviarIdeiaButtonState()
+                                }
+                        } catch (e: Exception) {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(
+                                    itemView.context,
+                                    "Erro: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                e.printStackTrace()
+                                subscribed = false
+                                btnInscrever.text = "Inscrever-se"
+                                updateEnviarIdeiaButtonState()
+                            }
+                        }
+                    }
+                }
             }
 
+            recyclerIdeasP.visibility = View.VISIBLE
+            recyclerIdeasS.visibility = View.GONE
+
+            suasIdeiasAdapter = SuasIdeiasAdapter(ideiasR) { ideiaClicada ->
+                Toast.makeText(itemView.context, "Enviando: ${ideiaClicada.nome}", Toast.LENGTH_SHORT).show()
+                lifecycleOwner.lifecycleScope.launch {
+                    try {
+                        val newIdeia = IdeiaIdRequest(
+                            ideias_id = listOf(ideiaClicada.ideia_id)
+                        )
+                        RetrofitClient.inPulseApiService.subscribeIdeia(programaId = programa.programa_id, newIdeia)
+
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(itemView.context, "Ideia enviada com sucesso!", Toast.LENGTH_SHORT).show()
+                            recyclerIdeasS.visibility = View.GONE
+                            textDica.visibility = View.GONE
+                            recyclerIdeasP.visibility = View.VISIBLE
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(itemView.context, "Falha ao enviar ideia: ${e.message}", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+            recyclerIdeasS.layoutManager = GridLayoutManager(itemView.context, 2)
+            recyclerIdeasS.adapter = suasIdeiasAdapter
+            recyclerIdeasS.layoutManager = GridLayoutManager(itemView.context, 2)
+            recyclerIdeasS.adapter = suasIdeiasAdapter
+
             btnEnviarIdeia.setOnClickListener {
-                if (subscribed) {
-                    recyclerIdeasP.visibility = View.GONE
-                    recyclerIdeasS.visibility = View.VISIBLE
-                } else {
+                if (!subscribed) {
                     Toast.makeText(itemView.context, "Você precisa se inscrever no programa primeiro.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                if (recyclerIdeasS.visibility == View.VISIBLE) {
+                    recyclerIdeasS.visibility = View.GONE
+                    textDica.visibility = View.GONE
+                    recyclerIdeasP.visibility = View.VISIBLE
+                } else {
+                    recyclerIdeasS.visibility = View.VISIBLE
+                    recyclerIdeasP.visibility = View.GONE
+                    textDica.visibility = View.VISIBLE
                 }
             }
 
@@ -183,9 +232,4 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
     }
 
     override fun getItemCount(): Int = programas.size
-
-    fun addItemAtTop(programa: ProgramaResponse) {
-        programas.add(0, programa)
-        notifyItemInserted(0)
-    }
 }

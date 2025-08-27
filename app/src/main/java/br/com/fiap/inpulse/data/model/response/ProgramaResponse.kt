@@ -1,6 +1,6 @@
 package br.com.fiap.inpulse.data.model.response
 
-data class ProgramaResponse (
+data class  ProgramaResponse (
     val programa_id: Int,
     val nome_programa: String,
     val descricao_programa: String,
