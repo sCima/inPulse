@@ -16,7 +16,7 @@ data class FuncionarioResponse(
     var modo_anonimo: Boolean,
     val imagem_funcionario: String?,
     val ideias: List<IdeiaFuncionario>,
-    val programas: List<String>,
+    val programas: List<ProgramaFuncionario>,
     val selos: List<Selo>,
     val logs: List<String>,
     var valorOrdenacao: String? = null
@@ -31,7 +31,7 @@ data class IdeiaFuncionario(
     val imagem: String?,
     val data: String,
     val curtidas: Int,
-    val programas_nome: List<String>,
+    val programas_nome: List<ProgramaFuncionario>,
     val categoriasIcone: List<String>
 ) : Parcelable
 
@@ -39,4 +39,10 @@ data class IdeiaFuncionario(
 data class Selo(
     val nome: String,
     val descricao: String
+) : Parcelable
+
+@Parcelize
+data class ProgramaFuncionario(
+    val id: Int,
+    val nome: String
 ) : Parcelable

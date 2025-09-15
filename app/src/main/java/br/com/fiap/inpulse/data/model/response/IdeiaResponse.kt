@@ -1,7 +1,5 @@
 package br.com.fiap.inpulse.data.model.response
 
-import java.time.LocalDate
-
 data class IdeiaResponse (
     val ideia_id: Int,
     val nome: String,
@@ -11,7 +9,7 @@ data class IdeiaResponse (
     val data: String,
     var curtidas: Int,
     val funcionario_nome: String,
-    val programas_nome: List<String>,
+    val programas_nome: List<ProgramaFuncionario>,
     val categoriasIcone: List<String>,
     val contribuicoes: List<Contribuicao>,
     var valorOrdenacao: String? = null

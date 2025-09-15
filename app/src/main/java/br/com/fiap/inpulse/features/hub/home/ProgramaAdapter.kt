@@ -60,6 +60,7 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
 
         private val PREFS_NAME = "InPulsePrefs"
         private val KEY_USER_ID = "loggedInUserId"
+        private val KEY_FUNCIONARIO_JSON = "funcionario_json"
 
         fun bind(programa: ProgramaResponse) {
             nome.text = programa.nome_programa
@@ -94,9 +95,29 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
             recyclerIdeasP.layoutManager = GridLayoutManager(itemView.context, 2)
             recyclerIdeasP.adapter = adapter
 
+            val sharedPref = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            val funcionarioJson = sharedPref.getString(KEY_FUNCIONARIO_JSON, null)
+
+            if (funcionarioJson != null) {
+                val gson = Gson()
+                val funcionarioData = gson.fromJson(funcionarioJson, FuncionarioResponse::class.java)
+
+                val subscribedProgramIds = funcionarioData.programas.map { it.id }.toSet()
+                this.subscribed = subscribedProgramIds.contains(programa.programa_id)
+            } else {
+                this.subscribed = false
+            }
+
+            if (this.subscribed) {
+                btnInscrever.text = "Inscrito"
+                btnInscrever.isEnabled = false
+            } else {
+                btnInscrever.text = "Inscrever-se"
+                btnInscrever.isEnabled = true
+            }
+
             updateEnviarIdeiaButtonState()
 
-            val sharedPref = itemView.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             val userId = sharedPref.getInt(KEY_USER_ID, -1)
 
             btnInscrever.setOnClickListener {
@@ -104,7 +125,7 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
                     withContext(Dispatchers.IO) {
                         try {
                             val newFunc = FuncionarioIdRequest(
-                                funcionarios_id = listOf(userId)
+                                funcionarios_id = userId
                             )
                             RetrofitClient.inPulseApiService.subscribePrograma(programaId = programa.programa_id, newFunc)
                                 withContext(Dispatchers.Main) {
@@ -137,7 +158,7 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
                 lifecycleOwner.lifecycleScope.launch {
                     try {
                         val newIdeia = IdeiaIdRequest(
-                            ideias_id = listOf(ideiaClicada.ideia_id)
+                            ideias_id = ideiaClicada.ideia_id
                         )
                         RetrofitClient.inPulseApiService.subscribeIdeia(programaId = programa.programa_id, newIdeia)
 
@@ -209,6 +230,8 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
         }
 
         private fun updateEnviarIdeiaButtonState() {
+
+
             if (subscribed) {
                 btnEnviarIdeia.setImageResource(R.drawable.baseline_enviar_ideias_24)
                 btnEnviarIdeia.isEnabled = true

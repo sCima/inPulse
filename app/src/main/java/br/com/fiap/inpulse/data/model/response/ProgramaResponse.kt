@@ -7,5 +7,10 @@ data class  ProgramaResponse (
     val dataInicio: String,
     val dataFim: String,
     val funcionarios_nome: List<String>,
-    val ideias_nome: List<String>
+    val ideias_nome: List<IdeiaPrograma>
+)
+
+data class IdeiaPrograma (
+    val id: Int,
+    val nome: String
 )

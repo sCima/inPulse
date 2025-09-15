@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +19,6 @@ import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.Selo
 import br.com.fiap.inpulse.features.hub.home.IdeaAdapter
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 
 class ProfileFragment : Fragment() {
@@ -29,7 +26,6 @@ class ProfileFragment : Fragment() {
     private lateinit var adapter: IdeaAdapter
     private lateinit var adapterS: SeloAdapter
     private lateinit var adapterP: ProgramaProfileAdapter
-    private lateinit var adapterL: LojaAdapter
     private var funcionarioData: FuncionarioResponse? = null
 
     override fun onCreateView(
@@ -222,8 +218,7 @@ class ProfileFragment : Fragment() {
 
         }
     }
-
-
+    
     private fun mockItens(): MutableList<ItemLoja> {
         return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),
             ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Ouro"))

@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
+import br.com.fiap.inpulse.data.repository.PredictionRepository
 import br.com.fiap.inpulse.features.hub.HubActivity
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentDescricao
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentImg
@@ -36,7 +37,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
     private val ideaFragmentProblema = IdeaFragmentProblema()
     private val ideaFragmentDescricao = IdeaFragmentDescricao()
     private val ideaFragmentImg = IdeaFragmentImg()
-    private val ideaFragmentResumo = IdeaFragmentResumo()
+    private val ideaFragmentResumo = IdeaFragmentResumo(PredictionRepository())
     private val ideaFragmentMissoes = IdeaFragmentMissoes()
     private var etapaAtual = 0
     private val infosIdea = Bundle()
