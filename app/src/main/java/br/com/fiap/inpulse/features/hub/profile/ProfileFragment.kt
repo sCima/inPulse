@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.features.hub.profile
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
@@ -8,18 +9,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.ItemLoja
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.Selo
+import br.com.fiap.inpulse.features.hub.ToolbarController
 import br.com.fiap.inpulse.features.hub.home.IdeaAdapter
 import com.google.android.material.button.MaterialButtonToggleGroup
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileFragment : Fragment() {
 
@@ -27,6 +36,17 @@ class ProfileFragment : Fragment() {
     private lateinit var adapterS: SeloAdapter
     private lateinit var adapterP: ProgramaProfileAdapter
     private var funcionarioData: FuncionarioResponse? = null
+
+    private var toolbarListener: ToolbarController? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ToolbarController) {
+            toolbarListener = context
+        } else {
+            throw RuntimeException("$context must implement ToolbarController")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,14 +59,51 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let { bundle ->
-            funcionarioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                bundle.getParcelable("funcionario_profile_data", FuncionarioResponse::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                bundle.getParcelable("funcionario_profile_data")
+            if (bundle.containsKey("profile_user_id")) {
+
+                val userId = bundle.getInt("profile_user_id")
+                fetchFuncionarioData(userId, view)
+
+            } else if (bundle.containsKey("funcionario_profile_data")) {
+
+                funcionarioData = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getParcelable("funcionario_profile_data", FuncionarioResponse::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    bundle.getParcelable("funcionario_profile_data")
+                }
+
+                populateUi(funcionarioData, view)
             }
         }
 
+    }
+
+    private fun fetchFuncionarioData(id: Int, view: View) {
+        lifecycleScope.launch {
+            try {
+                val funcionarioVisitado = withContext(Dispatchers.IO) {
+                    RetrofitClient.inPulseApiService.getFuncionarioById(id)
+                }
+                populateUi(funcionarioVisitado, view)
+            } catch (e: Exception) {
+                Toast.makeText(context, "Não foi possível carregar o perfil: ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    
+    private fun mockItens(): MutableList<ItemLoja> {
+        return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),
+            ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Ouro"))
+    }
+
+    private fun populateUi(data: FuncionarioResponse?, view: View) {
+
+        data?.let {
+            toolbarListener?.setToolbarForProfile(it)
+        }
+
+        funcionarioData = data
         val btnIdeas: TextView = view.findViewById(R.id.btn_ideias_profile)
         val btnProg: TextView = view.findViewById(R.id.btn_programas_profile)
         val btnStats: TextView = view.findViewById(R.id.btnStatsProfile)
@@ -60,6 +117,15 @@ class ProfileFragment : Fragment() {
         val perfilContent = view.findViewById<View>(R.id.perfil_content)
         val lojaContent = view.findViewById<View>(R.id.loja_content)
         val switch = view.findViewById<MaterialButtonToggleGroup>(R.id.switch_loja)
+
+        val isMyProfile = arguments?.containsKey("funcionario_profile_data") ?: false
+
+        if (isMyProfile) {
+            switch.visibility = View.VISIBLE
+        } else {
+            switch.visibility = View.GONE
+            lojaContent.visibility = View.GONE
+        }
 
         val tvProximoNivel = view.findViewById<TextView>(R.id.next_tier)
         tvProximoNivel.text = (when (funcionarioData?.tier) {
@@ -180,12 +246,12 @@ class ProfileFragment : Fragment() {
             val ideiasConvertidas: MutableList<IdeiaResponse> = funcionario.ideias.map { ideiaFuncionario ->
                 IdeiaResponse(
                     ideiaFuncionario = ideiaFuncionario,
-                    funcionarioNome = "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}",
+                    funcionarioNome = ProgramaFuncionario(funcionario.funcionario_id, "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}"),
                     contribuicoesPadrao = emptyList()
                 )
             }.toMutableList()
 
-            adapter = IdeaAdapter(ideiasConvertidas, "ProfileFragment", viewLifecycleOwner)
+            adapter = IdeaAdapter(ideiasConvertidas, "ProfileFragment", viewLifecycleOwner, null)
             recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
@@ -205,7 +271,7 @@ class ProfileFragment : Fragment() {
             recyclerViewS.adapter = adapterS
 
         } ?: run {
-            adapter = IdeaAdapter(mutableListOf(), "ProfileFragment", viewLifecycleOwner)
+            adapter = IdeaAdapter(mutableListOf(), "ProfileFragment", viewLifecycleOwner, null)
             recyclerViewI.layoutManager = LinearLayoutManager(requireContext())
             recyclerViewI.adapter = adapter
             recyclerViewI.visibility = View.VISIBLE
@@ -218,10 +284,10 @@ class ProfileFragment : Fragment() {
 
         }
     }
-    
-    private fun mockItens(): MutableList<ItemLoja> {
-        return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),
-            ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Ouro"))
+
+    override fun onDetach() {
+        super.onDetach()
+        toolbarListener = null
     }
 
 }

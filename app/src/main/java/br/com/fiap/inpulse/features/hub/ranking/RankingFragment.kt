@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.features.hub.ranking
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,21 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.features.hub.ToolbarController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RankingFragment : Fragment() {
+
+    private var toolbarListener: ToolbarController? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is ToolbarController) {
+            toolbarListener = context
+        }
+    }
 
     private lateinit var adapterU: UserRankingAdapter
     private lateinit var adapterI: IdeaRankingAdapter
@@ -38,6 +49,11 @@ class RankingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_ranking, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarListener?.resetToolbarToDefault()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

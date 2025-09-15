@@ -24,7 +24,9 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
+import br.com.fiap.inpulse.features.hub.ToolbarController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -32,7 +34,27 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class HomeFragment : Fragment() {
+interface NavigationListener {
+    fun navigateToProfile(funcionarioId: Int)
+}
+
+class HomeFragment : Fragment(), OnProfileClickListener{
+
+    private var navigationListener: NavigationListener? = null
+    private var toolbarListener: ToolbarController? = null
+
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is NavigationListener) {
+            navigationListener = context
+        } else {
+            throw RuntimeException("$context must implement NavigationListener")
+        }
+        if (context is ToolbarController) {
+            toolbarListener = context
+        }
+    }
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: IdeaAdapter
@@ -56,6 +78,11 @@ class HomeFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        toolbarListener?.resetToolbarToDefault()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,7 +101,7 @@ class HomeFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView.setHasFixedSize(false)
-        adapter = IdeaAdapter(mutableListOf(), "HomeFragment", viewLifecycleOwner)
+        adapter = IdeaAdapter(mutableListOf(), "HomeFragment", viewLifecycleOwner, this)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
@@ -130,6 +157,15 @@ class HomeFragment : Fragment() {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
         }
+    }
+
+    override fun onProfileClick(funcionarioId: Int) {
+        navigationListener?.navigateToProfile(funcionarioId)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigationListener = null
     }
 
     private fun refreshPage() {
@@ -219,7 +255,7 @@ class HomeFragment : Fragment() {
                                 val ideiasConvertidas: MutableList<IdeiaResponse> = funcionario.ideias.map { ideiaFuncionario ->
                                     IdeiaResponse(
                                         ideiaFuncionario = ideiaFuncionario,
-                                        funcionarioNome = "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}",
+                                        funcionarioNome = ProgramaFuncionario(funcionario.funcionario_id, "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}"),
                                         contribuicoesPadrao = emptyList()
                                     )
                                 }.toMutableList()
@@ -272,7 +308,7 @@ class HomeFragment : Fragment() {
                 it.nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.problema.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.descricao.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                        it.funcionario_nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        it.funcionario_nome.nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.categoriasIcone.toString().lowercase(Locale.getDefault()).contains(lowerCaseQuery)
             }
             adapter.ideas.clear()

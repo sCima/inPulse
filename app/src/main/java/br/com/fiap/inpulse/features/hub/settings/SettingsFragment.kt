@@ -20,6 +20,7 @@ import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.request.SenhaRequest
 import br.com.fiap.inpulse.data.model.request.UpdateStatsRequest
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
+import br.com.fiap.inpulse.features.hub.ToolbarController
 import br.com.fiap.inpulse.features.login.LoginActivity
 import br.com.fiap.inpulse.utils.PasswordHasher
 import com.google.android.material.button.MaterialButton
@@ -33,12 +34,27 @@ class SettingsFragment : Fragment() {
     private var funcionarioData: FuncionarioResponse? = null
     private lateinit var passwordContainer: View
 
+    private var toolbarListener: ToolbarController? = null // Use a interface da Activity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // ... (seu código de onAttach existente)
+        if (context is ToolbarController) {
+            toolbarListener = context
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_settings, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        toolbarListener?.resetToolbarToDefault()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

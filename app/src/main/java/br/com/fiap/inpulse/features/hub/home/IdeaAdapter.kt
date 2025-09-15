@@ -33,13 +33,21 @@ import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: String, private val lifecycleOwner: LifecycleOwner) :
+interface OnProfileClickListener {
+    fun onProfileClick(funcionarioId: Int)
+}
+
+class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
+                  private val fragment: String,
+                  private val lifecycleOwner: LifecycleOwner,
+                  private val profileClickListener: OnProfileClickListener?) :
     RecyclerView.Adapter<IdeaAdapter.InfoViewHolder>() {
 
     class InfoViewHolder(
         itemView: View,
         private val fragment: String,
-        private val lifecycleOwner: LifecycleOwner
+        private val lifecycleOwner: LifecycleOwner,
+        private val profileClickListener: OnProfileClickListener?
     ) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById<View>(R.id.includeBar)
             .findViewById(R.id.fragment_bar_title)
@@ -125,7 +133,12 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
                 data.text = "Erro na data"
             }
 
-            autor.text = idea.funcionario_nome
+            autor.text = idea.funcionario_nome.nome
+
+            autor.setOnClickListener {
+                profileClickListener?.onProfileClick(idea.funcionario_nome.id)
+            }
+
             likes.text = idea.curtidas.toString()
 
             if (!idea.imagem.isNullOrEmpty()) {
@@ -304,7 +317,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>, private val fragment: S
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InfoViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_recycler_ideias, parent, false)
-        return InfoViewHolder(view, fragment, lifecycleOwner)
+        return InfoViewHolder(view, fragment, lifecycleOwner, profileClickListener)
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
