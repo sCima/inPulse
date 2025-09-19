@@ -10,7 +10,7 @@ object CategoriaMapper {
     private val mapaSetor = mapOf(
         "atef" to Categoria(1, "Administração, TI & Finanças", R.drawable.administracao),
         "pel" to Categoria(2, "Produção e Logística", R.drawable.logistica),
-        "geral" to Categoria(3, "Geral", R.drawable.ic_launcher_foreground), //corrigir
+        "geral" to Categoria(3, "Geral", R.drawable.geral),
         "ped" to Categoria(4, "Pesquisa & Desenvolvimento", R.drawable.ped)
     )
 

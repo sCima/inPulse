@@ -18,6 +18,7 @@ data class FuncionarioResponse(
     val ideias: List<IdeiaFuncionario>,
     val programas: List<ProgramaFuncionario>,
     val selos: List<Selo>,
+    val itens: List<Item>,
     val logs: List<String>,
     var valorOrdenacao: String? = null
 ) : Parcelable
@@ -43,6 +44,12 @@ data class Selo(
 
 @Parcelize
 data class ProgramaFuncionario(
+    val id: Int,
+    val nome: String
+) : Parcelable
+
+@Parcelize
+data class Item(
     val id: Int,
     val nome: String
 ) : Parcelable

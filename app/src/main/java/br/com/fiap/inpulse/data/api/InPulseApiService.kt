@@ -11,6 +11,7 @@ import br.com.fiap.inpulse.data.model.request.UpdateStatsRequest
 import br.com.fiap.inpulse.data.model.response.ContribuicaoResponse
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.model.response.ItemResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -62,5 +63,8 @@ interface InPulseApiService {
     @PUT("funcionarios/senha/{id}")
     suspend fun updateSenha(@Path("id") id: Int, @Body requestBody: SenhaRequest): FuncionarioResponse
 
+    //itens da loja
+    @GET("itens")
+    suspend fun loadItens(): List<ItemResponse>
 
 }

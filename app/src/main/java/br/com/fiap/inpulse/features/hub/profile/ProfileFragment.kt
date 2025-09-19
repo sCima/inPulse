@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
-import br.com.fiap.inpulse.data.model.ItemLoja
+import br.com.fiap.inpulse.data.model.response.ItemResponse
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
@@ -91,10 +91,12 @@ class ProfileFragment : Fragment() {
             }
         }
     }
-    
-    private fun mockItens(): MutableList<ItemLoja> {
-        return mutableListOf(ItemLoja("Item", "0 EC", "Bronze"), ItemLoja("Item", "0 EC", "Bronze"),
-            ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Prata"), ItemLoja("Item", "0 EC", "Ouro"))
+
+    private fun mockItens(): MutableList<ItemResponse> {
+        val idsTeste: List<Int> = listOf(1, 2)
+        return mutableListOf(
+            ItemResponse(1, "KIT Churrasco", "Um belo kit", 3, idsTeste, "Bronze")
+        )
     }
 
     private fun populateUi(data: FuncionarioResponse?, view: View) {

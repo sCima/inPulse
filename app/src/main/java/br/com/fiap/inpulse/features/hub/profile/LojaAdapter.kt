@@ -1,16 +1,24 @@
 package br.com.fiap.inpulse.features.hub.profile
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.data.model.ItemLoja
+import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
+import br.com.fiap.inpulse.data.model.response.ItemResponse
+import com.google.gson.Gson
 
-class LojaAdapter(private var itens: MutableList<ItemLoja>, private var tier: String?) :
+class LojaAdapter(private var itens: MutableList<ItemResponse>, private var tier: String?) :
     RecyclerView.Adapter<LojaAdapter.InfoViewHolder>() {
+
+    // --- Constantes para SharedPreferences ---
+    private val PREFS_NAME = "InPulsePrefs"
+    private val KEY_FUNCIONARIO_JSON = "funcionario_json"
 
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nome = itemView.findViewById<TextView>(R.id.nome_item)
@@ -26,8 +34,38 @@ class LojaAdapter(private var itens: MutableList<ItemLoja>, private var tier: St
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
         val item = itens[position]
+        val context = holder.itemView.context
+
+        val sharedPref = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val funcionarioJson = sharedPref.getString(KEY_FUNCIONARIO_JSON, null)
+
+        if (funcionarioJson == null) {
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            return
+        }
+
+        val loggedUser = Gson().fromJson(funcionarioJson, FuncionarioResponse::class.java)
+        val loggedUserId = loggedUser.funcionario_id
+        var userMoedas = loggedUser.moedas
+
+        val ownerIds = item.funcionarios_id.map { it }.toSet()
+        val isOwned = ownerIds.contains(loggedUserId)
+
+        if (isOwned) {
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(0, 0)
+            return
+        } else {
+            holder.itemView.visibility = View.VISIBLE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
         holder.nome.text = item.nome
-        holder.preco.text = item.preco
+        holder.preco.text = "${item.preco} EC"
 
         val itemDesbloqueado = isItemDesbloqueado(item.tier, this.tier)
 
@@ -35,6 +73,28 @@ class LojaAdapter(private var itens: MutableList<ItemLoja>, private var tier: St
             holder.img.setImageResource(R.drawable.item_loja)
         } else {
             holder.img.setImageResource(R.drawable.item_loja_bloq)
+        }
+
+        holder.itemView.setOnClickListener {
+            if (!itemDesbloqueado) {
+                Toast.makeText(context, "Item bloqueado! Você precisa atingir o tier ${item.tier}.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (userMoedas >= item.preco) {
+                Toast.makeText(context, "'${item.nome}' comprado com sucesso!", Toast.LENGTH_SHORT).show()
+
+                val currentPosition = holder.adapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    itens.removeAt(currentPosition)
+                    notifyItemRemoved(currentPosition)
+                }
+
+                // TODO - call api e descontar moedas
+
+            } else {
+                Toast.makeText(context, "Moedas insuficientes. Você precisa de ${item.preco} moedas.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
