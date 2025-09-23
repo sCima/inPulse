@@ -20,6 +20,7 @@ import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.response.ItemResponse
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
+import br.com.fiap.inpulse.data.model.response.Funcionarios
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.Selo
@@ -271,7 +272,7 @@ class ProfileFragment : Fragment(), OnItemPurchaseListener {
             val ideiasConvertidas: MutableList<IdeiaResponse> = funcionario.ideias.map { ideiaFuncionario ->
                 IdeiaResponse(
                     ideiaFuncionario = ideiaFuncionario,
-                    funcionarioNome = ProgramaFuncionario(funcionario.funcionario_id, "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}"),
+                    funcionarioNome = Funcionarios(funcionario.funcionario_id, funcionario.primeiro_nome, funcionario.ultimo_sobrenome),
                     contribuicoesPadrao = emptyList()
                 )
             }.toMutableList()

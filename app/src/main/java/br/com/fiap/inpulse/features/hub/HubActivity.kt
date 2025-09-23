@@ -33,15 +33,12 @@ interface ToolbarController {
 class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
 
     override fun navigateToProfile(funcionarioId: Int) {
-        // Cria uma NOVA instância do ProfileFragment para não interferir com o perfil do usuário logado
         val visitorProfileFragment = ProfileFragment()
 
-        // Cria um Bundle para passar o ID do funcionário a ser visitado
         val bundle = Bundle()
         bundle.putInt("profile_user_id", funcionarioId)
         visitorProfileFragment.arguments = bundle
 
-        // Carrega o fragment com os dados do visitante
         loadFragment(visitorProfileFragment)
     }
     private lateinit var toolbarHub: Toolbar
@@ -145,18 +142,14 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
     private fun configureToolbar(
         toolbar: Toolbar,
         isPerfil: Boolean = false,
-        dataOverride: FuncionarioResponse? = null // Novo parâmetro para dados do perfil
+        dataOverride: FuncionarioResponse? = null
     ) {
         setSupportActionBar(toolbar)
         val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
         val toolbarTitle: TextView? = toolbar.findViewById(R.id.toolbar_text)
         var tierColor: Int = R.color.bronze
 
-        // ▼▼▼ LÓGICA DE DECISÃO DE DADOS ▼▼▼
-        // Se a chamada forneceu dados (dataOverride), use-os.
-        // Caso contrário, use o 'funcionarioData' padrão (usuário logado).
         val dataToUse = dataOverride ?: this.funcionarioData
-        // ▲▲▲ FIM DA LÓGICA DE DECISÃO ▲▲▲
 
         dataToUse?.let { funcionario ->
             val primeiroNome = funcionario.primeiro_nome.trim()
@@ -168,7 +161,7 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
             } else if (primeiroNome.isNotEmpty()) {
                 primeiroNome
             } else {
-                "Funcionario"
+                "Funcionário"
             }
             toolbarTitle?.text = nomeFormatado
 
@@ -191,14 +184,11 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
         }
     }
 
-    // 3. IMPLEMENTE OS MÉTODOS DA INTERFACE
     override fun setToolbarForProfile(data: FuncionarioResponse) {
-        // Chama a função refatorada com isPerfil=true e os dados do perfil específico
         configureToolbar(toolbarHub, true, data)
     }
 
     override fun resetToolbarToDefault() {
-        // Chama a função refatorada no modo padrão (usará o 'funcionarioData' do usuário logado)
         configureToolbar(toolbarHub, false, null)
     }
 }

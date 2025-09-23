@@ -23,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.api.RetrofitClient
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
+import br.com.fiap.inpulse.data.model.response.Funcionarios
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
@@ -255,7 +256,7 @@ class HomeFragment : Fragment(), OnProfileClickListener{
                                 val ideiasConvertidas: MutableList<IdeiaResponse> = funcionario.ideias.map { ideiaFuncionario ->
                                     IdeiaResponse(
                                         ideiaFuncionario = ideiaFuncionario,
-                                        funcionarioNome = ProgramaFuncionario(funcionario.funcionario_id, "${funcionario.primeiro_nome} ${funcionario.ultimo_sobrenome}"),
+                                        funcionarioNome = Funcionarios(funcionario.funcionario_id, funcionario.primeiro_nome , funcionario.ultimo_sobrenome),
                                         contribuicoesPadrao = emptyList()
                                     )
                                 }.toMutableList()
@@ -308,7 +309,8 @@ class HomeFragment : Fragment(), OnProfileClickListener{
                 it.nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.problema.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.descricao.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
-                        it.funcionario_nome.nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        it.funcionario_nome.primeiro_nome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
+                        it.funcionario_nome.ultimo_sobrenome.lowercase(Locale.getDefault()).contains(lowerCaseQuery) ||
                         it.categoriasIcone.toString().lowercase(Locale.getDefault()).contains(lowerCaseQuery)
             }
             adapter.ideas.clear()

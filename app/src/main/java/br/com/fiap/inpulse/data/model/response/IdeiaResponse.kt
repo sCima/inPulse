@@ -1,5 +1,7 @@
 package br.com.fiap.inpulse.data.model.response
 
+import android.net.http.UrlRequest.Status
+
 data class IdeiaResponse (
     val ideia_id: Int,
     val nome: String,
@@ -8,7 +10,7 @@ data class IdeiaResponse (
     val imagem: String,
     val data: String,
     var curtidas: Int,
-    val funcionario_nome: ProgramaFuncionario,
+    val funcionario_nome: Funcionarios,
     val programas_nome: List<ProgramaFuncionario>,
     val categoriasIcone: List<String>,
     val contribuicoes: List<Contribuicao>,
@@ -17,7 +19,7 @@ data class IdeiaResponse (
     // Construtor auxiliar para converter de IdeiaFuncionario para IdeiaResponse
     constructor(
         ideiaFuncionario: IdeiaFuncionario,
-        funcionarioNome: ProgramaFuncionario,
+        funcionarioNome: Funcionarios,
         contribuicoesPadrao: List<Contribuicao> = emptyList(), // Default para lista vazia,
     ) : this(
         ideia_id = ideiaFuncionario.ideia_id,

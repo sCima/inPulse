@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.TooltipCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import br.com.fiap.inpulse.data.model.request.LikeRequest
 import br.com.fiap.inpulse.data.model.response.Contribuicao
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.utils.CategoriaMapper
 import br.com.fiap.inpulse.utils.fadeIn
 import br.com.fiap.inpulse.utils.fadeOut
 import com.google.gson.Gson
@@ -86,38 +88,43 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
             nome.text = idea.nome
             problema.text = idea.problema
             descricao.text = idea.descricao
-            val iconImageViews = listOf(imgSetor, imgTipo, imgComplex, imgUrgencia)
+            val apiKeys = idea.categoriasIcone
 
-            val iconMap = mapOf(
-                "administracao" to R.drawable.administracao,
-                "alta" to R.drawable.alta,
-                "automacao" to R.drawable.automacao,
-                "baixa" to R.drawable.baixa,
-                "comunicacao" to R.drawable.comunicacao,
-                "criacao" to R.drawable.criacao,
-                "critica" to R.drawable.critica,
-                "fabrica" to R.drawable.fabrica,
-                "logistica" to R.drawable.logistica,
-                "media" to R.drawable.media,
-                "melhoria" to R.drawable.melhoria,
-                "ped" to R.drawable.ped,
-                "prioritaria" to R.drawable.prioritaria,
-                "programada" to R.drawable.programada,
-                "sustentabilidade" to R.drawable.sustentabilidade,
-                "ti" to R.drawable.ti,
-                "vendas" to R.drawable.vendas,
-                "otimizacao" to R.drawable.otimizacao,
+            val predictionMap = mutableMapOf<String, String>()
 
-            )
+            for (key in apiKeys) {
+                when {
+                    CategoriaMapper.mapaSetor.containsKey(key) -> predictionMap["setor"] = key
 
-            idea.categoriasIcone.forEachIndexed { index, iconName ->
-                if (index < iconImageViews.size) {
-                    val imageView = iconImageViews[index]
-                    val drawableId = iconMap[iconName.lowercase()] ?: R.drawable.ic_launcher_foreground
-                    imageView.setImageResource(drawableId)
+                    CategoriaMapper.mapaObjetivo.containsKey(key) -> predictionMap["objetivo"] = key
+
+                    CategoriaMapper.mapaComplexidade.containsKey(key) -> predictionMap["complexidade"] = key
+
+                    CategoriaMapper.mapaUrgencia.containsKey(key) -> predictionMap["urgencia"] = key
                 }
             }
 
+            val categoriasMapeadas = CategoriaMapper.mapearPredicoes(predictionMap)
+
+            categoriasMapeadas["setor"]?.let { categoria ->
+                imgSetor.setImageResource(categoria.icone)
+                TooltipCompat.setTooltipText(imgSetor, categoria.nome)
+            }
+
+            categoriasMapeadas["objetivo"]?.let { categoria ->
+                imgTipo.setImageResource(categoria.icone)
+                TooltipCompat.setTooltipText(imgTipo, categoria.nome)
+            }
+
+            categoriasMapeadas["complexidade"]?.let { categoria ->
+                imgComplex.setImageResource(categoria.icone)
+                TooltipCompat.setTooltipText(imgComplex, categoria.nome)
+            }
+
+            categoriasMapeadas["urgencia"]?.let { categoria ->
+                imgUrgencia.setImageResource(categoria.icone)
+                TooltipCompat.setTooltipText(imgUrgencia, categoria.nome)
+            }
 
             val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
@@ -133,7 +140,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
                 data.text = "Erro na data"
             }
 
-            autor.text = idea.funcionario_nome.nome
+            autor.text = idea.funcionario_nome.primeiro_nome
 
             autor.setOnClickListener {
                 profileClickListener?.onProfileClick(idea.funcionario_nome.id)

@@ -49,6 +49,14 @@ data class ProgramaFuncionario(
 ) : Parcelable
 
 @Parcelize
+data class Funcionarios(
+    val id: Int,
+    val primeiro_nome: String,
+    val ultimo_sobrenome: String
+) : Parcelable
+
+
+@Parcelize
 data class Item(
     val id: Int,
     val nome: String
