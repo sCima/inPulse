@@ -30,12 +30,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), OnItemPurchaseListener {
 
     private lateinit var adapter: IdeaAdapter
     private lateinit var adapterS: SeloAdapter
     private lateinit var adapterP: ProgramaProfileAdapter
     private var funcionarioData: FuncionarioResponse? = null
+    private lateinit var tvPontos: TextView
 
     private var toolbarListener: ToolbarController? = null
 
@@ -95,7 +96,29 @@ class ProfileFragment : Fragment() {
     private fun mockItens(): MutableList<ItemResponse> {
         val idsTeste: List<Int> = listOf(1, 2)
         return mutableListOf(
-            ItemResponse(1, "KIT Churrasco", "Um belo kit", 3, idsTeste, "Bronze")
+            ItemResponse(1, "KIT Churrasco", "Um kit completo", 4, idsTeste, "Bronze"),
+        ItemResponse(2, "Caneca Térmica", "Mantém sua bebida quente ou gelada por horas", 2, idsTeste, "Bronze"),
+        ItemResponse(3, "Agenda Ecológica", "Agenda feita com papel reciclado e capa sustentável", 3, idsTeste, "Bronze"),
+        ItemResponse(4, "Fone Bluetooth", "Compacto e ideal para o dia a dia", 6, idsTeste, "Bronze"),
+        ItemResponse(5, "Vale-Cinema", "Voucher para assistir ao filme de sua escolha", 3, idsTeste, "Bronze"),
+        ItemResponse(6, "Kit Chá Relaxante", "Seleção de chás especiais para momentos de descanso", 4, idsTeste,"Bronze"),
+        ItemResponse(7, "Camiseta Exclusiva", "Estampa personalizada da empresa", 2, idsTeste, "Bronze"),
+        ItemResponse(7, "Vale Compras", "Vale compras no valor de 200 reais", 4, idsTeste, "Bronze"),
+        ItemResponse(7, "Boné Eurofarma", "Boné da empresa", 3, idsTeste, "Bronze"),
+        ItemResponse(8, "Mochila Executiva", "Mochila reforçada com compartimento para notebook", 8, idsTeste, "Prata"),
+        ItemResponse(9, "Kit Fitness", "Squeeze, toalha de treino e elástico de resistência", 7, idsTeste, "Prata"),
+        ItemResponse(10, "Smartwatch Básico", "Monitora passos, batimentos e notificações", 10, idsTeste, "Prata"),
+        ItemResponse(11, "Vale-Gasolina", "Crédito em posto de combustível parceiro", 9, idsTeste, "Prata"),
+        ItemResponse(12, "Acessório Home Office", "Suporte ergonômico para notebook", 6, idsTeste, "Prata"),
+        ItemResponse(13, "Streaming 3 Meses", "Acesso à sua plataforma favorita", 8, idsTeste, "Prata"),
+        ItemResponse(13, "Humidificador", "Humidificador para seu ambiente", 9, idsTeste, "Prata"),
+        ItemResponse(14, "Kit Taças", "Garrafa de vinho selecionado e duas taças personalizadas", 9, idsTeste, "Prata"),
+        ItemResponse(15, "Tablet", "Dispositivo leve e prático para estudos e trabalho", 15, idsTeste, "Ouro"),
+        ItemResponse(16, "Smartphone", "Modelo atualizado com ótima performance", 20, idsTeste, "Ouro"),
+        ItemResponse(17, "Viagem Nacional", "Pacote de viagem de fim de semana", 25, idsTeste, "Ouro"),
+        ItemResponse(18, "Notebook Ultrafino", "Ideal para produtividade e mobilidade", 30, idsTeste, "Ouro"),
+        ItemResponse(19, "Curso Online Premium", "Treinamento de alto nível em inovação", 18, idsTeste, "Ouro"),
+        ItemResponse(20, "Cadeira Ergonômica", "Conforto para trabalho e lazer", 22, idsTeste, "Ouro")
         )
     }
 
@@ -118,6 +141,7 @@ class ProfileFragment : Fragment() {
         val containerStats = view.findViewById<View>(R.id.containerStats)
         val perfilContent = view.findViewById<View>(R.id.perfil_content)
         val lojaContent = view.findViewById<View>(R.id.loja_content)
+        tvPontos = view.findViewById(R.id.text_pontos)
         val switch = view.findViewById<MaterialButtonToggleGroup>(R.id.switch_loja)
 
         val isMyProfile = arguments?.containsKey("funcionario_profile_data") ?: false
@@ -154,7 +178,6 @@ class ProfileFragment : Fragment() {
         val soma = funcionarioData?.ideias?.sumOf{it.curtidas}
         tvNumeroLikes.text = "Curtidas: ${soma.toString()}"
 
-        val tvPontos = view.findViewById<TextView>(R.id.text_pontos)
         val moedas = funcionarioData?.moedas
         tvPontos.text =  "$moedas Eurocoins disponíveis"
 
@@ -182,9 +205,9 @@ class ProfileFragment : Fragment() {
         val itensOuro = todosOsItens.filter { it.tier == "Ouro" }.toMutableList()
         val userTier = funcionarioData?.tier
 
-        val adapterBronze = LojaAdapter(itensBronze, userTier)
-        val adapterPrata = LojaAdapter(itensPrata, userTier)
-        val adapterOuro = LojaAdapter(itensOuro, userTier)
+        val adapterBronze = LojaAdapter(itensBronze, userTier, this)
+        val adapterPrata = LojaAdapter(itensPrata, userTier, this)
+        val adapterOuro = LojaAdapter(itensOuro, userTier, this)
 
         recyclerViewLB.layoutManager = GridLayoutManager(requireContext(), 4)
         recyclerViewLB.adapter = adapterBronze
@@ -284,6 +307,14 @@ class ProfileFragment : Fragment() {
             recyclerViewS.adapter = adapterS
             recyclerViewS.visibility = View.GONE
 
+        }
+    }
+
+    override fun onItemPurchased(novoTotalMoedas: Int) {
+        tvPontos.text =  "$novoTotalMoedas Eurocoins disponíveis"
+
+        funcionarioData?.let {
+            it.moedas = novoTotalMoedas
         }
     }
 

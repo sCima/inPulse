@@ -5,6 +5,6 @@ data class ItemResponse(
     val nome: String,
     val descricao: String,
     val preco: Int,
-    val funcionarios_id: List<Int>,
+    val funcionarios: List<Int>,
     val tier: String
 )

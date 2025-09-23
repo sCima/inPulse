@@ -7,13 +7,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.TooltipCompat
 import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.ItemResponse
 import com.google.gson.Gson
 
-class LojaAdapter(private var itens: MutableList<ItemResponse>, private var tier: String?) :
+interface OnItemPurchaseListener {
+    fun onItemPurchased(novoTotalMoedas: Int)
+}
+
+class LojaAdapter(private var itens: MutableList<ItemResponse>,
+                  private var tier: String?,
+                  private val purchaseListener: OnItemPurchaseListener) :
     RecyclerView.Adapter<LojaAdapter.InfoViewHolder>() {
 
     // --- Constantes para SharedPreferences ---
@@ -49,8 +56,10 @@ class LojaAdapter(private var itens: MutableList<ItemResponse>, private var tier
         val loggedUserId = loggedUser.funcionario_id
         var userMoedas = loggedUser.moedas
 
-        val ownerIds = item.funcionarios_id.map { it }.toSet()
+        val ownerIds = item.funcionarios.map { it }.toSet()
         val isOwned = ownerIds.contains(loggedUserId)
+
+        TooltipCompat.setTooltipText(holder.itemView, item.descricao)
 
         if (isOwned) {
             holder.itemView.visibility = View.GONE
@@ -82,6 +91,8 @@ class LojaAdapter(private var itens: MutableList<ItemResponse>, private var tier
             }
 
             if (userMoedas >= item.preco) {
+                val novoTotalMoedas = userMoedas - item.preco
+
                 Toast.makeText(context, "'${item.nome}' comprado com sucesso!", Toast.LENGTH_SHORT).show()
 
                 val currentPosition = holder.adapterPosition
@@ -90,6 +101,11 @@ class LojaAdapter(private var itens: MutableList<ItemResponse>, private var tier
                     notifyItemRemoved(currentPosition)
                 }
 
+                val updatedFuncionario = loggedUser.copy(moedas = novoTotalMoedas)
+                val updatedJson = Gson().toJson(updatedFuncionario)
+                sharedPref.edit().putString(KEY_FUNCIONARIO_JSON, updatedJson).apply()
+
+                purchaseListener.onItemPurchased(novoTotalMoedas)
                 // TODO - call api e descontar moedas
 
             } else {

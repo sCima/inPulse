@@ -22,13 +22,13 @@ import retrofit2.http.Path
 interface InPulseApiService {
 
     //ideias
-    @GET("ideias")
+    @GET("api/ideias")
     suspend fun loadIdeias(): List<IdeiaResponse>
 
-    @PUT("ideias/{id}")
+    @PUT("api/ideias/{id}")
     suspend fun updateIdeia(@Path("id") id: Int, @Body requestBody: LikeRequest): IdeiaResponse
 
-    @POST("ideias")
+    @POST("api/ideias")
     suspend fun sendIdeia(@Body requestBody: IdeiaRequest): IdeiaResponse
 
     @POST("contribuicoes")
@@ -45,22 +45,22 @@ interface InPulseApiService {
     suspend fun subscribeIdeia(@Path("id") programaId: Int, @Body requestBody: IdeiaIdRequest): ProgramaResponse
 
     //funcionarios
-    @GET("funcionarios")
+    @GET("api/funcionarios")
     suspend fun loadFuncionarios(): List<FuncionarioResponse>
 
-    @GET("funcionarios/email/{email}")
+    @GET("api/funcionarios/email/{email}")
     suspend fun getFuncionarioByEmail(@Path("email") email: String): FuncionarioResponse
 
-    @GET("funcionarios/{id}")
+    @GET("api/funcionarios/{id}")
     suspend fun getFuncionarioById(@Path("id") id: Int): FuncionarioResponse
 
-    @POST("funcionarios")
+    @POST("api/funcionarios")
     suspend fun cadastrarFuncionario(@Body request: FuncionarioRequest): FuncionarioResponse
 
-    @PUT("funcionarios/{id}")
+    @PUT("api/funcionarios/{id}")
     suspend fun updateFuncionarioStats(@Path("id") id: Int, @Body requestBody: UpdateStatsRequest): FuncionarioResponse
 
-    @PUT("funcionarios/senha/{id}")
+    @PUT("api/funcionarios/senha/{id}")
     suspend fun updateSenha(@Path("id") id: Int, @Body requestBody: SenhaRequest): FuncionarioResponse
 
     //itens da loja

@@ -11,7 +11,7 @@ data class FuncionarioResponse(
     val email: String,
     var senha: String,
     val pontos: Int,
-    val moedas: Int,
+    var moedas: Int,
     val tier: String,
     var modo_anonimo: Boolean,
     val imagem_funcionario: String?,
