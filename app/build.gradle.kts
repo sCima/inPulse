@@ -43,6 +43,10 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+
+            excludes += "META-INF/DEPENDENCIES"
+
+            excludes += "META-INF/INDEX.LIST"
         }
     }
 }
@@ -75,5 +79,9 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation("org.mindrot:jbcrypt:0.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    implementation(platform("com.google.cloud:libraries-bom:26.42.0"))
+    implementation("com.google.cloud:google-cloud-dialogflow-cx")
+    implementation("io.grpc:grpc-okhttp")
 
 }
