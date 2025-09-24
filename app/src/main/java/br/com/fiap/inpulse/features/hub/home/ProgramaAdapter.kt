@@ -21,6 +21,7 @@ import br.com.fiap.inpulse.data.model.request.IdeiaIdRequest
 import br.com.fiap.inpulse.data.model.response.Contribuicao
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
+import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
@@ -121,6 +122,9 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
             val userId = sharedPref.getInt(KEY_USER_ID, -1)
 
             btnInscrever.setOnClickListener {
+
+                if (subscribed) return@setOnClickListener
+
                 lifecycleOwner.lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
@@ -131,7 +135,30 @@ class ProgramaAdapter(var programas: MutableList<ProgramaResponse>,
                                 withContext(Dispatchers.Main) {
                                     subscribed = true
                                     btnInscrever.text = "Inscrito"
+                                    btnInscrever.isEnabled = false
                                     updateEnviarIdeiaButtonState()
+
+                                    val currentJson = sharedPref.getString(KEY_FUNCIONARIO_JSON, null)
+                                    if (currentJson != null) {
+                                        val gson = Gson()
+                                        val currentFuncionarioData = gson.fromJson(currentJson, FuncionarioResponse::class.java)
+
+                                        val novoProgramaInscrito = ProgramaFuncionario(
+                                            id = programa.programa_id,
+                                            nome = programa.nome_programa
+                                            )
+                                        val programasAtualizados = currentFuncionarioData.programas.toMutableList()
+                                        programasAtualizados.add(novoProgramaInscrito)
+
+                                        val funcionarioAtualizado = currentFuncionarioData.copy(
+                                            programas = programasAtualizados
+                                        )
+
+                                        val novoJson = gson.toJson(funcionarioAtualizado)
+                                        sharedPref.edit().putString(KEY_FUNCIONARIO_JSON, novoJson).apply()
+
+                                        Toast.makeText(itemView.context, "Inscrição realizada!", Toast.LENGTH_SHORT).show()
+                                        }
                                 }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
