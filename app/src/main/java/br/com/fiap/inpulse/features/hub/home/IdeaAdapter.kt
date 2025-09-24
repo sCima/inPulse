@@ -245,6 +245,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
             }
 
             fun sendCont(ideiaId: Int, funcionarioId: Int, cont: String, nome: String) {
+                btnEnviarCont.isEnabled = false;
                 lifecycleOwner.lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         try {
@@ -257,6 +258,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
                                 )
                                 contAdapter.addItemAtTop(newContribuicao)
                                 etCont.text.clear()
+                                btnEnviarCont.isEnabled = true;
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
@@ -267,6 +269,7 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
                                 ).show()
                                 e.printStackTrace()
                             }
+                            btnEnviarCont.isEnabled = true;
                         }
                     }
                 }

@@ -10,6 +10,8 @@ import br.com.fiap.inpulse.R
 class IdeaProgramaAdapter(private var ideas: List<String>) :
     RecyclerView.Adapter<IdeaProgramaAdapter.InfoViewHolder>() {
 
+    private val uniqueIdeas: List<String> = ideas.distinct()
+
     class InfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nome: TextView = itemView.findViewById(R.id.ideaPNome)
 
@@ -25,9 +27,9 @@ class IdeaProgramaAdapter(private var ideas: List<String>) :
     }
 
     override fun onBindViewHolder(holder: InfoViewHolder, position: Int) {
-        holder.bind(ideas[position])
+        holder.bind(uniqueIdeas[position])
 
     }
 
-    override fun getItemCount(): Int = ideas.size
+    override fun getItemCount(): Int = uniqueIdeas.size
 }
