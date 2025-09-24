@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -16,9 +17,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.R
+import br.com.fiap.inpulse.data.api.HuggingFaceApiService
 import br.com.fiap.inpulse.data.api.RetrofitClient
+import br.com.fiap.inpulse.data.model.ClassificationRequest
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
-import br.com.fiap.inpulse.data.repository.PredictionRepository
 import br.com.fiap.inpulse.features.hub.HubActivity
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentDescricao
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentImg
@@ -26,24 +28,34 @@ import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentMissoes
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentProblema
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentResumo
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
+import br.com.fiap.inpulse.features.newidea.fragments.OnCategoriasMapeadasListener
+import br.com.fiap.inpulse.utils.CategoriaMapper
 import br.com.fiap.inpulse.utils.ImageSelectionListener
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 
-class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
+class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
+    OnCategoriasMapeadasListener {
 
     private val ideaFragmentProblema = IdeaFragmentProblema()
     private val ideaFragmentDescricao = IdeaFragmentDescricao()
     private val ideaFragmentImg = IdeaFragmentImg()
-    private val ideaFragmentResumo = IdeaFragmentResumo(PredictionRepository())
+    private val ideaFragmentResumo = IdeaFragmentResumo()
     private val ideaFragmentMissoes = IdeaFragmentMissoes()
     private var etapaAtual = 0
     private val infosIdea = Bundle()
     private lateinit var btnContinuar: AppCompatButton
-
     private var imageBase64: String? = null
+    private var idsDasCategorias: List<Int>? = null
+
+    override fun onCategoriasProntas(ids: List<Int>) {
+        this.idsDasCategorias = ids
+        Log.d("NovaIdeiaActivity", "IDs das categorias da IA recebidos: $ids")
+    }
 
     private val pickImageLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -74,6 +86,17 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
         ideaFragmentDescricao,
         ideaFragmentImg,
         ideaFragmentResumo
+    )
+
+    private val categoriaNomeParaIdMap = mapOf(
+        // Setor
+        "atef" to 102, "pel" to 103, "geral" to 104, "ped" to 105,
+        // Objetivo
+        "oa" to 106, "inv" to 107, "sustentabilidade" to 108,
+        // Complexidade
+        "baixa" to 109, "media" to 110, "alta" to 111,
+        // Urgência
+        "programada" to 112, "prioritaria" to 113, "urgente" to 114
     )
 
     private val PREFS_NAME = "InPulsePrefs"
@@ -108,12 +131,17 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener {
                 }
                 carregarFragmentoAtual()
             } else {
+                if (idsDasCategorias == null) {
+                    Toast.makeText(this, "Aguarde a classificação da IA...", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val nomeIdeia = infosIdea.getString("etTitulo") ?: ""
                 val problemaIdeia = infosIdea.getString("resumoProblema") ?: ""
                 val descricaoIdeia = infosIdea.getString("resumoSolucao") ?: ""
                 val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 val funcionarioId = sharedPref.getInt(KEY_USER_ID, -1)
-                val categorias = listOf(5, 9, 11, 14)
+                val categorias = idsDasCategorias!!
 
                 val ideiaRequest = IdeiaRequest(
                     nome = nomeIdeia,
