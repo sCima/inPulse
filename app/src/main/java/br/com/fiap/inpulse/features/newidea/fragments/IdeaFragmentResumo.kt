@@ -1,9 +1,7 @@
 package br.com.fiap.inpulse.features.newidea.fragments
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +24,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.io.IOException
+import coil.load
 
 interface OnCategoriasMapeadasListener {
     fun onCategoriasProntas(ids: List<Int>)
@@ -75,10 +74,10 @@ class IdeaFragmentResumo : Fragment(), IdeaInfoProvider {
         iconeS = view.findViewById(R.id.icone_setor)
         iconeO = view.findViewById(R.id.icone_objetivo)
         progressBar = view.findViewById(R.id.pbResumo)
+        val imageUrl = arguments?.getString("imageUrl")
 
         val problema = arguments?.getString("problema") ?: "Nenhum problema informado"
         val solucao = arguments?.getString("solucao") ?: "Nenhuma solucao informada"
-        val imagemBase64 = arguments?.getString("imagemBase64")
 
         resumoProblemaTextView.text = problema
         resumoSolucaoTextView.text = solucao
@@ -88,17 +87,11 @@ class IdeaFragmentResumo : Fragment(), IdeaInfoProvider {
             etTituloEditText.setText(tituloPreenchido)
         }
 
-        if (!imagemBase64.isNullOrEmpty()) {
-            try {
-                val decodedString = Base64.decode(imagemBase64, Base64.DEFAULT)
-                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                imageConfirmationPreview.setImageBitmap(decodedByte)
-                imageConfirmationPreview.visibility = View.VISIBLE
-                cardViewImagePreview.visibility = View.VISIBLE
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-                imageConfirmationPreview.visibility = View.GONE
-                cardViewImagePreview.visibility = View.GONE
+        if (!imageUrl.isNullOrEmpty()) {
+            cardViewImagePreview.visibility = View.VISIBLE
+            imageConfirmationPreview.visibility = View.VISIBLE
+            imageConfirmationPreview.load(imageUrl) {
+                crossfade(true)
             }
         } else {
             imageConfirmationPreview.visibility = View.GONE

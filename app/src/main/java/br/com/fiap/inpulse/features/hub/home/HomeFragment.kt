@@ -28,6 +28,7 @@ import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.ProgramaResponse
 import br.com.fiap.inpulse.features.hub.ToolbarController
+import br.com.fiap.inpulse.utils.AzureConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -187,7 +188,16 @@ class HomeFragment : Fragment(), OnProfileClickListener{
             withContext(Dispatchers.IO) {
                 try {
                     val ideiasFetched = RetrofitClient.inPulseApiService.loadIdeias()
-                    val sortedIdeias = ideiasFetched.sortedByDescending { ideaResponse ->
+
+                    val ideiasComUrlAzure = ideiasFetched.map { ideia ->
+                        if (!ideia.imagem.isNullOrEmpty()) {
+                            ideia.copy(imagem = ideia.imagem + AzureConstants.SAS_TOKEN)
+                        } else {
+                            ideia
+                        }
+                    }
+
+                    val sortedIdeias = ideiasComUrlAzure.sortedByDescending { ideaResponse ->
                         try {
                             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                             dateFormat.parse(ideaResponse.data)

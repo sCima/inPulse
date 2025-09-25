@@ -31,7 +31,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
+    kotlinOptions{
         jvmTarget = "1.8"
     }
     buildFeatures {
@@ -42,6 +42,9 @@ android {
     }
     packaging {
         resources {
+
+            pickFirst("META-INF/io.netty.versions.properties")
+
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
 
             excludes += "META-INF/DEPENDENCIES"
@@ -52,7 +55,7 @@ android {
 }
 
 dependencies {
-
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -85,6 +88,8 @@ dependencies {
     implementation("io.grpc:grpc-okhttp")
 
     implementation("com.azure:azure-storage-blob:12.31.2")
-    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+    implementation("io.coil-kt:coil:2.4.0")
+
+    implementation("org.codehaus.woodstox:wstx-asl:3.2.7")
 
 }

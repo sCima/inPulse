@@ -1,8 +1,7 @@
 package br.com.fiap.inpulse.features.hub.home
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.util.Base64
+import coil.load
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -149,14 +148,11 @@ class IdeaAdapter(var ideas: MutableList<IdeiaResponse>,
             likes.text = idea.curtidas.toString()
 
             if (!idea.imagem.isNullOrEmpty()) {
-                try {
-                    val decodedString = Base64.decode(idea.imagem, Base64.DEFAULT)
-                    val decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                    imagemIdeia.setImageBitmap(decodedBitmap)
-                    imagemIdeia.visibility = View.VISIBLE
-                } catch (e: IllegalArgumentException) {
-                    e.printStackTrace()
-                    imagemIdeia.visibility = View.GONE
+                imagemIdeia.visibility = View.VISIBLE
+                imagemIdeia.load(idea.imagem) {
+                    crossfade(true)
+                    placeholder(R.drawable.loading_placeholder)
+                    error(R.drawable.error_placeholder)
                 }
             } else {
                 imagemIdeia.visibility = View.GONE

@@ -2,6 +2,7 @@ package br.com.fiap.inpulse.features.newidea.fragments
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,13 +53,11 @@ class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
 
     fun updateImagePreviewFromUri(imageUri: Uri?) {
         if (imageUri != null) {
+            cardViewImagePreview.visibility = View.VISIBLE
+            imagePreview.visibility = View.VISIBLE
+
             imagePreview.load(imageUri) {
                 crossfade(true)
-                listener { _, _ ->
-                    imagePreview.visibility = View.VISIBLE
-                    cardViewImagePreview.visibility = View.VISIBLE
-                    btnEnviarImg.text = "Alterar Imagem"
-                }
             }
         } else {
             imagePreview.setImageDrawable(null)

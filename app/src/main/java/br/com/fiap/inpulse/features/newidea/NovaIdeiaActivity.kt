@@ -75,11 +75,8 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
 
                         if (urlFinal != null) {
                             imageUrlFromAzure = urlFinal
-                            Log.d("AzureUpload", "Upload com sucesso! URL: $urlFinal")
-                            Toast.makeText(this@NovaIdeiaActivity, "Imagem enviada!", Toast.LENGTH_SHORT).show()
                         } else {
-                            Log.e("AzureUpload", "Falha no upload da imagem.")
-                            Toast.makeText(this@NovaIdeiaActivity, "Erro ao enviar imagem.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@NovaIdeiaActivity, "Erro", Toast.LENGTH_LONG).show()
                             fragment?.updateImagePreviewFromUri(null)
                         }
                     }
@@ -169,6 +166,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
         }
 
         if (fragment is IdeaFragmentResumo) {
+            infosIdea.putString("imageUrl", imageUrlFromAzure)
             fragment.arguments = infosIdea
         }
 
