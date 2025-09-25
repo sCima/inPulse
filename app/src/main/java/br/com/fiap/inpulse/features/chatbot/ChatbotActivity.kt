@@ -69,9 +69,12 @@ class ChatbotActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        chatAdapter = ChatAdapter(messageList)
+        chatAdapter = ChatAdapter(messageList, lifecycleScope)
         recyclerChat.adapter = chatAdapter
-        recyclerChat.layoutManager = LinearLayoutManager(this)
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.stackFromEnd = true
+        recyclerChat.layoutManager = layoutManager
     }
 
     private fun setupClickListeners() {
@@ -106,8 +109,9 @@ class ChatbotActivity : AppCompatActivity() {
     private fun addMessageToChat(text: String, isSentByUser: Boolean) {
         runOnUiThread {
             messageList.add(ChatMessage(text, isSentByUser))
-            chatAdapter.notifyItemInserted(messageList.size - 1)
-            recyclerChat.scrollToPosition(messageList.size - 1)
+            val novaPosicao = messageList.size - 1
+            chatAdapter.notifyItemInserted(novaPosicao)
+            recyclerChat.scrollToPosition(novaPosicao)
         }
     }
 

@@ -29,8 +29,12 @@ import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentProblema
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentResumo
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
 import br.com.fiap.inpulse.features.newidea.fragments.OnCategoriasMapeadasListener
+import br.com.fiap.inpulse.utils.AzureConstants
 import br.com.fiap.inpulse.utils.CategoriaMapper
 import br.com.fiap.inpulse.utils.ImageSelectionListener
+import br.com.fiap.inpulse.utils.uploadImageToAzure
+import com.azure.storage.blob.BlobClientBuilder
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -49,7 +53,7 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
     private var etapaAtual = 0
     private val infosIdea = Bundle()
     private lateinit var btnContinuar: AppCompatButton
-    private var imageBase64: String? = null
+    private var imageUrlFromAzure: String? = null //
     private var idsDasCategorias: List<Int>? = null
 
     override fun onCategoriasProntas(ids: List<Int>) {
@@ -61,20 +65,23 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val imageUri: Uri? = result.data?.data
-                imageUri?.let {
-                    try {
-                        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
-                        lifecycleScope.launch(Dispatchers.IO) {
-                            val compressedBitmap = resizeAndCompressBitmap(bitmap, 300, 40)
-                            val base64 = bitmapToBase64(compressedBitmap)
-                            withContext(Dispatchers.Main) {
-                                imageBase64 = base64
-                                (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg)?.updateImagePreview(imageBase64)
-                            }
+                imageUri?.let { uri ->
+                    val fragment = supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg
+                    fragment?.updateImagePreviewFromUri(uri)
+
+                    lifecycleScope.launch {
+                        val nomeDoArquivo = "ideia-${System.currentTimeMillis()}.jpg"
+                        val urlFinal = uploadImageToAzure(this@NovaIdeiaActivity, uri, nomeDoArquivo)
+
+                        if (urlFinal != null) {
+                            imageUrlFromAzure = urlFinal
+                            Log.d("AzureUpload", "Upload com sucesso! URL: $urlFinal")
+                            Toast.makeText(this@NovaIdeiaActivity, "Imagem enviada!", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.e("AzureUpload", "Falha no upload da imagem.")
+                            Toast.makeText(this@NovaIdeiaActivity, "Erro ao enviar imagem.", Toast.LENGTH_LONG).show()
+                            fragment?.updateImagePreviewFromUri(null)
                         }
-                    } catch (e: Exception) {
-                        Toast.makeText(this, "Erro ao carregar imagem: ${e.message}", Toast.LENGTH_LONG).show()
-                        e.printStackTrace()
                     }
                 }
             }
@@ -88,19 +95,9 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
         ideaFragmentResumo
     )
 
-    private val categoriaNomeParaIdMap = mapOf(
-        // Setor
-        "atef" to 102, "pel" to 103, "geral" to 104, "ped" to 105,
-        // Objetivo
-        "oa" to 106, "inv" to 107, "sustentabilidade" to 108,
-        // Complexidade
-        "baixa" to 109, "media" to 110, "alta" to 111,
-        // Urgência
-        "programada" to 112, "prioritaria" to 113, "urgente" to 114
-    )
-
     private val PREFS_NAME = "InPulsePrefs"
     private val KEY_USER_ID = "loggedInUserId"
+    private val KEY_FUNCIONARIO_JSON = "funcionario_json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,33 +120,22 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
 
             if (etapaAtual < fragments.size - 1) {
                 etapaAtual++
-                val proximoFragmento = fragments[etapaAtual]
-
-                if (proximoFragmento is IdeaFragmentResumo) {
-                    infosIdea.putString("imagemBase64", imageBase64)
-                    proximoFragmento.arguments = infosIdea
-                }
                 carregarFragmentoAtual()
             } else {
-                if (idsDasCategorias == null) {
-                    Toast.makeText(this, "Aguarde a classificação da IA...", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
                 val nomeIdeia = infosIdea.getString("etTitulo") ?: ""
                 val problemaIdeia = infosIdea.getString("resumoProblema") ?: ""
                 val descricaoIdeia = infosIdea.getString("resumoSolucao") ?: ""
                 val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
                 val funcionarioId = sharedPref.getInt(KEY_USER_ID, -1)
-                val categorias = idsDasCategorias!!
+                val categorias = if(idsDasCategorias != null) idsDasCategorias else listOf(104, 107, 110, 112)
 
                 val ideiaRequest = IdeiaRequest(
                     nome = nomeIdeia,
                     problema = problemaIdeia,
                     descricao = descricaoIdeia,
-                    imagem = imageBase64,
+                    imagem = imageUrlFromAzure,
                     funcionario_id = funcionarioId,
-                    categorias_id = categorias
+                    categorias_id = categorias!!
                 )
 
                 enviarIdeia(ideiaRequest)
@@ -203,66 +189,78 @@ class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
     }
 
     override fun onImageSelected(base64Image: String?) {
-        this.imageBase64 = base64Image
-        (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg)?.updateImagePreview(base64Image)
-    }
-
-    private fun resizeAndCompressBitmap(bitmap: Bitmap, maxWidth: Int, quality: Int): Bitmap {
-        val width = bitmap.width
-        val height = bitmap.height
-
-        val ratio: Float = width.toFloat() / height.toFloat()
-
-        val newWidth: Int
-        val newHeight: Int
-
-        if (width > height) {
-            newWidth = maxWidth
-            newHeight = (newWidth / ratio).toInt()
-        } else {
-            newHeight = maxWidth
-            newWidth = (newHeight * ratio).toInt()
+        if(base64Image == null){
+            this.imageUrlFromAzure = null
+            (supportFragmentManager.findFragmentById(R.id.containerIdea) as? IdeaFragmentImg)?.updateImagePreviewFromUri(null)
         }
-
-        return Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
     }
 
-    private fun bitmapToBase64(bitmap: Bitmap): String? {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-        return android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT)
+    private suspend fun uploadImageToAzure(context: Context, imageUri: Uri, blobName: String): String? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val blobEndpoint = "https://${AzureConstants.STORAGE_ACCOUNT_NAME}.blob.core.windows.net"
+                val blobUrlWithSas = "$blobEndpoint/${AzureConstants.CONTAINER_NAME}/$blobName${AzureConstants.SAS_TOKEN}"
+
+                val blobClient = BlobClientBuilder().endpoint(blobUrlWithSas).buildClient()
+
+                context.contentResolver.openInputStream(imageUri)?.use { inputStream ->
+                    blobClient.upload(inputStream, inputStream.available().toLong(), true)
+                    return@withContext "$blobEndpoint/${AzureConstants.CONTAINER_NAME}/$blobName"
+                }
+
+                return@withContext null
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext null
+            }
+        }
     }
 
     private fun enviarIdeia(ideiaRequest: IdeiaRequest) {
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val response = RetrofitClient.inPulseApiService.sendIdeia(ideiaRequest)
 
-                    withContext(Dispatchers.Main) {
-                        if (response != null) {
-                            val intent = Intent(this@NovaIdeiaActivity, HubActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(
-                                this@NovaIdeiaActivity,
-                                "Erro ao enviar ideia",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@NovaIdeiaActivity,
-                            "Falha na conexão: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        e.printStackTrace()
-                    }
+        lifecycleScope.launch {
+            try {
+                val responseIdeia = withContext(Dispatchers.IO) {
+                    RetrofitClient.inPulseApiService.sendIdeia(ideiaRequest)
                 }
+
+                if (responseIdeia == null) {
+                    throw Exception("Falha ao criar a ideia. A resposta da API foi nula.")
+                }
+
+                Log.d("UserDataSync", "Ideia enviada. Buscando dados atualizados do usuário...")
+                val sharedPref = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+                val funcionarioId = sharedPref.getInt(KEY_USER_ID, -1)
+
+                if (funcionarioId == -1) {
+                    Log.w("UserDataSync", "ID do usuário não encontrado. Não foi possível atualizar os dados locais.")
+                }
+
+                val funcionarioAtualizado = withContext(Dispatchers.IO) {
+                    RetrofitClient.inPulseApiService.getFuncionarioById(funcionarioId)
+                }
+
+                val gson = Gson()
+                val novoJson = gson.toJson(funcionarioAtualizado)
+                sharedPref.edit().putString(KEY_FUNCIONARIO_JSON, novoJson).apply()
+                Log.d("UserDataSync", "JSON do funcionário atualizado com sucesso no SharedPreferences.")
+
+                Toast.makeText(this@NovaIdeiaActivity, "Ideia enviada com sucesso!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@NovaIdeiaActivity, HubActivity::class.java)
+
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                startActivity(intent)
+                finish()
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    this@NovaIdeiaActivity,
+                    "Falha na operação: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
             }
         }
     }

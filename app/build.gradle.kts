@@ -84,4 +84,7 @@ dependencies {
     implementation("com.google.cloud:google-cloud-dialogflow-cx")
     implementation("io.grpc:grpc-okhttp")
 
+    implementation("com.azure:azure-storage-blob:12.31.2")
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+
 }

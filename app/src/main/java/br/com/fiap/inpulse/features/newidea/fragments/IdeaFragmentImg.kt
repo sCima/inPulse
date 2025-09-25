@@ -1,18 +1,18 @@
 package br.com.fiap.inpulse.features.newidea.fragments
 
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView // Importar ImageView
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.utils.ImageSelectionListener // Importar a interface
+import br.com.fiap.inpulse.utils.ImageSelectionListener
+import coil.load
 
 class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
 
@@ -21,7 +21,6 @@ class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
     private lateinit var btnEnviarImg: AppCompatButton
     private lateinit var cardViewImagePreview: CardView
     private var imageSelectionListener: ImageSelectionListener? = null
-    private var currentImageBase64: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +43,6 @@ class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
 
         view.findViewById<TextView>(R.id.txt_sem_imagem).setOnClickListener {
             imageSelectionListener?.onImageSelected(null)
-            imagePreview.visibility = View.GONE
-            imagePreview.setImageDrawable(null)
-            currentImageBase64 = null
-        }
-
-        if (!currentImageBase64.isNullOrEmpty()) {
-            updateImagePreview(currentImageBase64)
         }
     }
 
@@ -58,25 +50,21 @@ class IdeaFragmentImg : Fragment(), IdeaInfoProvider {
         this.imageSelectionListener = listener
     }
 
-    fun updateImagePreview(base64Image: String?) {
-        this.currentImageBase64 = base64Image
-        if (!base64Image.isNullOrEmpty()) {
-            try {
-                val decodedString = Base64.decode(base64Image, Base64.DEFAULT)
-                val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                imagePreview.setImageBitmap(decodedByte)
-                imagePreview.visibility = View.VISIBLE
-                cardViewImagePreview.visibility = View.VISIBLE
-                btnEnviarImg.text = "Imagem enviada"
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-                imagePreview.visibility = View.GONE
-                cardViewImagePreview.visibility = View.GONE
+    fun updateImagePreviewFromUri(imageUri: Uri?) {
+        if (imageUri != null) {
+            imagePreview.load(imageUri) {
+                crossfade(true)
+                listener { _, _ ->
+                    imagePreview.visibility = View.VISIBLE
+                    cardViewImagePreview.visibility = View.VISIBLE
+                    btnEnviarImg.text = "Alterar Imagem"
+                }
             }
         } else {
+            imagePreview.setImageDrawable(null)
             imagePreview.visibility = View.GONE
             cardViewImagePreview.visibility = View.GONE
-            imagePreview.setImageDrawable(null)
+            btnEnviarImg.text = "Enviar Imagem"
         }
     }
 
