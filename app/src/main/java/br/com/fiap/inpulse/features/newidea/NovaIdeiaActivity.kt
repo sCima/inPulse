@@ -2,7 +2,6 @@ package br.com.fiap.inpulse.features.newidea
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,9 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.data.api.HuggingFaceApiService
 import br.com.fiap.inpulse.data.api.RetrofitClient
-import br.com.fiap.inpulse.data.model.ClassificationRequest
 import br.com.fiap.inpulse.data.model.request.IdeiaRequest
 import br.com.fiap.inpulse.features.hub.HubActivity
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentDescricao
@@ -30,17 +27,12 @@ import br.com.fiap.inpulse.features.newidea.fragments.IdeaFragmentResumo
 import br.com.fiap.inpulse.features.newidea.fragments.IdeaInfoProvider
 import br.com.fiap.inpulse.features.newidea.fragments.OnCategoriasMapeadasListener
 import br.com.fiap.inpulse.utils.AzureConstants
-import br.com.fiap.inpulse.utils.CategoriaMapper
 import br.com.fiap.inpulse.utils.ImageSelectionListener
-import br.com.fiap.inpulse.utils.uploadImageToAzure
 import com.azure.storage.blob.BlobClientBuilder
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
 
 class NovaIdeiaActivity : AppCompatActivity(), ImageSelectionListener,
     OnCategoriasMapeadasListener {

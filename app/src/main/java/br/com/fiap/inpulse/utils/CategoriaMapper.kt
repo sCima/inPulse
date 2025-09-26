@@ -7,6 +7,8 @@ object CategoriaMapper {
 
     private val categoriaPadrao = Categoria(0, "Indefinido", R.drawable.ic_launcher_foreground)
 
+    private val categoriaErro = Categoria(-1, "Erro na IA", R.drawable.ic_launcher_foreground)
+
     internal val mapaSetor = mapOf(
         "atef" to Categoria(1, "Administração, TI & Finanças", R.drawable.administracao),
         "pel" to Categoria(2, "Produção e Logística", R.drawable.logistica),
@@ -33,11 +35,24 @@ object CategoriaMapper {
     )
 
     fun mapearPredicoes(predictions: Map<String, String>): Map<String, Categoria> {
+
+        fun getCategoriaPara(chave: String, mapa: Map<String, Categoria>): Categoria {
+            val labelOriginal = predictions[chave]
+
+            if (labelOriginal?.startsWith("Erro") == true) {
+                return categoriaErro
+            }
+
+            val label = labelOriginal?.trim()?.lowercase()
+
+            return mapa[label] ?: categoriaPadrao
+        }
+
         return mapOf(
-            "setor" to (mapaSetor[predictions["setor"]] ?: categoriaPadrao),
-            "objetivo" to (mapaObjetivo[predictions["objetivo"]] ?: categoriaPadrao),
-            "complexidade" to (mapaComplexidade[predictions["complexidade"]] ?: categoriaPadrao),
-            "urgencia" to (mapaUrgencia[predictions["urgencia"]] ?: categoriaPadrao)
+            "setor" to getCategoriaPara("setor", mapaSetor),
+            "objetivo" to getCategoriaPara("objetivo", mapaObjetivo),
+            "complexidade" to getCategoriaPara("complexidade", mapaComplexidade),
+            "urgencia" to getCategoriaPara("urgencia", mapaUrgencia)
         )
     }
 }
