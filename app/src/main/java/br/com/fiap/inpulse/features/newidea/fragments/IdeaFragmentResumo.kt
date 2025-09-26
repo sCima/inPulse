@@ -135,44 +135,46 @@ class IdeaFragmentResumo : Fragment(), IdeaInfoProvider {
         val request = ClassificationRequest(texto)
         val apiService = AzureRetrofitClient.api
 
-        suspend fun extrairLabelDoSetor(): String {
-            return try {
-                val response = apiService.classifyDefault(request)
+        suspend fun extrairLabelDaResposta(deploymentName: String): String {
+             try {
+                val response = apiService.classifyWithHeader(deploymentName, request)
 
-                if (response.isSuccessful) {
-                    val todasPredicoes = response.body().orEmpty()
+                    if (response.isSuccessful) {
+                        val todasPredicoes = response.body().orEmpty()
 
-                    if (todasPredicoes.isEmpty()) {
-                        return "Label não encontrado"
-                    }
-
-                    var melhorPredicao = todasPredicoes[0]
-                    for (predicao in todasPredicoes) {
-                        if (predicao.score > melhorPredicao.score) {
-                            melhorPredicao = predicao
+                        if (todasPredicoes.isEmpty()) {
+                            return "Label não encontrado"
                         }
-                    }
-                    melhorPredicao.label
 
-                } else {
+                        var melhorPredicao = todasPredicoes[0]
+                        for (predicao in todasPredicoes) {
+                            if (predicao.score > melhorPredicao.score) {
+                                melhorPredicao = predicao
+                            }
+                        }
+                        return melhorPredicao.label
+                    } else {
                     val erro = response.errorBody()?.string()
-                    Log.e("AzureIA", "Erro API SETOR: $erro")
-                    "Erro: ${response.code()}"
-                }
+                    Log.e("AzureIA", "Erro API $deploymentName: $erro")
+                    return "Erro: ${response.code()}"
+                    }
             } catch (e: Exception) {
-                e.printStackTrace()
-                "Erro de conexão"
+                Log.e("AzureIA", "Erro de conexão no $deploymentName", e)
+                return "Erro de conexão"
             }
         }
 
         return coroutineScope {
-            val setorJob = async(Dispatchers.IO) { extrairLabelDoSetor() }
+            val setorJob = async(Dispatchers.IO) { extrairLabelDaResposta(DeploymentNames.SETOR) }
+            val objetivoJob = async(Dispatchers.IO) { extrairLabelDaResposta(DeploymentNames.OBJETIVO) }
+            val complexidadeJob = async(Dispatchers.IO) { extrairLabelDaResposta(DeploymentNames.COMPLEXIDADE) }
+            val urgenciaJob = async(Dispatchers.IO) { extrairLabelDaResposta(DeploymentNames.URGENCIA) }
 
             mapOf(
                 "setor" to setorJob.await(),
-                "objetivo" to "Não disponível",
-                "complexidade" to "Não disponível",
-                "urgencia" to "Não disponível"
+                "objetivo" to objetivoJob.await(),
+                "complexidade" to complexidadeJob.await(),
+                "urgencia" to urgenciaJob.await()
             )
         }
     }
