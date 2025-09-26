@@ -16,10 +16,9 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import br.com.fiap.inpulse.R
-import br.com.fiap.inpulse.data.api.AzureRetrofitClient
+import br.com.fiap.inpulse.data.api.azure.AzureRetrofitClient
 import br.com.fiap.inpulse.data.model.Categoria
 import br.com.fiap.inpulse.data.model.ClassificationRequest
-import br.com.fiap.inpulse.data.model.LabelScore
 import br.com.fiap.inpulse.utils.CategoriaMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -158,6 +157,7 @@ class IdeaFragmentResumo : Fragment(), IdeaInfoProvider {
                     Log.e("AzureIA", "Erro API $deploymentName: $erro")
                     return "Erro: ${response.code()}"
                     }
+
             } catch (e: Exception) {
                 Log.e("AzureIA", "Erro de conexão no $deploymentName", e)
                 return "Erro de conexão"

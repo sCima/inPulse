@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.fiap.inpulse.R
 import br.com.fiap.inpulse.data.model.response.FuncionarioResponse
 import br.com.fiap.inpulse.data.model.response.ItemResponse
+import br.com.fiap.inpulse.data.repository.EmailRepository
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 interface OnItemPurchaseListener {
     fun onItemPurchased(novoTotalMoedas: Int)
@@ -20,10 +23,11 @@ interface OnItemPurchaseListener {
 
 class LojaAdapter(private var itens: MutableList<ItemResponse>,
                   private var tier: String?,
-                  private val purchaseListener: OnItemPurchaseListener) :
+                  private val purchaseListener: OnItemPurchaseListener,
+                  private val repository: EmailRepository,
+                  private val coroutineScope: CoroutineScope) :
     RecyclerView.Adapter<LojaAdapter.InfoViewHolder>() {
 
-    // --- Constantes para SharedPreferences ---
     private val PREFS_NAME = "InPulsePrefs"
     private val KEY_FUNCIONARIO_JSON = "funcionario_json"
 
@@ -95,6 +99,14 @@ class LojaAdapter(private var itens: MutableList<ItemResponse>,
 
                 Toast.makeText(context, "'${item.nome}' comprado com sucesso!", Toast.LENGTH_SHORT).show()
 
+                coroutineScope.launch {
+                    repository.sendEmail(
+                        recipientEmail = "lucasdelimabzr@gmail.com",
+                        subject = "Novo item comprado por ${loggedUser.primeiro_nome} ${loggedUser.ultimo_sobrenome}",
+                        body = "Olá Eurofarma, o item '${item.nome}' foi comprado por ${loggedUser.primeiro_nome}. O colaborador está aguardando ansiosamente..."
+                    )
+                }
+
                 val currentPosition = holder.adapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
                     itens.removeAt(currentPosition)
@@ -106,7 +118,6 @@ class LojaAdapter(private var itens: MutableList<ItemResponse>,
                 sharedPref.edit().putString(KEY_FUNCIONARIO_JSON, updatedJson).apply()
 
                 purchaseListener.onItemPurchased(novoTotalMoedas)
-                // TODO - call api e descontar moedas
 
             } else {
                 Toast.makeText(context, "Moedas insuficientes. Você precisa de ${item.preco} moedas.", Toast.LENGTH_SHORT).show()

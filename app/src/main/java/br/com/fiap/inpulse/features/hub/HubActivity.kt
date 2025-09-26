@@ -21,12 +21,14 @@ import br.com.fiap.inpulse.features.hub.home.NavigationListener
 import br.com.fiap.inpulse.features.hub.profile.ProfileFragment
 import br.com.fiap.inpulse.features.hub.ranking.RankingFragment
 import br.com.fiap.inpulse.features.hub.settings.SettingsFragment
+import coil.load
+import coil.transform.CircleCropTransformation
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.gson.Gson
 
 interface ToolbarController {
-    fun setToolbarForProfile(data: FuncionarioResponse)
+    fun setToolbarForProfile(data: FuncionarioResponse, isOtherProfile: Boolean = false)
     fun resetToolbarToDefault()
 }
 
@@ -142,10 +144,12 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
     private fun configureToolbar(
         toolbar: Toolbar,
         isPerfil: Boolean = false,
-        dataOverride: FuncionarioResponse? = null
+        dataOverride: FuncionarioResponse? = null,
+        isOtherProfile: Boolean = false
     ) {
         setSupportActionBar(toolbar)
         val toolbarButton: ImageButton = findViewById(R.id.toolbar_button)
+        val toolbarImage: ShapeableImageView = findViewById(R.id.toolbar_image)
         val toolbarTitle: TextView? = toolbar.findViewById(R.id.toolbar_text)
         var tierColor: Int = R.color.bronze
 
@@ -170,9 +174,22 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
                 "Ouro" -> R.color.gold
                 else -> R.color.bronze
             }
+
+            if (isOtherProfile) {
+                toolbarImage.setImageResource(R.mipmap.profile_default_round)
+            } else {
+                val urlFotoPerfil = "https://inpulsestorage.blob.core.windows.net/imagens/imagem_2025-09-26_012219160.png"
+                toolbarImage.load(urlFotoPerfil) {
+                    crossfade(true)
+                    placeholder(R.mipmap.profile_default_round)
+                    error(R.mipmap.profile_default_round)
+                    transformations(CircleCropTransformation())
+                }
+            }
         } ?: run {
             toolbarTitle?.text = "InPulse"
             tierColor = R.color.bronze
+            toolbarButton.setImageResource(R.mipmap.profile_default_round)
         }
 
         toolbarButton.setBackgroundColor(getColor(R.color.bgWhite))
@@ -184,11 +201,11 @@ class HubActivity : AppCompatActivity(), NavigationListener, ToolbarController {
         }
     }
 
-    override fun setToolbarForProfile(data: FuncionarioResponse) {
-        configureToolbar(toolbarHub, true, data)
+    override fun setToolbarForProfile(data: FuncionarioResponse,  isOtherProfile: Boolean) {
+        configureToolbar(toolbarHub, true, data, isOtherProfile)
     }
 
     override fun resetToolbarToDefault() {
-        configureToolbar(toolbarHub, false, null)
+        configureToolbar(toolbarHub, false, null, false)
     }
 }

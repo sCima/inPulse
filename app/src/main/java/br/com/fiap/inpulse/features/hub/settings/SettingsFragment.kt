@@ -38,7 +38,6 @@ class SettingsFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // ... (seu código de onAttach existente)
         if (context is ToolbarController) {
             toolbarListener = context
         }

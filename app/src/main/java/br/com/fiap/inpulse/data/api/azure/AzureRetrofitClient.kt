@@ -1,4 +1,4 @@
-package br.com.fiap.inpulse.data.api
+package br.com.fiap.inpulse.data.api.azure
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

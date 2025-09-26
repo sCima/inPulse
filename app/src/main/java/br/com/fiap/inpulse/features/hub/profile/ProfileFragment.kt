@@ -24,6 +24,7 @@ import br.com.fiap.inpulse.data.model.response.Funcionarios
 import br.com.fiap.inpulse.data.model.response.IdeiaResponse
 import br.com.fiap.inpulse.data.model.response.ProgramaFuncionario
 import br.com.fiap.inpulse.data.model.response.Selo
+import br.com.fiap.inpulse.data.repository.EmailRepository
 import br.com.fiap.inpulse.features.hub.ToolbarController
 import br.com.fiap.inpulse.features.hub.home.IdeaAdapter
 import com.google.android.material.button.MaterialButtonToggleGroup
@@ -38,6 +39,7 @@ class ProfileFragment : Fragment(), OnItemPurchaseListener {
     private lateinit var adapterP: ProgramaProfileAdapter
     private var funcionarioData: FuncionarioResponse? = null
     private lateinit var tvPontos: TextView
+    private val emailRepository = EmailRepository()
 
     private var toolbarListener: ToolbarController? = null
 
@@ -100,26 +102,32 @@ class ProfileFragment : Fragment(), OnItemPurchaseListener {
         recyclerViewLP: RecyclerView,
         recyclerViewLO: RecyclerView
     ) {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 val todosOsItens = withContext(Dispatchers.IO) {
                     RetrofitClient.inPulseApiService.loadItens()
+                }
+
+                if (!isAdded || context == null) {
+                    return@launch
                 }
 
                 val itensBronze = todosOsItens.filter { it.tier == "Bronze" }.toMutableList()
                 val itensPrata = todosOsItens.filter { it.tier == "Prata" }.toMutableList()
                 val itensOuro = todosOsItens.filter { it.tier == "Ouro" }.toMutableList()
 
-                val adapterBronze = LojaAdapter(itensBronze, userTier, this@ProfileFragment)
-                val adapterPrata = LojaAdapter(itensPrata, userTier, this@ProfileFragment)
-                val adapterOuro = LojaAdapter(itensOuro, userTier, this@ProfileFragment)
+                val adapterBronze = LojaAdapter(itensBronze, userTier, this@ProfileFragment, emailRepository, viewLifecycleOwner.lifecycleScope)
+                val adapterPrata = LojaAdapter(itensPrata, userTier, this@ProfileFragment, emailRepository, viewLifecycleOwner.lifecycleScope)
+                val adapterOuro = LojaAdapter(itensOuro, userTier, this@ProfileFragment, emailRepository, viewLifecycleOwner.lifecycleScope)
 
                 recyclerViewLB.adapter = adapterBronze
                 recyclerViewLP.adapter = adapterPrata
                 recyclerViewLO.adapter = adapterOuro
 
             } catch (e: Exception) {
-                Toast.makeText(context, "Erro ao carregar itens da loja: ${e.message}", Toast.LENGTH_LONG).show()
+                if (isAdded && context != null) {
+                    Toast.makeText(context, "Erro ao carregar itens da loja: ${e.message}", Toast.LENGTH_LONG).show()
+                }
                 e.printStackTrace()
             }
         }
@@ -127,8 +135,10 @@ class ProfileFragment : Fragment(), OnItemPurchaseListener {
 
     private fun populateUi(data: FuncionarioResponse?, view: View) {
 
+        val isOtherProfile = arguments?.containsKey("profile_user_id") ?: false
+
         data?.let {
-            toolbarListener?.setToolbarForProfile(it)
+            toolbarListener?.setToolbarForProfile(it, isOtherProfile)
         }
 
         funcionarioData = data
