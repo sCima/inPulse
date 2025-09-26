@@ -34,8 +34,9 @@ class IdeaFragmentMissoes: Fragment() {
 
     private fun mockMissoes() : MutableList<Missao>{
         return mutableListOf(Missao("Sua primeira ideia", "Envie sua primeira ideia, vale de tudo!", 5),
-            Missao("Ajudando a logistica", "Envie uma ideia da categoria producao", 4))
-
+            Missao("Ajudando a logística", "Envie uma ideia da categoria Produção & Logística", 4),
+            Missao("Colaborando", "Envie uma contribuição a um colega", 2),
+            Missao("Medalha de prata", "Alcance o tier Prata", 20))
     }
 
 }
