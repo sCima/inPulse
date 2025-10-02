@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.data.api.azure
 
+import br.com.fiap.inpulse.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -9,7 +10,7 @@ object AzureRetrofitClient {
 
     private const val BASE_URL = "https://aipulse.eastus.inference.ml.azure.com/"
 
-    private val API_KEY = "G2d4MNp53VsW1R0TG7Z2EqGvfkrBoJWSXJ98e8GFXVC5p2pmj6N8JQQJ99BIAAAAAAAAAAAAINFRAZML3bnc"
+    private val API_KEY = BuildConfig.AZURE_KEY
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor { chain ->

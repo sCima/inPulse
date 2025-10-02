@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.lifecycle.lifecycleScope
+import br.com.fiap.inpulse.BuildConfig
 import br.com.fiap.inpulse.data.model.ChatMessage
 import com.google.api.gax.core.FixedCredentialsProvider
 import com.google.auth.oauth2.GoogleCredentials
@@ -117,7 +118,9 @@ class ChatbotActivity : AppCompatActivity() {
 
     private fun setupDialogflow() {
         try {
-            val credentialsStream = resources.openRawResource(R.raw.dialogflow_token)
+            val credentialsBase64 = BuildConfig.GOOGLE_64
+            val credentialsBytes = java.util.Base64.getDecoder().decode(credentialsBase64)
+            val credentialsStream = java.io.ByteArrayInputStream(credentialsBytes)
             googleCredentials = GoogleCredentials.fromStream(credentialsStream)
                 .createScoped(listOf("https://www.googleapis.com/auth/cloud-platform"))
 

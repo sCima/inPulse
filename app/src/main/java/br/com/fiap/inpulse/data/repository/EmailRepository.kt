@@ -1,5 +1,6 @@
 package br.com.fiap.inpulse.data.repository
 
+import br.com.fiap.inpulse.BuildConfig
 import br.com.fiap.inpulse.data.api.sendgrid.SendGridRetrofitClient
 import br.com.fiap.inpulse.data.model.EmailAddress
 import br.com.fiap.inpulse.data.model.EmailContent
@@ -26,7 +27,7 @@ class EmailRepository {
             content = listOf(content)
         )
 
-        val apiKey = "Bearer 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"
+        val apiKey = BuildConfig.SENDGRID_KEY
 
         try {
             apiService.sendEmail(apiKey, requestBody)

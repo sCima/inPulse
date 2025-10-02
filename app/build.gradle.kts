@@ -1,7 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlin-parcelize")
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { input ->
+        localProperties.load(input)
+    }
 }
 
 android {
@@ -19,6 +29,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "SENDGRID_KEY", "\"${localProperties.getProperty("SENDGRID_KEY")}\"")
+        buildConfigField("String", "AZURE_KEY", "\"${localProperties.getProperty("AZURE_KEY")}\"")
+        buildConfigField("String", "AZURE_SAS", "\"${localProperties.getProperty("AZURE_SAS")}\"")
+        buildConfigField("String", "GOOGLE_64", "\"${localProperties.getProperty("GOOGLE_64")}\"")
     }
 
     buildTypes {
@@ -36,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
